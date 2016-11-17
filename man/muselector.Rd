@@ -4,7 +4,8 @@
 \alias{muselector}
 \title{Matrix Uncertainty Selector (MU Selector)}
 \usage{
-muselector(W, y, lambda, delta, family = c("gaussian", "binomial"))
+muselector(W, y, lambda = NULL, delta = NULL, family = c("gaussian",
+  "binomial"))
 }
 \arguments{
 \item{W}{Design matrix, measured with error.}
@@ -23,50 +24,18 @@ Matrix Uncertainty Selector (MU Selector) for linear regression, a modified vers
 }
 \examples{
 set.seed(1)
-# Problem dimensions
-n <- 100; p <- 50
-
-# True (latent) variables
-X <- matrix(rnorm(n * p), nrow = n)
-
-# Measurement matrix (this is the one we observe)
-W <- X + matrix(rnorm(n*p, sd = 1), nrow = n, ncol = p)
-
-# Response
+n <- 100; p <- 50 # Problem dimensions
+X <- matrix(rnorm(n * p), nrow = n) # True (latent) variables
+W <- X + matrix(rnorm(n*p, sd = 1), nrow = n, ncol = p) # Measurement matrix (this is the one we observe)
 beta <- c(seq(from = 0.1, to = 1, length.out = 5), rep(0, p-5))
-y <- X \%*\% beta + rnorm(n, sd = 1)
-
-# Run the MU Selector at lambda = 0.1 and delta = 0.1
-fit <- MUSelector(W, y, 0.1, 0.1)
-
-# Estimate the regularization parameters:
-# First compute the optimal cross-validated lambda value for the standard lasso
-library(glmnet)
-lassoFit <- cv.glmnet(W, y)
-lambdaMin <- lassoFit$lambda.min
-
-# Next, use this lambda, and draw an elbow plot for delta
-delta <- seq(from = 0, to = 0.5, by = 0.02)
-support <- sapply(delta, function(x) sum(MUSelector(W, y, lambdaMin, delta = x)$coefficients != 0))
-
-# Create an elbow plot
-plot(delta, support, type = "l",
- xlab = expression(delta),
- ylab = "Nonzero coefficients",
- main = "Elbow plot",
- ylim = c(0, max(support)))
+y <- X \%*\% beta + rnorm(n, sd = 1) # Response
+fit <- muselector(W, y) # Run the MU Selector
+plot(fit) # Draw an elbow plot to select delta
 
 # Now, according to the "elbow rule", choose the final delta where the curve has an "elbow".
 # In this case, the elbow is at about delta = 0.12, so we use this to compute the final estimate:
-MUSelectorFit <- MUSelector(W, y, lambdaMin, 0.12)
-
-# Compare the MUSelector fit to the Lasso fit
-plot(1:p, beta, xlab = "Coefficient no.", ylab = "Coefficient value", ylim = c(-0.2, 1.1))
-points(1:p, coefficients(lassoFit)[-1], col = "red")
-points(1:p, MUSelectorFit$coefficients, col = "blue")
-legend(35, 0.9,
- legend = c("True value", "Standard lasso", "MU Selector"),
- col = c("black", "red", "blue"), pch = 20)
+fit <- muselector(W, y, delta = 0.12)
+plot(fit) # Plot the coefficients
 
 }
 \references{

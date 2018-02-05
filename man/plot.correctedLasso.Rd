@@ -16,4 +16,3 @@ a <- 1
 class(a) <- "lm"
 MyHappyFunction(a)
 }
-

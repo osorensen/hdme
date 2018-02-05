@@ -43,4 +43,3 @@ Emmanuel Candes and Terence Tao. 2007. "The Dantzig Selector: Statistical Estima
 
 Mathieu Rosenbaum and Alexandre B. Tsybakov. 2010. "Sparse Recovery Under Matrix Uncertainty." The Annals of Statistics 38 (5) https://projecteuclid.org/euclid.aos/1278861455
 }
-

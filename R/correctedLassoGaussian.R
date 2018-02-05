@@ -1,4 +1,4 @@
-correctedLassoGaussian <- function(W, y,sigmaUU, radius, noRadii, alpha, maxits, standardize){
+correctedLassoGaussian <- function(W, y,sigmaUU, radius, noRadii, alpha, maxits){
 
   # Mean-subtract the columns of W
   W <- scale(W, scale = FALSE)

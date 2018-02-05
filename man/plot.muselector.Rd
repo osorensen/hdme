@@ -6,4 +6,3 @@
 \usage{
 \method{plot}{muselector}(x)
 }
-

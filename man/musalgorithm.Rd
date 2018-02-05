@@ -9,4 +9,3 @@ musalgorithm(W, y, lambda, delta)
 \description{
 Algorithm for mus
 }
-

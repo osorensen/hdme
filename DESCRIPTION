@@ -1,11 +1,24 @@
 Package: hdme
 Type: Package
-Title: What the Package Does (Title Case)
+Title: High-Dimensional Regression with Measurement Error
 Version: 0.1.0
-Author: Who wrote it
-Maintainer: Who to complain to <yourfault@somewhere.net>
-Description: More about what it does (maybe more than one line)
-License: What license is it under?
+Encoding: UTF-8
+Authors@R: person("Øystein", "Sorensen", email = "oystein.sorensen.1985@gmail.com",
+  role = c("aut", "cre"))
+Description: Penalized regression for generalized linear models for
+  measurement error problems (aka. errors-in-variables). The package
+  contains a version of the lasso (L1-penalization) which corrects
+  for measurement error. It also contains an implementation of the 
+  Genearalized Matrix Uncertainty Selector, which is a version the
+  (Generalized) Dantzig Selector for the case of measurement error.
+License: GPL-3
 LazyData: TRUE
-RoxygenNote: 5.0.1
-Imports: glmnet, Rglpk, mvtnorm, stats, base, ggplot2
+RoxygenNote: 6.0.1
+Imports: 
+  glmnet (>= 2.0-13), 
+  Rglpk (>= 0.6-3), 
+  mvtnorm (>= 1.0-7), 
+  ggplot2 (>= 2.2.1),
+  Rdpack
+URL: https://github.com/osorensen/hdme
+RdMacros: Rdpack

@@ -85,4 +85,3 @@ Mathieu Rosenbaum and Alexandre B. Tsybakov. 2010. "Sparse Recovery Under Matrix
 
 Oystein Sorensen, Arnoldo Frigessi, and Magne Thoresen. 2014. "Covariate Selection in High-Dimensional Generalized Linear Models with Measurement Error." https://arxiv.org/abs/1407.1070
 }
-

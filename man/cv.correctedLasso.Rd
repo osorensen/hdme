@@ -50,4 +50,3 @@ Po-Ling Loh, and Martin J. Wainwright. 2012. "High-Dimensional Regression with N
 
 Oystein Sorensen, Arnoldo Frigessi, and Magne Thoresen. 2015. "Measurement Error in Lasso: Impact and Likelihood Bias Correction." Statistica Sinica 25 (2).
 }
-

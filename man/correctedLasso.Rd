@@ -2,39 +2,48 @@
 % Please edit documentation in R/correctedLasso.R
 \name{correctedLasso}
 \alias{correctedLasso}
-\title{Corrected lasso}
+\title{Corrected Lasso}
 \usage{
 correctedLasso(W, y, sigmaUU, family = c("gaussian", "binomial", "poisson"),
-  radius = NULL, noRadii = 20, alpha = 0.1, maxits = 5000,
-  standardize = FALSE)
+  radius = NULL, noRadii = 20, alpha = 0.1, maxits = 5000)
 }
 \arguments{
-\item{W}{Design matrix, measured with error.}
+\item{W}{Design matrix, measured with error. Must be a numeric matrix.}
 
-\item{y}{Vector of the continuous response value.}
+\item{y}{Vector of responses.}
 
 \item{sigmaUU}{Covariance matrix of the measurement error.}
 
-\item{family}{Response type.}
+\item{family}{Response type. Character string of length 1.}
 
-\item{alpha}{Optional step size of the projected gradient descent algorithm. Default is 0.1.}
+\item{alpha}{Step size of the projected gradient descent algorithm. Default
+is 0.1.}
 
-\item{maxits}{Optional maxium number of iterations of the project gradient descent algorithm for each radius. Default is 5000.}
+\item{maxits}{Maxium number of iterations of the project gradient descent
+algorithm for each radius. Default is 5000.}
 
-\item{radii}{Optional vector containing the set of radii of the l1-ball onto which the solution is projected. If not provided, the algorithm will select an evenly spaced vector of 20 radii.}
+\item{radii}{Vector containing the set of radii of the l1-ball onto which the
+solution is projected. If not provided, the algorithm will select an evenly
+spaced vector of 20 radii.}
 }
 \value{
-Returns a list containing a matrix whose columns represent the corrected beta estimates at each radius, as well as the vector of radii used.
+Returns a list containing a matrix whose columns represent the
+  corrected beta estimates at each radius, as well as the vector of radii
+  used.
 }
 \description{
-Corrected lasso
+Lasso (L1-regularization) for generalized linear models with measurement
+error.
 }
 \details{
-Corrected version of the lasso for generalized linear models. The method does require an estimate of the measurement error covariance matrix.
+Corrected version of the lasso for generalized linear models. The
+  method does require an estimate of the measurement error covariance matrix.
 }
 \examples{
-# Gaussian
-n <- 100; p <- 50 # Problem dimensions
+
+# Example with linear regression
+n <- 100; # Number of samples
+p <- 50 # Number of covariates
 X <- matrix(rnorm(n * p), nrow = n)  # True (latent) variables
 sigmaUU <- diag(x = 0.2, nrow = p, ncol = p) # Measurement error covariance matrix (typically estimated by replicate measurements)
 W <- X + rnorm(n, sd = diag(sigmaUU)) # Measurement matrix (this is the one we observe)
@@ -43,7 +52,7 @@ y <- X \%*\% beta + rnorm(n, sd = 1) # Response
 fit <- correctedLasso(W, y, sigmaUU, family = "gaussian") # Run the corrected lasso
 plot(fit)
 
-# Binomial
+# Binomial, logistic regression
 n <- 1000; p <- 50
 X <- matrix(rnorm(n * p), nrow = n) # True (latent) variables
 sigmaUU <- diag(x = 0.2, nrow = p, ncol = p) # Measurement error covariance matrix
@@ -53,10 +62,10 @@ y <- rbinom(n, size = 1, prob = logit(X \%*\% c(rep(5, 5), rep(0, p-5)))) # Resp
 fit <- correctedLasso(W, y, sigmaUU, family = "binomial")
 plot(fit)
 
+
 }
 \references{
-Po-Ling Loh, and Martin J. Wainwright. 2012. "High-Dimensional Regression with Noisy and Missing Data: Provable Guarantees with Nonconvexity." The Annals of Statistics 40 (3) https://projecteuclid.org/euclid.aos/1346850068
+\insertRef{loh2012}{hdme}
 
-Oystein Sorensen, Arnoldo Frigessi, and Magne Thoresen. 2015. "Measurement Error in Lasso: Impact and Likelihood Bias Correction." Statistica Sinica 25 (2).
+\insertRef{sorensen2015}{hdme}
 }
-

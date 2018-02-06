@@ -15,6 +15,7 @@ correctedLassoGaussian <- function(W, y,sigmaUU, radius, noRadii, alpha, maxits)
 
     # Use the estimated vector to find the upper radius for cross-validation
     R <- 2 * sum( abs( betaNaive ) )
+
     # Set the cross-validation range
     radius <- seq(from = 1e-3 * R, to = R, length.out = noRadii)
   } else {

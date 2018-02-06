@@ -4,8 +4,8 @@
 \alias{correctedLasso}
 \title{Corrected Lasso}
 \usage{
-correctedLasso(W, y, sigmaUU, family = c("gaussian", "binomial", "poisson"),
-  radius = NULL, noRadii = 20, alpha = 0.1, maxits = 5000)
+correctedLasso(W, y, sigmaUU, family = "gaussian", radius = NULL,
+  noRadii = 20, alpha = 0.1, maxits = 5000)
 }
 \arguments{
 \item{W}{Design matrix, measured with error. Must be a numeric matrix.}
@@ -14,7 +14,8 @@ correctedLasso(W, y, sigmaUU, family = c("gaussian", "binomial", "poisson"),
 
 \item{sigmaUU}{Covariance matrix of the measurement error.}
 
-\item{family}{Response type. Character string of length 1.}
+\item{family}{Response type. Character string of length 1. Possible values
+are "gaussian" and "binomial".}
 
 \item{alpha}{Step size of the projected gradient descent algorithm. Default
 is 0.1.}
@@ -40,9 +41,8 @@ Corrected version of the lasso for generalized linear models. The
   method does require an estimate of the measurement error covariance matrix.
 }
 \examples{
-
 # Example with linear regression
-n <- 100; # Number of samples
+n <- 100 # Number of samples
 p <- 50 # Number of covariates
 X <- matrix(rnorm(n * p), nrow = n)  # True (latent) variables
 sigmaUU <- diag(x = 0.2, nrow = p, ncol = p) # Measurement error covariance matrix (typically estimated by replicate measurements)
@@ -53,7 +53,8 @@ fit <- correctedLasso(W, y, sigmaUU, family = "gaussian") # Run the corrected la
 plot(fit)
 
 # Binomial, logistic regression
-n <- 1000; p <- 50
+n <- 1000 # Number of samples
+p <- 50 # Number of covariates
 X <- matrix(rnorm(n * p), nrow = n) # True (latent) variables
 sigmaUU <- diag(x = 0.2, nrow = p, ncol = p) # Measurement error covariance matrix
 W <- X + rnorm(n, sd = diag(sigmaUU)) # Measurement matrix (this is the one we observe)

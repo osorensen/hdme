@@ -1,4 +1,4 @@
-#' Matrix Uncertainty Selector (MU Selector)
+ #' Matrix Uncertainty Selector (MU Selector)
 #' @description Matrix Uncertainty Selector (MU Selector) for linear regression, a modified version of the Dantzig Selector for the case of covariate measurement error. The method was first proposed by Rosenbaum and Tsybakov (2010). The MU Selector does not require an estimate of the measurement error covariance matrix, but instead takes measurement error into account through an additional regularization parameter, delta.
 #' @import glmnet
 #' @param W Design matrix, measured with error.

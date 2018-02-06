@@ -1,7 +1,7 @@
 logit <- function(x) (1+exp(-x))^(-1)
 dlogit <- function(x) exp(-x)*(1+exp(-x))^(-2)
 
-correctedLassoBinomial <- function(W, y, sigmaUU, radius, noRadii, alpha, maxits, standardize, tol = 1e-10){
+correctedLassoBinomial <- function(W, y, sigmaUU, radius, noRadii, alpha, maxits, standardize, tol = 1e-10, maxIR = 50){
   if( is.null(radius) ){
     # First run the naive Lasso
     lassoFit <- glmnet::cv.glmnet(W, y, family = "binomial")
@@ -28,11 +28,16 @@ correctedLassoBinomial <- function(W, y, sigmaUU, radius, noRadii, alpha, maxits
 
   for(r in seq_along(radius)) {
     # Iteration counter
-    s <- 0; diff <- tol + 1
+    s <- 0
+    diff <- tol + 1
+    cat("Step", r, "of outer iteration loop. Radius =", radius[r], "\n")
 
-    while(s <= maxits & diff > tol){
-      tmp1vec <- sum(y - logit(muOld + W %*% betaOld + t(betaOld) %*% sigmaUU %*% betaOld*(y - 1/2) ))
-      tmp2vec <- drop(t(y - logit(muOld + W %*% betaOld + t(betaOld) %*% sigmaUU %*% betaOld * (y - 1/2) )) %*% (W + y %*% (t(betaOld) %*% sigmaUU)))
+    while(s <= maxIR & diff > tol){
+      tmp1vec <- sum(y - logit(muOld + W %*% betaOld + (y - 1/2) * as.vector(t(betaOld) %*% sigmaUU %*% betaOld )))
+
+      part1 <- y - logit(muOld + W %*% betaOld + (y - 1/2) * as.vector(t(betaOld) %*% sigmaUU %*% betaOld) )
+      part2 <- W + y %*% (t(betaOld) %*% sigmaUU)
+      tmp2vec <- as.vector(t(part1) %*% (part2))
       mu <- muOld + alpha * tmp1vec
       beta <- projectOntoL1Ball(betaOld + alpha * tmp2vec, radius[r])
       diff <- sum(abs(beta - betaOld))

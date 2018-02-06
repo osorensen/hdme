@@ -8,7 +8,8 @@
 #' @param W Design matrix, measured with error. Must be a numeric matrix.
 #' @param y Vector of responses.
 #' @param sigmaUU Covariance matrix of the measurement error.
-#' @param family Response type. Character string of length 1.
+#' @param family Response type. Character string of length 1. Possible values
+#'   are "gaussian" and "binomial".
 #' @param radii Vector containing the set of radii of the l1-ball onto which the
 #'   solution is projected. If not provided, the algorithm will select an evenly
 #'   spaced vector of 20 radii.
@@ -20,8 +21,7 @@
 #'   corrected beta estimates at each radius, as well as the vector of radii
 #'   used.
 #'
-#' @references
-#' \insertRef{loh2012}{hdme}
+#' @references \insertRef{loh2012}{hdme}
 #'
 #' \insertRef{sorensen2015}{hdme}
 #' @examples
@@ -51,7 +51,7 @@
 #' @importFrom Rdpack reprompt
 #'
 #' @export
-correctedLasso <- function(W, y, sigmaUU, family = c("gaussian", "binomial", "poisson"),
+correctedLasso <- function(W, y, sigmaUU, family = "gaussian",
                  radius = NULL, noRadii = 20, alpha = 0.1, maxits = 5000){
   family <- match.arg(family)
 
@@ -85,7 +85,9 @@ correctedLasso <- function(W, y, sigmaUU, family = c("gaussian", "binomial", "po
     stop("The length of y should equal the number of rows in W")
   }
 
-
+  if(!family %in% c("gaussian", "binomial")) {
+    stop("Argment family must have value 'gaussian' or 'binmial'")
+  }
 
 
   fit <- switch(family,

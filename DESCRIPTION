@@ -3,7 +3,7 @@ Type: Package
 Title: High-Dimensional Regression with Measurement Error
 Version: 0.1.0
 Encoding: UTF-8
-Authors@R: person("Øystein", "Sorensen", email = "oystein.sorensen.1985@gmail.com",
+Authors@R: person("Øystein", "Sørensen", email = "oystein.sorensen.1985@gmail.com",
   role = c("aut", "cre"))
 Description: Penalized regression for generalized linear models for
   measurement error problems (aka. errors-in-variables). The package
@@ -22,3 +22,7 @@ Imports:
   Rdpack
 URL: https://github.com/osorensen/hdme
 RdMacros: Rdpack
+Suggests: 
+    knitr,
+    rmarkdown
+VignetteBuilder: knitr

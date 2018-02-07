@@ -1,0 +1,91 @@
+---
+title: "The hdme package: regression methods for high-dimensional data with measurement error"
+author: "Øystein Sørensen"
+date: "`r Sys.Date()`"
+output: rmarkdown::html_vignette
+bibliography: ../inst/REFERENCES.bib
+vignette: >
+  %\VignetteIndexEntry{The hdme package: regression methods for high-dimensional data with measurement error}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r setup, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+
+The `hdme` package contains algorithms for regression problems with measurement error when the number of covariates $p$ is on the same order as the number of samples $n$, or even larger. 
+
+# Measurement Error in Regression
+
+## Classical Measurement Error Problems
+Consider a linear regression model, $y = X\beta + \epsilon$, where $y$ is an $n$-dimensional response vector, $X$ is an $n \times p$ design matrix, and $\epsilon$ is normally distributed error. With $n>p$ (and $X$ positive definite), unbiased regression coefficients are obtained as 
+
+$$
+\hat{\beta} = (X^{T}X )^{-1} X^{T} y.
+$$ 
+
+In many cases, however, the true covariates $X$ are not directly observed. Instead, we have noise measurements
+
+$$ W = X + U, $$
+
+where $W$ is the $n\times p$ measurement matrix, and $U$ is the $n\times p$ matrix of measurement errors. Assume for the moment that the $n$ rows of $U$, $u_{i}$ are identically and independently distributed with covariance matrix $\Sigma_{uu}$, i.e.,
+
+$$ u_{i} \sim N(0, \Sigma_{uu}), ~ i = 1,\dots,n. $$
+
+Since we do not have measurements of $X$, using a classical linear regression model now yields coefficient estimate
+
+$$
+\hat{\beta}_{naive} = (W^{T}W )^{-1} W^{T} y,
+$$
+which is referred to as the *naive* estimate in the measurement error literature. Naive estimates are typically biased. For example, when all measurement errors are uncorrelated and each have variance $\sigma_{u}$, i.e., $\Sigma_{uu} = \sigma_{u} I_{p\times p}$, the expected value of $\hat{\beta}$ is
+
+$$
+E(\hat{\beta}_{naive}) = \frac{\sigma_{x}^{2}}{\sigma_{u}^{2} + \sigma_{x}^2} \beta = \gamma \beta,
+$$
+where $\gamma$ is the attenuation factor. Unbiased estimates for the case of linear regression can be obtained using the corrected estimator
+$$
+\hat{\beta}_{corr} = (W^{T}W - \Sigma_{uu} )^{-1} W^{T} y.
+$$
+An estimate $\hat{\Sigma}_{uu}$ of $\Sigma_{uu}$ can be typically obtained with replicate measurements. 
+
+Similar results hold for generalized linear models, e.g., logistic and Poisson regression: Measurement error typically leads to bias in the naive estimates, and correction methods can be used to obtained unbiased estimates. We refer to the book @carroll2006 for a thorough introduction to measurement error modeling.
+
+
+## Measurement Error in High-Dimensional Regression Problems
+Now consider the same setup as in the previous section, but with high-dimensional data. That is, the number of covariates $p$ is either on the same order as $n$, or even larger than $n$. In this case, even in the absence of measurement error, regularization is typically needed. 
+
+# Corrected Lasso
+
+## Corrected Lasso for Linear Regression
+
+## Corrected Lasso for Generalized Linear Models
+
+## Model Tuning
+
+- Cross validation
+
+# Matrix Uncertainty Selector
+
+## Matrix Uncertainty Selector
+
+## Generalized Matrix Uncertainty Selector
+
+## Model Tuning
+
+- Elbow rule
+
+# Interpretation of Results
+
+## Plotting Important Features
+
+## Sensitivity Analysis
+
+- Investigate the impact of measurement error
+- Compare the output of standard methods to the outputs of corrected methods.
+
+
+# References

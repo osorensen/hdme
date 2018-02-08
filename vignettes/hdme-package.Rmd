@@ -13,7 +13,8 @@ vignette: >
 ```{r setup, include = FALSE}
 knitr::opts_chunk$set(
   collapse = TRUE,
-  comment = "#>"
+  comment = "#>",
+  fig.width=6
 )
 ```
 
@@ -82,20 +83,21 @@ Using the `glmnet` package, we can illustrate the impact of measurement error in
 First we set up the parameters and generate random data:
 
 ```{r}
+set.seed(1000)
 # Number of samples
 n <- 100
 # Number of covariates
-p <- 50 
+p <- 500
 # Number of nonzero coefficients
 s <- 5
 # True coefficient vector
-beta <- c(rep(1, s), rep(0, p - s))
+beta <- c(rnorm(n = s, sd = 2), rep(0, p - s))
 # Standard deviation of covariates
 sdX <- 1
 # Standard deviation of measurement error
-sdU <- 0.1
+sdU <- 0.5
 # Standard deviation of residual
-sdEpsilon <- 0.5
+sdEpsilon <- 0.1
 # Generate the covariates
 X <- matrix(rnorm(n * p, sd = sdX), nrow = n, ncol = p)
 # Generate the response
@@ -104,11 +106,59 @@ y <- X %*% beta + rnorm(n, sd = sdEpsilon)
 W <- X + matrix(rnorm(n * p, sd = sdU), nrow = n, ncol = p)
 ```
 
+Next we run the lasso with cross-validation on the true covariates and on the noisy measurements. We pick that coefficient estimate at $\lambda_{1se}$, i.e., on standard error on the sparse side of the cross-validation minimum. This is the default of the `coef` function for objects of class `cv.glmnet`.
+
+```{r, message=FALSE}
+library(glmnet)
+library(tidyverse)
+# Lasso with cross-validation on data without measurement error
+fit1 <- cv.glmnet(X, y)
+# Lasso with cross-validation on data with measurement error
+fit2 <- cv.glmnet(W, y)
+# Create a data frame with results ([-1] because we drop the intercept)
+lassoEstimates <- tibble(
+  index = rep(1:p, times = 3),
+  beta = c(beta, as.numeric(coef(fit1)[-1]), coef(fit2)[-1]),
+  label = c(rep("True values", p), rep("No measurement error", p), rep("Measurement error", p))
+  )
+
+```
+
+By plotting all the estimated regression coefficients, we see that when the data are subject to measurement error, the number of false postives may increase. Note that this is not necessarily the case for all choices of parameters.
+
+```{r}
+ggplot(lassoEstimates, aes(x = index, y = beta, color = label)) +
+  geom_point() +
+  xlab("p") +
+  theme(legend.title=element_blank()) + 
+  ggtitle("Measurement error leading to false positives")
+```
+
+We can also focus on the `r s` parameters which are truly nonzero. In this case, we see that in the absence of measurement error, the lasso estimates values quite close to truth. With measurement error, on the other hand, the attenuation is quite clear: the estimates are biased toward zero.
+
+```{r}
+estimatesOfNonzero <- lassoEstimates %>% 
+  spread(key = label, value = beta) %>% 
+  filter(`True values` != 0) %>% 
+  gather(key = label, value = beta, -index)
+
+ggplot(estimatesOfNonzero, aes(x = index, y = beta, color = label)) +
+  geom_point() +
+  xlab("p") +
+  theme(legend.title=element_blank()) + 
+  ggtitle("Measurement error leading to attenuation")
+```
 
 ### The Dantzig Selector
 
 
 # Corrected Lasso
+When an estimate of the measurement error covariance matrix $\Sigma_{uu}$ is available, a corrected lasso can be defined as minimizing the loss
+$$
+\text{minimize } ~ L(\beta) = \|y - W \beta \|^{2} - \beta^{T} \Sigma_{uu} \beta + \lambda \|\beta\|_{1} ~\text{ subject to } \|\beta\|_{1} \leq R.
+$$
+Because we subtract the positive semidefinite matrix $\Sigma_{uu}$ from the convex function $\|y - W\beta\|^{2}$, this corrected lasso may be non-convex. In fact, when $p>n$ is is always non-convex. Hence, in order to avoid non-trivial solution, we must constrain the solution to lie in some L1-ball with radius $R$. Since this problem involves two regularization parameters, $\lambda$ and $R$, it is more convenient to use the
+
 
 ## Corrected Lasso for Linear Regression
 

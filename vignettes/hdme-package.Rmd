@@ -56,7 +56,57 @@ Similar results hold for generalized linear models, e.g., logistic and Poisson r
 
 
 ## Measurement Error in High-Dimensional Regression Problems
-Now consider the same setup as in the previous section, but with high-dimensional data. That is, the number of covariates $p$ is either on the same order as $n$, or even larger than $n$. In this case, even in the absence of measurement error, regularization is typically needed. 
+Now consider the same setup as in the previous section, but with high-dimensional data. That is, the number of covariates $p$ is either on the same order as $n$, or even larger than $n$. In this case, even in the absence of measurement error, regularization is typically needed (see, e.g., Chapter 3 of @hastie2009). 
+
+### The lasso
+The lasso (@tibshirani1996) performs $L1$-regularization, which induces sparsity. A popular `R` implementation can be found in the `glmnet` package (@simon2011). For linear regression models, the lasso finds $\hat{\beta}$ minimizing the loss
+$$
+L(\beta) = \|y - X \beta\|^{2} + \lambda \|\beta\|_{1},
+$$
+where $\lambda$ is a regularization parameter. The lasso can also be formulated as a constrained optimization problem,
+$$
+\text{minimize }  ~\|y - X\beta\|^{2}~  \text{ subject to }~ \|\beta\|_{1} \leq R,
+$$
+where $R$ is in a one-to-one relationship with $\lambda$.
+
+A lot of effort has been put on understanding the statistical properties of the lasso, both in the classical $p<n$ case and in the high-dimensional $p>n$ case, summarized in @buhlmann2011. The results are typically either probabilistic upper bounds on or asymptotic limits for
+
+* Prediction error $E(\|y_{new} - X_{new}\hat{\beta}\|)$ where $(X_{new}, y_{new})$ are a new sample of data.
+* Sum of squared estimation error $\|\hat{\beta} - \beta\|_{2}^{2}$ or sum of absolute estimation error $\|\hat{\beta} - \beta\|_{1}$
+* Covariate selection: If true coefficients in the index set $J \subseteq \{1, \dots, p\}$ are nonzero, while the rest are zero, i.e., $\beta_{J} \neq 0$ and $\beta_{J^{C}} = 0$, under which conditions will the lasso recover the true set of relevant covariates while correctly setting the irrelevant covariates to zero?
+
+The impact of measurement error in the lasso for linear models has been studied by @sorensen2015. The authors show that estimation of $\hat{\beta}$ in the asymptotic limit suffers the same bias as for a multivariate linear model described above. Consistent covariate selection, on the other hand, requires stricter conditions than in the case without measurement error.
+
+Using the `glmnet` package, we can illustrate the impact of measurement error in a small experiment.
+
+First we set up the parameters and generate random data:
+
+```{r}
+# Number of samples
+n <- 100
+# Number of covariates
+p <- 50 
+# Number of nonzero coefficients
+s <- 5
+# True coefficient vector
+beta <- c(rep(1, s), rep(0, p - s))
+# Standard deviation of covariates
+sdX <- 1
+# Standard deviation of measurement error
+sdU <- 0.1
+# Standard deviation of residual
+sdEpsilon <- 0.5
+# Generate the covariates
+X <- matrix(rnorm(n * p, sd = sdX), nrow = n, ncol = p)
+# Generate the response
+y <- X %*% beta + rnorm(n, sd = sdEpsilon)
+# Generate the measurements by adding measurement error
+W <- X + matrix(rnorm(n * p, sd = sdU), nrow = n, ncol = p)
+```
+
+
+### The Dantzig Selector
+
 
 # Corrected Lasso
 

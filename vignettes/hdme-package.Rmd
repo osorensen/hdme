@@ -87,16 +87,23 @@ The impact of measurement error in the lasso for linear models has been studied 
 
 Using the `glmnet` package, we can illustrate the impact of measurement error in a small experiment.
 
-First we set up the parameters and generate random data. In order to repeat the procedure, we create the function `create_example_data` for doing this.
+First we set up the parameters and generate random data. In order to repeat the procedure, we create the function `create_example_data` for doing this. For illustration purposes, we set the true coefficient vector to $\beta = (-2, -1, 0.5, 1, 2, 0, \dots, 0)^{T}$.
 
 ```{r}
-create_example_data <- function(n, p, s = 5, sdX = 1, sdU = 0.5, sdEpsilon = 0.1) {
-  # True coefficient vector has s non-zero elements and p-s zero elements
-  beta <- c(rnorm(n = s, sd = 2), rep(0, p - s))
+create_example_data <- function(n, p, s = 5, sdX = 1, sdU = 0.5, sdEpsilon = 0.1, family = "gaussian") {
   # Independent true covariates with mean zero and standard deviation sdX
   X <- matrix(rnorm(n * p, sd = sdX), nrow = n, ncol = p)
-  # Response has standard deviation sdEpsilon, and the intercept is zero
-  y <- X %*% beta + rnorm(n, sd = sdEpsilon)
+  # if Gaussian, response has standard deviation sdEpsilon, and the intercept is zero
+  # if binomial, the response is binomially distributed with mean (1 + exp(-X %*% beta))^(-1)
+  if(family == "gaussian") {
+    # True coefficient vector has s non-zero elements and p-s zero elements
+    beta <- c(-2, -1, 0.5, 1, 2, rep(0, p - s))
+    y <- X %*% beta + rnorm(n, sd = sdEpsilon)  
+  } else if (family == "binomial") {
+    beta <- c(rep(5, s), rep(0, p - s))
+    y <- rbinom(n, size = 1, prob = (1 + exp(-X %*% beta))**(-1))
+  }
+  
   # The measurements W have mean X and standard deviation sdU. We assume uncorrelated measurment errors
   W <- X + matrix(rnorm(n * p, sd = sdU), nrow = n, ncol = p)
   
@@ -220,6 +227,27 @@ plot(corrected_fit, type = "path")
 
 
 ## Corrected Lasso for Generalized Linear Models
+@sorensen2015 show how we can also corrected for measurement error in the lasso for generalized linear models, using the conditional score method introduced by @stefanski1987, combined with the projected gradient descent algorithm used by @loh2012 for the corrected lasso for linear models.
+
+At the time of writing, the corrected lasso for logistic regression is implemented in `hdme`. Poisson regression will be added. To illustrate its use, we start by generating some measurement error data with binomially distributed response.
+```{r}
+set.seed(323)
+n <- 2000
+p <- 50
+c(X, W, y, beta, sigmaUU) %<-% create_example_data(n, p, sdU = 0.2, family = "binomial")
+```
+
+We get logistic regression by specifying `family = "binomial"` in the call the `fit_corrected_lasso()`. 
+
+```{r}
+corrected_fit <- fit_corrected_lasso(W, y, sigmaUU, family = "binomial")
+```
+
+The plot functions work the same way as for linear regression.
+```{r}
+plot(corrected_fit)
+```
+
 
 ## Model Tuning
 

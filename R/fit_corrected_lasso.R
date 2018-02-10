@@ -51,7 +51,7 @@
 #' @importFrom Rdpack reprompt
 #'
 #' @export
-fit_corrected_lasso <- function(W, y, sigmaUU, family = "gaussian",
+fit_corrected_lasso <- function(W, y, sigmaUU, family = c("gaussian", "binomial"),
                  radii = NULL, no_radii = 20, alpha = 0.1, maxits = 5000){
   family <- match.arg(family)
 
@@ -65,7 +65,7 @@ fit_corrected_lasso <- function(W, y, sigmaUU, family = "gaussian",
 
 
 
-  if(!is.null(dim(y)) & dim(y)[2] > 1) {
+  if(is.null(dim(y) | (!is.null(dim(y)) & dim(y)[2] > 1))) {
     stop("y should be a vector")
   } else if (!is.null(dim(y))) {
     y <- as.vector(y)

@@ -29,7 +29,7 @@ $$
 \hat{\beta} = (X^{T}X )^{-1} X^{T} y.
 $$ 
 
-In many cases, however, the true covariates $X$ are not directly observed. Instead, we have noise measurements
+In many cases, however, the true covariates $X$ are not directly observed. Instead, we have noisy measurements
 
 $$ W = X + U, $$
 
@@ -37,7 +37,7 @@ where $W$ is the $n\times p$ measurement matrix, and $U$ is the $n\times p$ matr
 
 $$ u_{i} \sim N(0, \Sigma_{uu}), ~ i = 1,\dots,n. $$
 
-Since we do not have measurements of $X$, using a classical linear regression model now yields coefficient estimate
+Since we do not have measurements of $X$, using a classical linear regression model now yields coefficient estimates
 
 $$
 \hat{\beta}_{naive} = (W^{T}W )^{-1} W^{T} y,
@@ -47,10 +47,17 @@ which is referred to as the *naive* estimate in the measurement error literature
 $$
 E(\hat{\beta}_{naive}) = \frac{\sigma_{x}^{2}}{\sigma_{u}^{2} + \sigma_{x}^2} \beta = \gamma \beta,
 $$
-where $\gamma$ is the attenuation factor. Unbiased estimates for the case of linear regression can be obtained using the corrected estimator
+where $\gamma$ is the attenuation factor. Unbiased estimates for the case of linear regression can be obtained by minimizing the corrected loss function
+$$
+L_{corr}(\beta) = \|y - W\beta\|^{2} - \beta^{T}\Sigma_{uu} \beta.
+$$
+This $L_{corr}(\beta)$ is not always convex. If the Hessian $W^{T}W - \Sigma_{uu}$ is positive definite, $L_{corr}(\beta)$ is convex, and the estimates can be found using
+
 $$
 \hat{\beta}_{corr} = (W^{T}W - \Sigma_{uu} )^{-1} W^{T} y.
 $$
+Otherwise, iteration methods must be used to find a minimum of $L(\beta)$.
+
 An estimate $\hat{\Sigma}_{uu}$ of $\Sigma_{uu}$ can be typically obtained with replicate measurements. 
 
 Similar results hold for generalized linear models, e.g., logistic and Poisson regression: Measurement error typically leads to bias in the naive estimates, and correction methods can be used to obtained unbiased estimates. We refer to the book @carroll2006 for a thorough introduction to measurement error modeling.
@@ -70,7 +77,7 @@ $$
 $$
 where $R$ is in a one-to-one relationship with $\lambda$.
 
-A lot of effort has been put on understanding the statistical properties of the lasso, both in the classical $p<n$ case and in the high-dimensional $p>n$ case, summarized in @buhlmann2011. The results are typically either probabilistic upper bounds on or asymptotic limits for
+A lot of effort has been put into understanding the statistical properties of the lasso, both in the classical $p<n$ case and in the high-dimensional $p>n$ case, summarized in @buhlmann2011. The results are typically either probabilistic upper bounds on or asymptotic limits for
 
 * Prediction error $E(\|y_{new} - X_{new}\hat{\beta}\|)$ where $(X_{new}, y_{new})$ are a new sample of data.
 * Sum of squared estimation error $\|\hat{\beta} - \beta\|_{2}^{2}$ or sum of absolute estimation error $\|\hat{\beta} - \beta\|_{1}$
@@ -80,33 +87,35 @@ The impact of measurement error in the lasso for linear models has been studied 
 
 Using the `glmnet` package, we can illustrate the impact of measurement error in a small experiment.
 
-First we set up the parameters and generate random data:
+First we set up the parameters and generate random data. In order to repeat the procedure, we create the function `create_example_data` for doing this.
 
 ```{r}
-set.seed(1000)
-# Number of samples
-n <- 100
-# Number of covariates
-p <- 500
-# Number of nonzero coefficients
-s <- 5
-# True coefficient vector
-beta <- c(rnorm(n = s, sd = 2), rep(0, p - s))
-# Standard deviation of covariates
-sdX <- 1
-# Standard deviation of measurement error
-sdU <- 0.5
-# Standard deviation of residual
-sdEpsilon <- 0.1
-# Generate the covariates
-X <- matrix(rnorm(n * p, sd = sdX), nrow = n, ncol = p)
-# Generate the response
-y <- X %*% beta + rnorm(n, sd = sdEpsilon)
-# Generate the measurements by adding measurement error
-W <- X + matrix(rnorm(n * p, sd = sdU), nrow = n, ncol = p)
+create_example_data <- function(n, p, s = 5, sdX = 1, sdU = 0.5, sdEpsilon = 0.1) {
+  # True coefficient vector has s non-zero elements and p-s zero elements
+  beta <- c(rnorm(n = s, sd = 2), rep(0, p - s))
+  # Independent true covariates with mean zero and standard deviation sdX
+  X <- matrix(rnorm(n * p, sd = sdX), nrow = n, ncol = p)
+  # Response has standard deviation sdEpsilon, and the intercept is zero
+  y <- X %*% beta + rnorm(n, sd = sdEpsilon)
+  # The measurements W have mean X and standard deviation sdU. We assume uncorrelated measurment errors
+  W <- X + matrix(rnorm(n * p, sd = sdU), nrow = n, ncol = p)
+  
+  return(list(X = X, W = W, y = y, beta = beta, sigmaUU = diag(p) * sdU))  
+}
 ```
 
-Next we run the lasso with cross-validation on the true covariates and on the noisy measurements. We pick that coefficient estimate at $\lambda_{1se}$, i.e., on standard error on the sparse side of the cross-validation minimum. This is the default of the `coef` function for objects of class `cv.glmnet`.
+We then call the function to get the data. I use the `%<-%` from the `zeallot` package (@zeallot_package) to get all elements of the list directly from the function call. 
+
+```{r}
+library(zeallot)
+n <- 100
+p <- 500
+set.seed(1000)
+c(X, W, y, beta, sigmaUU) %<-% create_example_data(n, p)
+```
+
+
+Next we run the lasso with cross-validation on the true covariates and on the noisy measurements. We pick the coefficient estimate at $\lambda_{1se}$, i.e., on standard error on the sparse side of the cross-validation minimum. This is the default of the `coef` function for objects of class `cv.glmnet`.
 
 ```{r, message=FALSE}
 library(glmnet)
@@ -134,7 +143,7 @@ ggplot(lassoEstimates, aes(x = index, y = beta, color = label)) +
   ggtitle("Measurement error leading to false positives")
 ```
 
-We can also focus on the `r s` parameters which are truly nonzero. In this case, we see that in the absence of measurement error, the lasso estimates values quite close to truth. With measurement error, on the other hand, the attenuation is quite clear: the estimates are biased toward zero.
+We can also focus on the `r sum(beta != 0)` parameters which are truly nonzero. In this case, we see that in the absence of measurement error, the lasso estimates values quite close to truth. With measurement error, on the other hand, the attenuation is quite clear: the estimates are biased toward zero.
 
 ```{r}
 estimatesOfNonzero <- lassoEstimates %>% 
@@ -153,14 +162,62 @@ ggplot(estimatesOfNonzero, aes(x = index, y = beta, color = label)) +
 
 
 # Corrected Lasso
+
+## Corrected Lasso for Linear Regression
+
 When an estimate of the measurement error covariance matrix $\Sigma_{uu}$ is available, a corrected lasso can be defined as minimizing the loss
 $$
 \text{minimize } ~ L(\beta) = \|y - W \beta \|^{2} - \beta^{T} \Sigma_{uu} \beta + \lambda \|\beta\|_{1} ~\text{ subject to } \|\beta\|_{1} \leq R.
 $$
-Because we subtract the positive semidefinite matrix $\Sigma_{uu}$ from the convex function $\|y - W\beta\|^{2}$, this corrected lasso may be non-convex. In fact, when $p>n$ is is always non-convex. Hence, in order to avoid non-trivial solution, we must constrain the solution to lie in some L1-ball with radius $R$. Since this problem involves two regularization parameters, $\lambda$ and $R$, it is more convenient to use the
+Because we subtract the positive semidefinite matrix $\Sigma_{uu}$ from the convex function $\|y - W\beta\|^{2}$, this corrected lasso may be non-convex. In fact, when $p>n$ is is always non-convex. Hence, in order to avoid non-trivial solution, we must constrain the solution to lie in some L1-ball with radius $R$. Since this problem involves two regularization parameters, $\lambda$ and $R$, it is more convenient to use the constrained version of the lasso
+$$
+\text{minimize } ~ L(\beta) = \|y - W \beta \|^{2} - \beta^{T} \Sigma_{uu} \beta  ~\text{ subject to } \|\beta\|_{1} \leq R.
+$$
+@loh2012 analyze the properties of these two closely related versions of the lasso. They show that the bounds for the estimates of $\|\hat{\beta} - \beta\|_{2}^{2}$ and $\|\hat{\beta}-\beta\|_{1}$ are of the same order as for the standard lasso without measurement error, where $\hat{\beta}$ is the global minimum of the optimization problem. More remarkably, they show that despite non-convexity, under mild assumptions a projected gradient descent algorithm will converge with high probability to a local optimum which is very close to the global optimum. 
+
+@sorensen2015 analyzed the covariate selection properties of the same model, and similarly showed that results very similar to those for covariate selection with the standard lasso in the absence of measurement, also hold for this corrected lasso.
+
+### R Implementation
+This package implements the projected gradient descent algorithm proposed by @loh2012. It can be found in the `fit_corrected_lasso` function. Using the `create_example_data` function defined above, we illustrate its use.
+
+```{r}
+library(hdme)
+set.seed(1000)
+# Generate example data
+c(X, W, y, beta, sigmaUU) %<-% create_example_data(n, p)
+# Fit the corrected lasso
+corrected_fit <- fit_corrected_lasso(W = W, y = y, sigmaUU = sigmaUU)
+```
+
+The object returned is a `list` with class `corrected_lasso` and subclass `corrected_lasso_gaussian`.
+
+```{r}
+# Class of the object
+class(corrected_fit)
+# Object is a list
+typeof(corrected_fit)
+```
+
+The arguments to the function are shown below.
+```{r}
+args(fit_corrected_lasso)
+```
+
+If the `radii` argument is not set, a naive lasso is run on the measurement error data, using cross-validation to find $\hat{\beta}_{naive}$. The maximum of $R$ is set to $R_{max}=2\|\hat{\beta}_{naive}\|_{1}$, i.e., the maximum possible solution to the corrected lasso is twice as large as the naive solution, as measured by the L1-norm. The minimum of $R$ is by default set to $R_{min} = 10^{-3}R_{max}$. The corrected lasso solution is then computed on an equally spaced grid between $R_{min}$ and $R_{max}$. The length of the grid is set by the `no_radii` argument, which by default equals $20$. 
+
+The resulting estimates can be visualized using the `plot` function for objects of class `corrected_lasso`. Calling the function with no additional arguments returns a plot of the number of nonzero coefficients for each value of the constraint radius. This is equivalent to calling `plot(corrected_fit, type = "nonzero")`.
+
+```{r}
+plot(corrected_fit)
+```
+
+Instead using the additional argument `type = "path"` yields the full coefficient paths for the estimates for all values of the radius.
+
+```{r}
+plot(corrected_fit, type = "path")
+```
 
 
-## Corrected Lasso for Linear Regression
 
 ## Corrected Lasso for Generalized Linear Models
 

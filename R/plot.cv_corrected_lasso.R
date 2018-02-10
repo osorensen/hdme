@@ -1,7 +1,7 @@
-#' @title cv.correctedLasso
+#' @title cv_corrected_lasso
 #' @import ggplot2
 #' @export
-plot.cv.correctedLasso <- function(x) {
+plot.cv_corrected_lasso <- function(x) {
   df <- data.frame(x1 = c(0, 0),
                    x2 = c(x$radius.min, x$radius.1se),
                    y1 <- c(0, 0),

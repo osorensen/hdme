@@ -21,12 +21,12 @@
 #' W <- X + rnorm(n, sd = diag(sigmaUU)) # Measurement matrix (this is the one we observe)
 #' beta <- c(seq(from = 0.1, to = 1, length.out = 5), rep(0, p-5)) # Coefficient
 #' y <- X %*% beta + rnorm(n, sd = 1) # Response
-#' cvfit <- cv.correctedLasso(W, y, sigmaUU) # Run the corrected lasso
+#' cvfit <- cv.corrected_lasso(W, y, sigmaUU) # Run the corrected lasso
 #' plot(cvfit)
 #' # Run the standard lasso using the radius found by cross-validation
-#' fit <- correctedLasso(W, y, sigmaUU, family = "gaussian", radius = cvfit$radius.min)
+#' fit <- corrected_lasso(W, y, sigmaUU, family = "gaussian", radius = cvfit$radius.min)
 #' @export
-cv.correctedLasso <- function(W, y, sigmaUU, nfolds = 10,
+cv_corrected_lasso <- function(W, y, sigmaUU, nfolds = 10,
                  radius = NULL, noRadii = 100, alpha = 0.1, maxits = 5000, standardize = FALSE){
   N = nrow(W)
   y <- drop(y)
@@ -66,7 +66,7 @@ cv.correctedLasso <- function(W, y, sigmaUU, nfolds = 10,
               loss.1se = loss.1se
               )
 
-  class(fit) <- c("cv.correctedLasso", class(fit))
+  class(fit) <- c("cv_correctedLasso", class(fit))
 
   return(fit)
 

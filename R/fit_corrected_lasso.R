@@ -33,7 +33,7 @@
 #' W <- X + rnorm(n, sd = diag(sigmaUU)) # Measurement matrix (this is the one we observe)
 #' beta <- c(seq(from = 0.1, to = 1, length.out = 5), rep(0, p-5)) # Coefficient
 #' y <- X %*% beta + rnorm(n, sd = 1) # Response
-#' fit <- correctedLasso(W, y, sigmaUU, family = "gaussian") # Run the corrected lasso
+#' fit <- fit_corrected_lasso(W, y, sigmaUU, family = "gaussian") # Run the corrected lasso
 #' plot(fit)
 #'
 #' # Binomial, logistic regression
@@ -44,15 +44,15 @@
 #' W <- X + rnorm(n, sd = diag(sigmaUU)) # Measurement matrix (this is the one we observe)
 #' logit <- function(x) (1+exp(-x))^(-1)
 #' y <- rbinom(n, size = 1, prob = logit(X %*% c(rep(5, 5), rep(0, p-5)))) # Response
-#' fit <- correctedLasso(W, y, sigmaUU, family = "binomial")
+#' fit <- fit_corrected_lasso(W, y, sigmaUU, family = "binomial")
 #' plot(fit)
 #'
 #'
 #' @importFrom Rdpack reprompt
 #'
 #' @export
-correctedLasso <- function(W, y, sigmaUU, family = "gaussian",
-                 radius = NULL, noRadii = 20, alpha = 0.1, maxits = 5000){
+fit_corrected_lasso <- function(W, y, sigmaUU, family = "gaussian",
+                 radii = NULL, no_radii = 20, alpha = 0.1, maxits = 5000){
   family <- match.arg(family)
 
   if(!is.matrix(W)) {
@@ -63,9 +63,14 @@ correctedLasso <- function(W, y, sigmaUU, family = "gaussian",
     stop("X should be a numeric matrix")
   }
 
-  if(!is.vector(y)) {
+
+
+  if(!is.null(dim(y)) & dim(y)[2] > 1) {
     stop("y should be a vector")
+  } else if (!is.null(dim(y))) {
+    y <- as.vector(y)
   }
+
 
   if(!is.numeric(y)) {
     stop("y should be a numeric vector")
@@ -91,11 +96,11 @@ correctedLasso <- function(W, y, sigmaUU, family = "gaussian",
 
 
   fit <- switch(family,
-             "gaussian" = correctedLassoGaussian(W = W, y = y, sigmaUU = sigmaUU, radius = radius, noRadii = noRadii, alpha = alpha, maxits = maxits),
-             "binomial" = correctedLassoBinomial(W = W, y = y, sigmaUU = sigmaUU, radius = radius, noRadii = noRadii, alpha = alpha, maxits = maxits)
+             "gaussian" = corrected_lasso_gaussian(W = W, y = y, sigmaUU = sigmaUU, radii = radii, no_radii = no_radii, alpha = alpha, maxits = maxits),
+             "binomial" = corrected_lasso_binomial(W = W, y = y, sigmaUU = sigmaUU, radii = radii, no_radii = no_radii, alpha = alpha, maxits = maxits)
              )
 
-  class(fit) <- c("correctedLasso", class(fit))
+  class(fit) <- c("corrected_lasso", class(fit))
 
   return(fit)
 

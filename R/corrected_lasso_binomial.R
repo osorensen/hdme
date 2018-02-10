@@ -1,7 +1,7 @@
 logit <- function(x) (1+exp(-x))^(-1)
 dlogit <- function(x) exp(-x)*(1+exp(-x))^(-2)
 
-correctedLassoBinomial <- function(W, y, sigmaUU, radius, noRadii, alpha, maxits, standardize, tol = 1e-10, maxIR = 50){
+corrected_lasso_binomial <- function(W, y, sigmaUU, radius, noRadii, alpha, maxits, standardize, tol = 1e-10, maxIR = 50){
   if( is.null(radius) ){
     # First run the naive Lasso
     lassoFit <- glmnet::cv.glmnet(W, y, family = "binomial")

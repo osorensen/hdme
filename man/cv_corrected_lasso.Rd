@@ -4,8 +4,9 @@
 \alias{cv_corrected_lasso}
 \title{Cross-validated Corrected lasso}
 \usage{
-cv_corrected_lasso(W, y, sigmaUU, nfolds = 10, radius = NULL,
-  noRadii = 100, alpha = 0.1, maxits = 5000, standardize = FALSE)
+cv_corrected_lasso(W, y, sigmaUU, n_folds = 10, family = "gaussian",
+  radii = NULL, no_radii = 100, alpha = 0.1, maxits = 5000,
+  standardize = FALSE)
 }
 \arguments{
 \item{W}{Design matrix, measured with error.}
@@ -14,16 +15,18 @@ cv_corrected_lasso(W, y, sigmaUU, nfolds = 10, radius = NULL,
 
 \item{sigmaUU}{Covariance matrix of the measurement error.}
 
-\item{nfolds}{Number of folds to use in cross-validation. Default is 100.}
+\item{n_folds}{Number of folds to use in cross-validation. Default is 100.}
 
-\item{radius}{Optional vector containing the set of radii of the l1-ball onto which the solution is projected.}
+\item{family}{Only "gaussian" is implemented at the moment.}
+
+\item{radii}{Optional vector containing the set of radii of the l1-ball onto which the solution is projected.}
 
 \item{alpha}{Optional step size of the projected gradient descent algorithm. Default is 0.1.}
 
 \item{maxits}{Optional maxium number of iterations of the project gradient descent algorithm for each radius. Default is 5000.}
 }
 \value{
-An object with S3 class "cv.correctedLasso", "list"
+A list
 }
 \description{
 Cross-validated Corrected lasso
@@ -40,7 +43,7 @@ sigmaUU <- diag(x = 0.2, nrow = p, ncol = p) # Measurement error covariance matr
 W <- X + rnorm(n, sd = diag(sigmaUU)) # Measurement matrix (this is the one we observe)
 beta <- c(seq(from = 0.1, to = 1, length.out = 5), rep(0, p-5)) # Coefficient
 y <- X \%*\% beta + rnorm(n, sd = 1) # Response
-cvfit <- cv.corrected_lasso(W, y, sigmaUU) # Run the corrected lasso
+cvfit <- cv_corrected_lasso(W, y, sigmaUU) # Run the corrected lasso
 plot(cvfit)
 # Run the standard lasso using the radius found by cross-validation
 fit <- corrected_lasso(W, y, sigmaUU, family = "gaussian", radius = cvfit$radius.min)

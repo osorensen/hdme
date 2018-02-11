@@ -184,7 +184,7 @@ $$
 
 @sorensen2015 analyzed the covariate selection properties of the same model, and similarly showed that results very similar to those for covariate selection with the standard lasso in the absence of measurement, also hold for this corrected lasso.
 
-### R Implementation
+### Linear Regression
 This package implements the projected gradient descent algorithm proposed by @loh2012. It can be found in the `fit_corrected_lasso` function. Using the `create_example_data` function defined above, we illustrate its use.
 
 ```{r}
@@ -229,6 +229,7 @@ plot(corrected_fit, type = "path")
 ## Corrected Lasso for Generalized Linear Models
 @sorensen2015 show how we can also corrected for measurement error in the lasso for generalized linear models, using the conditional score method introduced by @stefanski1987, combined with the projected gradient descent algorithm used by @loh2012 for the corrected lasso for linear models.
 
+### Logistic Regression
 At the time of writing, the corrected lasso for logistic regression is implemented in `hdme`. Poisson regression will be added. To illustrate its use, we start by generating some measurement error data with binomially distributed response.
 ```{r}
 set.seed(323)
@@ -248,10 +249,53 @@ The plot functions work the same way as for linear regression.
 plot(corrected_fit)
 ```
 
+```{r}
+plot(corrected_fit, type = "path")
+```
+
+### Poison Regression
+Poisson regression will be added in the future.
 
 ## Model Tuning
 
-- Cross validation
+The corrected lasso for linear regression has a clearly defined loss function, 
+$$
+L(\beta) = \|y - W\beta\|_{2}^{2} - \beta^{T} \Sigma_{uu} \beta.
+$$
+In order to find the optimal value of the regulaization parameter $R$, we can hence use cross-validation to minimize $L(\beta)$. This is implemented in the fucntion `cv_corrected_lasso`. We illustrate its use below.
+
+```{r}
+set.seed(1000)
+# Generate example data
+c(X, W, y, beta, sigmaUU) %<-% create_example_data(n, p)
+# Run lasso with cross-validation
+corrected_fit <- cv_corrected_lasso(W = W, y = y, sigmaUU = sigmaUU)
+```
+
+The result is a list of class `cv_corrected_lasso`.
+
+```{r}
+class(corrected_fit)
+```
+
+The print below shows all the elements of the resulting list. 
+```{r}
+str(corrected_fit)
+```
+
+The element `cv` contains all the details of the cross-validation runs.
+
+* `radii` contains all the constraint radii $R$ that were used.
+* `mean_loss` contains the mean of the loss function at the given radius over all folds.
+* `sd_loss` gives the standard deviation of the loss at the given radius.
+* `upper_1se` and `lower_1se` contain the upper and lower standard error of `mean_loss` at the given radius.
+
+Next, `loss_min` gives the minimum of the mean loss, and `radius_min` is the corresponding radius. `loss_1se` gives the smallest loss within one standard error of `loss_min`, and `radius_1se` is a smallest radius given a loss less than or equal to `loss_1se`.
+
+```{r}
+plot(corrected_fit)
+```
+
 
 # Matrix Uncertainty Selector
 

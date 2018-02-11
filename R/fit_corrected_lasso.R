@@ -55,6 +55,7 @@ fit_corrected_lasso <- function(W, y, sigmaUU, family = c("gaussian", "binomial"
                  radii = NULL, no_radii = 20, alpha = 0.1, maxits = 5000){
   family <- match.arg(family)
 
+
   if(!is.matrix(W)) {
     stop("X should be a matrix")
   }
@@ -63,14 +64,7 @@ fit_corrected_lasso <- function(W, y, sigmaUU, family = c("gaussian", "binomial"
     stop("X should be a numeric matrix")
   }
 
-
-
-  if(is.null(dim(y) | (!is.null(dim(y)) & dim(y)[2] > 1))) {
-    stop("y should be a vector")
-  } else if (!is.null(dim(y))) {
-    y <- as.vector(y)
-  }
-
+  y <- drop(y)
 
   if(!is.numeric(y)) {
     stop("y should be a numeric vector")

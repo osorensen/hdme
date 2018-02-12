@@ -40,6 +40,5 @@ corrected_lasso_gaussian <- function(W, y,sigmaUU, radii, no_radii, alpha, maxit
   value <- list(betaCorr = betaCorr[, -1, drop = FALSE],
                 radii = radii)
 
-  class(value) <- "corrected_lasso_gaussian"
   return(value)
 }

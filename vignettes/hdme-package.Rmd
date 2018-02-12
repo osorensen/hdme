@@ -95,12 +95,14 @@ create_example_data <- function(n, p, s = 5, sdX = 1, sdU = 0.5, sdEpsilon = 0.1
   X <- matrix(rnorm(n * p, sd = sdX), nrow = n, ncol = p)
   # if Gaussian, response has standard deviation sdEpsilon, and the intercept is zero
   # if binomial, the response is binomially distributed with mean (1 + exp(-X %*% beta))^(-1)
+  beta <- c(-2, -1, 0.5, 1, 2, rep(0, p - s))
+  
   if(family == "gaussian") {
     # True coefficient vector has s non-zero elements and p-s zero elements
-    beta <- c(-2, -1, 0.5, 1, 2, rep(0, p - s))
     y <- X %*% beta + rnorm(n, sd = sdEpsilon)  
   } else if (family == "binomial") {
-    beta <- c(rep(5, s), rep(0, p - s))
+    # Need an amplification in the binomial case
+    beta <- beta * 3
     y <- rbinom(n, size = 1, prob = (1 + exp(-X %*% beta))**(-1))
   }
   
@@ -196,7 +198,7 @@ c(X, W, y, beta, sigmaUU) %<-% create_example_data(n, p)
 corrected_fit <- fit_corrected_lasso(W = W, y = y, sigmaUU = sigmaUU)
 ```
 
-The object returned is a `list` with class `corrected_lasso` and subclass `corrected_lasso_gaussian`.
+The object returned is a `list` with class `corrected_lasso`.
 
 ```{r}
 # Class of the object
@@ -230,10 +232,10 @@ plot(corrected_fit, type = "path")
 @sorensen2015 show how we can also corrected for measurement error in the lasso for generalized linear models, using the conditional score method introduced by @stefanski1987, combined with the projected gradient descent algorithm used by @loh2012 for the corrected lasso for linear models.
 
 ### Logistic Regression
-At the time of writing, the corrected lasso for logistic regression is implemented in `hdme`. Poisson regression will be added. To illustrate its use, we start by generating some measurement error data with binomially distributed response.
+The corrected lasso for logistic regression is implemented in `hdme`. To illustrate its use, we start by generating some measurement error data with binomially distributed response.
 ```{r}
 set.seed(323)
-n <- 2000
+n <- 100
 p <- 50
 c(X, W, y, beta, sigmaUU) %<-% create_example_data(n, p, sdU = 0.2, family = "binomial")
 ```
@@ -244,10 +246,12 @@ We get logistic regression by specifying `family = "binomial"` in the call the `
 corrected_fit <- fit_corrected_lasso(W, y, sigmaUU, family = "binomial")
 ```
 
-The plot functions work the same way as for linear regression.
+The plot functions work the same way as for linear regression. By default, the argument `type = "nonzero"`.
 ```{r}
 plot(corrected_fit)
 ```
+
+Setting `type = "path"`, we get the coefficient values along the regularization parameter $R$.
 
 ```{r}
 plot(corrected_fit, type = "path")
@@ -264,23 +268,25 @@ L(\beta) = \|y - W\beta\|_{2}^{2} - \beta^{T} \Sigma_{uu} \beta.
 $$
 In order to find the optimal value of the regulaization parameter $R$, we can hence use cross-validation to minimize $L(\beta)$. This is implemented in the fucntion `cv_corrected_lasso`. We illustrate its use below.
 
+For generalized linear models, we are using the conditional score approach, which does not yield a well defined loss function. Hence, cross-validation is not straightforward in these cases.
+
 ```{r}
 set.seed(1000)
 # Generate example data
 c(X, W, y, beta, sigmaUU) %<-% create_example_data(n, p)
 # Run lasso with cross-validation
-corrected_fit <- cv_corrected_lasso(W = W, y = y, sigmaUU = sigmaUU)
+cv_corrected_fit <- cv_corrected_lasso(W = W, y = y, sigmaUU = sigmaUU)
 ```
 
 The result is a list of class `cv_corrected_lasso`.
 
 ```{r}
-class(corrected_fit)
+class(cv_corrected_fit)
 ```
 
 The print below shows all the elements of the resulting list. 
 ```{r}
-str(corrected_fit)
+str(cv_corrected_fit)
 ```
 
 The element `cv` contains all the details of the cross-validation runs.
@@ -292,9 +298,23 @@ The element `cv` contains all the details of the cross-validation runs.
 
 Next, `loss_min` gives the minimum of the mean loss, and `radius_min` is the corresponding radius. `loss_1se` gives the smallest loss within one standard error of `loss_min`, and `radius_1se` is a smallest radius given a loss less than or equal to `loss_1se`.
 
+The result of performing cross-validation can be illustrated using the `plot` function. It shows the cross-validated loss over the grid of radii. $R_{min}$ and $R_{1se}$ are shown with labels, and the corresponing loss as horizontal red lines.
+
 ```{r}
-plot(corrected_fit)
+plot(cv_corrected_fit)
 ```
+
+Having used `cv_corrected_lasso` to find the right value of the constraint parameter $R$, we can use `fit_corrected_lasso` on this single value. The snippet below shows how to compute the solution using $R_{1se}$.
+
+```{r}
+corrected_fit <- fit_corrected_lasso(W, y, sigmaUU, radii = cv_corrected_fit$radius_1se)
+```
+
+The final parameter estimates can be found in `corrected_fit$betaCorr`.
+```{r}
+str(corrected_fit)
+```
+
 
 
 # Matrix Uncertainty Selector

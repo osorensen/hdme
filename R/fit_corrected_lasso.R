@@ -94,7 +94,7 @@ fit_corrected_lasso <- function(W, y, sigmaUU, family = c("gaussian", "binomial"
              "binomial" = corrected_lasso_binomial(W = W, y = y, sigmaUU = sigmaUU, radii = radii, no_radii = no_radii, alpha = alpha, maxits = maxits)
              )
 
-  class(fit) <- c("corrected_lasso", class(fit))
+  class(fit) <- c("corrected_lasso")
 
   return(fit)
 

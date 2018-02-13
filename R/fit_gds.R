@@ -1,11 +1,13 @@
 #' Generalized Dantzig Selector
-#' @description Generalized Dantzig Selector
+#' @description Generalized Dantzig Selector for generalized
 #' @import glmnet
-#' @param X Design matrix.
+#' @param W Design matrix, measured with error.
 #' @param y Vector of the continuous response value.
-#' @param lambda Regularization parameter.
+#' @param lambda Regularization parameter due to model error.
+#' @param delta Regularization parameter due to measurement error.
 #' @return Intercept and coefficients at the values of lambda and delta specified.
 #' @references Emmanuel Candes and Terence Tao. 2007. "The Dantzig Selector: Statistical Estimation When p Is Much Larger Than n." The Annals of Statistics 35 (6) https://projecteuclid.org/euclid.aos/1201012958
+#' @references Mathieu Rosenbaum and Alexandre B. Tsybakov. 2010. "Sparse Recovery Under Matrix Uncertainty." The Annals of Statistics 38 (5) https://projecteuclid.org/euclid.aos/1278861455
 #' @examples
 #' set.seed(1)
 #' n <- 100; p <- 50 # Problem dimensions
@@ -22,7 +24,7 @@
 #' plot(fit) # Plot the coefficients
 #'
 #' @export
-muselector <- function(W, y, lambda = NULL, delta = NULL, family = c("gaussian", "binomial")) {
+fit_gds <- function(X, y, lambda = NULL, delta = 0, family = c("gaussian", "binomial")) {
   family <- match.arg(family)
 
   if(is.null(lambda)) lambda <- cv.glmnet(W, y, family = family)$lambda.min
@@ -44,7 +46,7 @@ muselector <- function(W, y, lambda = NULL, delta = NULL, family = c("gaussian",
               delta = delta,
               lambda = lambda,
               nonZero = colSums(fit[2:p, , drop = FALSE] > 0)
-              )
+  )
   class(fit) <- c("muselector", class(fit))
   return(fit)
 }

@@ -10,8 +10,9 @@
 #' @param alpha Optional step size of the projected gradient descent algorithm. Default is 0.1.
 #' @param maxits Optional maxium number of iterations of the project gradient descent algorithm for each radius. Default is 5000.
 #' @return A list
-#' @references Po-Ling Loh, and Martin J. Wainwright. 2012. "High-Dimensional Regression with Noisy and Missing Data: Provable Guarantees with Nonconvexity." The Annals of Statistics 40 (3) https://projecteuclid.org/euclid.aos/1346850068
-#' @references Oystein Sorensen, Arnoldo Frigessi, and Magne Thoresen. 2015. "Measurement Error in Lasso: Impact and Likelihood Bias Correction." Statistica Sinica 25 (2).
+#' @references
+#' \insertRef{loh2012}{hdme}
+#' \insertRef{sorensen2015}{hdme}
 #' @import dplyr
 #' @examples
 #' # Gaussian

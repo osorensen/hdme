@@ -22,7 +22,7 @@
 #'   used.
 #'
 #' @references \insertRef{loh2012}{hdme}
-#'
+#'2
 #' \insertRef{sorensen2015}{hdme}
 #' @examples
 #' # Example with linear regression

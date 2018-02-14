@@ -8,7 +8,7 @@
 #' @references Emmanuel Candes and Terence Tao. 2007. "The Dantzig Selector: Statistical Estimation When p Is Much Larger Than n." The Annals of Statistics 35 (6) https://projecteuclid.org/euclid.aos/1201012958
 #' @examples
 #' set.seed(1)
-#' n <- 100; p <- 50 # Problem dimensions
+#' n <- 1000; p <- 10 # Problem dimensions
 #' X <- matrix(rnorm(n * p), nrow = n) # True (latent) variables
 #' W <- X + matrix(rnorm(n*p, sd = 1), nrow = n, ncol = p) # Measurement matrix (this is the one we observe)
 #' beta <- c(seq(from = 0.1, to = 1, length.out = 5), rep(0, p-5))
@@ -38,13 +38,16 @@ muselector <- function(W, y, lambda = NULL, delta = NULL, family = c("gaussian",
                 "gaussian" = sapply(delta, function(delta, W, y, lambda) musalgorithm(W, y, lambda, delta), W, y, lambda),
                 "binomial" = sapply(delta, function(delta, W, y, lambda) musbinomial(W, y, lambda, delta), W, y, lambda))
 
+
+
   fit <- list(intercept = fit[1, ],
               beta = fit[2:p, ] / scales,
               family = family,
               delta = delta,
               lambda = lambda,
-              nonZero = colSums(fit[2:p, , drop = FALSE] > 0)
+              num_non_zero = colSums(fit[2:p, , drop = FALSE] > 0)
               )
+
   class(fit) <- c("muselector", class(fit))
   return(fit)
 }

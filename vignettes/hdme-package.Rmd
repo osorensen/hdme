@@ -18,6 +18,12 @@ knitr::opts_chunk$set(
 )
 ```
 
+```{r}
+# Load the hdme package
+library(hdme)
+```
+
+
 The `hdme` package contains algorithms for regression problems with measurement error when the number of covariates $p$ is on the same order as the number of samples $n$, or even larger. 
 
 # Measurement Error in Regression
@@ -211,9 +217,45 @@ $$
 $$
 where $\mu(\cdot) \in \mathbb{R}^{n}$ is the vector valued mean function of the generalized linear model. Examples include logistic regression with $\mu(x) = (1+\exp(-x))^{-1}$ and Poisson regression with $\mu(x) = \exp(x)$. Using an iterative reweighing algorithm, the generalized Dantzig selector can be solved as a sequence of linear optimization problems of the same form as the Dantzig selector for linear models.
 
-To our knowledge, no R package to date contains an implementation of the generalized Dantzig selector, although code is available on [Professor Gareth James' homepage](http://www-bcf.usc.edu/~gareth/research/gdscode). 
+#### Generalized Dantzig Selector
+To our knowledge, no R package to date contains an implementation of the Generalized Dantzig Selector (GDS), although code is available on [Professor Gareth James' homepage](http://www-bcf.usc.edu/~gareth/research/gdscode). Since the Generalized Matrix Uncertainty Selector (GMUS) presented later in this vignette is a generalization of the GDS, we have included a function for computing the GDS, called `fit_gds`.
+
+```{r}
+# Number of samples
+n <- 1000
+# Number of covariates
+p <- 50
+# Create example data
+c(X, W, y, beta, sigmaUU) %<-% create_example_data(n, p, family = "binomial")
+```
+
+Arguments to `fit_gds`. Only $X$ and $y$ are required.
+```{r}
+args(fit_gds)
+```
 
 
+Fit the generalized Dantzig selector on the data.
+```{r}
+# Fit the Generalized Dantzig Selector
+gds_estimate <- fit_gds(X, y, family = "binomial")
+```
+
+
+The result is a list of class `gds`.
+```{r}
+class(gds_estimate)
+```
+The list contains the intercept (which has not been penalized), the regression coefficients `beta`, the family, the value of `lambda` and the number of nonzero components of `beta`. By default, `fit_gds` uses the value $\lambda_{min}$ corresponding to the minimum cross-validated loss for the lasso, using `cv.glmnet`.
+```{r}
+str(gds_estimate)
+```
+
+At the moment, only a single value of `lambda` is accepted by GDS. We will fix this in the future, as well as adding a cross validation function.
+```{r, error=TRUE}
+# Try with a vector of lambda values
+gds_estimate <- fit_gds(X, y, lambda = c(0.002, 0.004), family = "binomial")
+```
 
 # Corrected Lasso
 
@@ -235,7 +277,6 @@ $$
 This package implements the projected gradient descent algorithm proposed by @loh2012. It can be found in the `fit_corrected_lasso` function. Using the `create_example_data` function defined above, we illustrate its use.
 
 ```{r}
-library(hdme)
 set.seed(1000)
 # Generate example data
 c(X, W, y, beta, sigmaUU) %<-% create_example_data(n, p)
@@ -363,6 +404,7 @@ str(corrected_fit)
 
 
 # Matrix Uncertainty Selector
+
 
 ## Matrix Uncertainty Selector
 

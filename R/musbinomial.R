@@ -64,8 +64,6 @@
 #'  col = c("black", "red", "blue"), pch = 20)
 #'  @import stats
 musbinomial <- function(W, y, lambda, delta){
-  W <- scale(W)
-  scales <- attr(W, "scaled:scale")
 
   mu <- logit
   dmu <- dlogit
@@ -88,12 +86,12 @@ musbinomial <- function(W, y, lambda, delta){
       z <- W%*%bOld + (y - mu(W%*%bOld))/dmu(W%*%bOld)
       Wtilde <- c(sqrt(V)) * W
       ztilde <- c(sqrt(V)) * c(z)
-      value <- musalgorithm(Wtilde, ztilde, lambda, delta * sqrt(sum((V)^2)) / sqrt(n))
-      betaNew <- value$coefficients
+      bNew <- musalgorithm(Wtilde, ztilde, lambda, delta * sqrt(sum((V)^2)) / sqrt(n))
+
       count <- count+1
       Diff1 <- sum(abs(bNew - bOld))
       Diff2 <- sum(abs(bNew - bOlder))
   }
   if(count >= maxit) print(paste("Did not converge"))
-  return(value)
+  return(bNew)
 }

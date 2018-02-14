@@ -1,53 +1,31 @@
 #' Generalized Dantzig Selector
-#' @description Generalized Dantzig Selector for generalized
+#' @description Generalized Dantzig Selector
 #' @import glmnet
-#' @param W Design matrix, measured with error.
+#' @param X Design matrix.
 #' @param y Vector of the continuous response value.
-#' @param lambda Regularization parameter due to model error.
-#' @param delta Regularization parameter due to measurement error.
-#' @return Intercept and coefficients at the values of lambda and delta specified.
-#' @references Emmanuel Candes and Terence Tao. 2007. "The Dantzig Selector: Statistical Estimation When p Is Much Larger Than n." The Annals of Statistics 35 (6) https://projecteuclid.org/euclid.aos/1201012958
-#' @references Mathieu Rosenbaum and Alexandre B. Tsybakov. 2010. "Sparse Recovery Under Matrix Uncertainty." The Annals of Statistics 38 (5) https://projecteuclid.org/euclid.aos/1278861455
+#' @param lambda Regularization parameter.
+#' @return Intercept and coefficients at the values of lambda specified.
+#' @references \insertRef{candes2007}{hdme}
+#' @references \insertRef{james2009}{hdme}
 #' @examples
-#' set.seed(1)
-#' n <- 100; p <- 50 # Problem dimensions
-#' X <- matrix(rnorm(n * p), nrow = n) # True (latent) variables
-#' W <- X + matrix(rnorm(n*p, sd = 1), nrow = n, ncol = p) # Measurement matrix (this is the one we observe)
-#' beta <- c(seq(from = 0.1, to = 1, length.out = 5), rep(0, p-5))
-#' y <- X %*% beta + rnorm(n, sd = 1) # Response
-#' fit <- muselector(W, y) # Run the MU Selector
-#' plot(fit) # Draw an elbow plot to select delta
-#'
-#' # Now, according to the "elbow rule", choose the final delta where the curve has an "elbow".
-#' # In this case, the elbow is at about delta = 0.12, so we use this to compute the final estimate:
-#' fit <- muselector(W, y, delta = 0.12)
-#' plot(fit) # Plot the coefficients
+#' Example with logistic regression
+#' n <- 1000  # Number of samples
+#' p <- 10 # Number of covariates
+#' X <- matrix(rnorm(n * p), nrow = n) # True (latent) variables # Design matrix
+#' beta <- c(seq(from = 0.1, to = 1, length.out = 5), rep(0, p-5)) # True regression coefficients
+#' y <- rbinom(n, 1, (1 + exp(-X %*% beta))^(-1)) # Binomially distributed response
+#' gds <- fit_gds(X, y, family = "binomial")
 #'
 #' @export
-fit_gds <- function(X, y, lambda = NULL, delta = 0, family = c("gaussian", "binomial")) {
-  family <- match.arg(family)
+fit_gds <- function(X, y, lambda = NULL, family = c("gaussian", "binomial")) {
 
-  if(is.null(lambda)) lambda <- cv.glmnet(W, y, family = family)$lambda.min
-  if(is.null(delta)) delta <- seq(from = 0, to = 0.5, by = 0.02)
+  if(!is.null(lambda) & length(lambda) != 1) stop("lambda must be a single value")
+  fit <- muselector(X, y, lambda = lambda, delta = 0, family = family)
 
-  n <- dim(W)[1]
-  p <- dim(W)[2] + 1
-  W <- scale(W)
-  scales <- attr(W, "scaled:scale")
-  W <- cbind(rep(1,n), W)
+  # In the Dantzig selector case, delta is not of interest
+  fit$delta <- NULL
 
-  fit <- switch(family,
-                "gaussian" = sapply(delta, function(delta, W, y, lambda) musalgorithm(W, y, lambda, delta), W, y, lambda),
-                "binomial" = sapply(delta, function(delta, W, y, lambda) musbinomial(W, y, lambda, delta), W, y, lambda))
-
-  fit <- list(intercept = fit[1, ],
-              beta = fit[2:p, ] / scales,
-              family = family,
-              delta = delta,
-              lambda = lambda,
-              nonZero = colSums(fit[2:p, , drop = FALSE] > 0)
-  )
-  class(fit) <- c("muselector", class(fit))
+  class(fit) <- "gds"
   return(fit)
 }
 

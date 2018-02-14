@@ -2,29 +2,27 @@
 % Please edit documentation in R/muselector.R
 \name{muselector}
 \alias{muselector}
-\title{Matrix Uncertainty Selector (MU Selector)}
+\title{Generalized Dantzig Selector}
 \usage{
 muselector(W, y, lambda = NULL, delta = NULL, family = c("gaussian",
   "binomial"))
 }
 \arguments{
-\item{W}{Design matrix, measured with error.}
-
 \item{y}{Vector of the continuous response value.}
 
-\item{lambda}{Regularization parameter due to model error.}
+\item{lambda}{Regularization parameter.}
 
-\item{delta}{Regularization parameter due to measurement error.}
+\item{X}{Design matrix.}
 }
 \value{
 Intercept and coefficients at the values of lambda and delta specified.
 }
 \description{
-Matrix Uncertainty Selector (MU Selector) for linear regression, a modified version of the Dantzig Selector for the case of covariate measurement error. The method was first proposed by Rosenbaum and Tsybakov (2010). The MU Selector does not require an estimate of the measurement error covariance matrix, but instead takes measurement error into account through an additional regularization parameter, delta.
+Generalized Dantzig Selector
 }
 \examples{
 set.seed(1)
-n <- 100; p <- 50 # Problem dimensions
+n <- 1000; p <- 10 # Problem dimensions
 X <- matrix(rnorm(n * p), nrow = n) # True (latent) variables
 W <- X + matrix(rnorm(n*p, sd = 1), nrow = n, ncol = p) # Measurement matrix (this is the one we observe)
 beta <- c(seq(from = 0.1, to = 1, length.out = 5), rep(0, p-5))
@@ -40,6 +38,4 @@ plot(fit) # Plot the coefficients
 }
 \references{
 Emmanuel Candes and Terence Tao. 2007. "The Dantzig Selector: Statistical Estimation When p Is Much Larger Than n." The Annals of Statistics 35 (6) https://projecteuclid.org/euclid.aos/1201012958
-
-Mathieu Rosenbaum and Alexandre B. Tsybakov. 2010. "Sparse Recovery Under Matrix Uncertainty." The Annals of Statistics 38 (5) https://projecteuclid.org/euclid.aos/1278861455
 }

@@ -3,7 +3,8 @@
 #' @import glmnet
 #' @param X Design matrix.
 #' @param y Vector of the continuous response value.
-#' @param lambda Regularization parameter.
+#' @param lambda Regularization parameter. Only a single value is supported.
+#' @param family Use "gaussian" for linear regression and "binomial" for logistic regression.
 #' @return Intercept and coefficients at the values of lambda specified.
 #' @references \insertRef{candes2007}{hdme}
 #' @references \insertRef{james2009}{hdme}
@@ -20,7 +21,7 @@
 fit_gds <- function(X, y, lambda = NULL, family = c("gaussian", "binomial")) {
 
   if(!is.null(lambda) & length(lambda) != 1) stop("lambda must be a single value")
-  fit <- muselector(X, y, lambda = lambda, delta = 0, family = family)
+  fit <- fit_gmus(X, y, lambda = lambda, delta = 0, family = family)
 
   # In the Dantzig selector case, delta is not of interest
   fit$delta <- NULL

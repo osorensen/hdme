@@ -178,7 +178,7 @@ ggplot(estimatesOfNonzero, aes(x = index, y = beta, color = label)) +
 ### The Dantzig Selector
 The Dantzig selector @candes2007 is closely related to the lasso. It is defined as the solution to the optimization problem
 $$
-\text{minimize } ~ \|\beta\|_{1}, ~ \text{ subject to }  ~ (1/n)\| x^{T} (y - X\beta)\|_{\infty} \leq \lambda,
+\text{minimize } ~ \|\beta\|_{1}, ~ \text{ subject to }  ~ (1/n)\| X^{T} (y - X\beta)\|_{\infty} \leq \lambda,
 $$
 where $\|\cdot\|_{\infty}$ denotes the maximum component norm. An `R` implentation of the Dantzig selector can be found in the `flare` package @flare_package. We illustrate it with the same data as in the previous section.
 
@@ -252,10 +252,6 @@ str(gds_estimate)
 ```
 
 At the moment, only a single value of `lambda` is accepted by GDS. We will fix this in the future, as well as adding a cross validation function.
-```{r, error=TRUE}
-# Try with a vector of lambda values
-gds_estimate <- fit_gds(X, y, lambda = c(0.002, 0.004), family = "binomial")
-```
 
 # Corrected Lasso
 
@@ -404,9 +400,26 @@ str(corrected_fit)
 
 
 # Matrix Uncertainty Selector
+The Matrix Uncertainty Selector (MUS) was introduced by @rosenbaum2010 as a modification of the Dantzig Selector for data with measurement error. The key insight behind the MUS, is that when $X$ is measured with error, the true coefficient vector $\beta$ may not be part of the feasible set, even when $\lambda$ is set to its theorically optimal value. The reason is that $\lambda$ is a bound on the residual of the linear model, while in the case of measurement error, a bound on $\delta$ the measurementer error matrix $U$ is also needed. The MUS is defined as the optimization problem
+$$
+\text{minimize } ~ \|\beta\|_{1}, ~ \text{ subject to }  ~ (1/n)\| W^{T} (y - W\beta)\|_{\infty} \leq \lambda + \delta \|\beta\|_{1}.
+$$
+The MUS can be converted to a linear programming problem (@sorensen2018).
 
+```{r}
+set.seed(1)
+# Number of samples
+n <- 1000
+# Number of covariates
+p <- 50
+# Generate data
+c(X, W, y, beta, sigmaUU) %<-% create_example_data(n, p, sdU = 0.2)
+```
 
-## Matrix Uncertainty Selector
+```{r}
+test <- fit_mus(W, y)
+```
+
 
 ## Generalized Matrix Uncertainty Selector
 

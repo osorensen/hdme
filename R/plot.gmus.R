@@ -1,9 +1,9 @@
 #' @title plot.muselector
 #' @import ggplot2
 #' @export
-plot.muselector <- function(x) {
+plot.gmus <- function(x) {
   if(length(x$delta) > 1) {
-    df <- data.frame(delta = x$delta, nonzero = x$nonZero)
+    df <- data.frame(delta = x$delta, nonzero = x$num_non_zero)
     ggplot(df, aes(delta, nonzero)) +
       geom_line() +
       labs(x = "delta", y = "Nonzero coefficients", title = "Elbow plot")

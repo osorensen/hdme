@@ -11,7 +11,9 @@ fit_gds(X, y, lambda = NULL, family = c("gaussian", "binomial"))
 
 \item{y}{Vector of the continuous response value.}
 
-\item{lambda}{Regularization parameter.}
+\item{lambda}{Regularization parameter. Only a single value is supported.}
+
+\item{family}{Use "gaussian" for linear regression and "binomial" for logistic regression.}
 }
 \value{
 Intercept and coefficients at the values of lambda specified.

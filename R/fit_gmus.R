@@ -1,28 +1,33 @@
-#' Generalized Dantzig Selector
-#' @description Generalized Dantzig Selector
+#' Generalized Matrix Uncertainty Selector
+#' @description Generalized Matrix Uncertainty Selector
 #' @import glmnet
 #' @param X Design matrix.
-#' @param y Vector of the continuous response value.
+#' @param y Vector of the response value.
 #' @param lambda Regularization parameter.
+#' @param delta Additional regularization parameter, bounding the measurement error.
+#' @param family "gaussian" for linear regression and "binomial" for logistic regression.
 #' @return Intercept and coefficients at the values of lambda and delta specified.
-#' @references Emmanuel Candes and Terence Tao. 2007. "The Dantzig Selector: Statistical Estimation When p Is Much Larger Than n." The Annals of Statistics 35 (6) https://projecteuclid.org/euclid.aos/1201012958
+#' @references \insertRef{rosenbaum2010}{hdme}
+#' \insertRef{sorensen2018}{hdme}
 #' @examples
+#' # Example with linear regression
 #' set.seed(1)
-#' n <- 1000; p <- 10 # Problem dimensions
+#' n <- 1000 # Number of samples
+#' p <- 200 # Number of covariates
 #' X <- matrix(rnorm(n * p), nrow = n) # True (latent) variables
 #' W <- X + matrix(rnorm(n*p, sd = 1), nrow = n, ncol = p) # Measurement matrix (this is the one we observe)
-#' beta <- c(seq(from = 0.1, to = 1, length.out = 5), rep(0, p-5))
+#' beta <- c(seq(from = 0.1, to = 1, length.out = 5), rep(0, p-5)) # Coefficient vector
 #' y <- X %*% beta + rnorm(n, sd = 1) # Response
-#' fit <- muselector(W, y) # Run the MU Selector
+#' gmus1 <- fit_gmus(W, y) # Run the MU Selector
 #' plot(fit) # Draw an elbow plot to select delta
 #'
 #' # Now, according to the "elbow rule", choose the final delta where the curve has an "elbow".
-#' # In this case, the elbow is at about delta = 0.12, so we use this to compute the final estimate:
-#' fit <- muselector(W, y, delta = 0.12)
+#' # In this case, the elbow is at about delta = 0.08, so we use this to compute the final estimate:
+#' gmus2 <- fit_gmus(W, y, delta = 0.08)
 #' plot(fit) # Plot the coefficients
 #'
 #' @export
-muselector <- function(W, y, lambda = NULL, delta = NULL, family = c("gaussian", "binomial")) {
+fit_gmus <- function(W, y, lambda = NULL, delta = NULL, family = c("gaussian", "binomial")) {
   family <- match.arg(family)
 
   if(is.null(lambda)) lambda <- cv.glmnet(W, y, family = family)$lambda.min
@@ -48,7 +53,7 @@ muselector <- function(W, y, lambda = NULL, delta = NULL, family = c("gaussian",
               num_non_zero = colSums(fit[2:p, , drop = FALSE] > 0)
               )
 
-  class(fit) <- c("muselector", class(fit))
+  class(fit) <- "gmus"
   return(fit)
 }
 

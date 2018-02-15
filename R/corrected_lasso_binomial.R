@@ -1,11 +1,13 @@
 logit <- function(x) (1+exp(-x))^(-1)
 dlogit <- function(x) exp(-x)*(1+exp(-x))^(-2)
 
+#' @import stats
+#' @import glmnet
 corrected_lasso_binomial <- function(W, y, sigmaUU, radii, no_radii, alpha, maxits, standardize, tol = 1e-10, maxIR = 50){
   if( is.null(radii) ){
     # First run the naive Lasso
-    lassoFit <- glmnet::cv.glmnet(W, y, family = "binomial")
-    betaNaive <- glmnet::coef.cv.glmnet(lassoFit, s = "lambda.min")
+    lassoFit <- cv.glmnet(W, y, family = "binomial")
+    betaNaive <- coef.cv.glmnet(lassoFit, s = "lambda.min")
 
     no_radii <- 20
     # Use the estimated vector to find the upper radii for cross-validation
@@ -23,7 +25,7 @@ corrected_lasso_binomial <- function(W, y, sigmaUU, radii, no_radii, alpha, maxi
   betaCorr <- matrix(nrow = p, ncol = no_radii)
 
   # Random starting points
-  muOld <- stats::rnorm(1) # Intercept
+  muOld <- rnorm(1) # Intercept
   betaOld <- rep(0, p)
 
   for(r in seq_along(radii)) {
@@ -39,7 +41,7 @@ corrected_lasso_binomial <- function(W, y, sigmaUU, radii, no_radii, alpha, maxi
       part2 <- W + y %*% (t(betaOld) %*% sigmaUU)
       tmp2vec <- as.vector(t(part1) %*% (part2))
       mu <- muOld + alpha * tmp1vec
-      beta <- projectOntoL1Ball(betaOld + alpha * tmp2vec, radii[r])
+      beta <- project_onto_l1_ball(betaOld + alpha * tmp2vec, radii[r])
       diff <- sum(abs(beta - betaOld))
 
       muOld <- mu

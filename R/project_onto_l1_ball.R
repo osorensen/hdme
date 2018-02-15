@@ -1,4 +1,4 @@
-projectOntoL1Ball <- function(gradient, radius) {
+project_onto_l1_ball <- function(gradient, radius) {
   if(radius < 0) stop("Radius should be non-negative")
   u <- sort(abs(gradient), decreasing = TRUE)
   sv <- cumsum(u)

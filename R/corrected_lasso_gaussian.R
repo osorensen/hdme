@@ -33,7 +33,7 @@ corrected_lasso_gaussian <- function(W, y,sigmaUU, radii, no_radii, alpha, maxit
 
   for(r in 2 : (no_radii + 1)) {
     # Compute the estimate
-    betaCorr[, r] <- doProjGrad(Q, b, maxits, alpha, radii[r - 1], betaCorr[, r-1])
+    betaCorr[, r] <- project_gradient(Q, b, maxits, alpha, radii[r - 1], betaCorr[, r-1])
   }
 
 

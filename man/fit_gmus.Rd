@@ -43,5 +43,6 @@ plot(fit) # Plot the coefficients
 
 }
 \references{
-Emmanuel Candes and Terence Tao. 2007. "The Dantzig Selector: Statistical Estimation When p Is Much Larger Than n." The Annals of Statistics 35 (6) https://projecteuclid.org/euclid.aos/1201012958
+\insertRef{rosenbaum2010}{hdme}
+\insertRef{sorensen2018}{hdme}
 }

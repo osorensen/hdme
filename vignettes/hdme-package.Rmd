@@ -213,7 +213,7 @@ plot(dantzig_fit_w)
 
 A generalized Dantzig selector for generalized linear models was introduced by @james2009. It is defined as the solution to the optimization problem 
 $$
-\text{minimize } ~ \|\beta\|_{1}, ~ \text{ subject to }  ~ (1/n)\| x^{T} (y - \mu(X\beta))\|_{\infty} \leq \lambda,
+\text{minimize } ~ \|\beta\|_{1}, ~ \text{ subject to }  ~ (1/n)\| X^{T} (y - \mu(X\beta))\|_{\infty} \leq \lambda,
 $$
 where $\mu(\cdot) \in \mathbb{R}^{n}$ is the vector valued mean function of the generalized linear model. Examples include logistic regression with $\mu(x) = (1+\exp(-x))^{-1}$ and Poisson regression with $\mu(x) = \exp(x)$. Using an iterative reweighing algorithm, the generalized Dantzig selector can be solved as a sequence of linear optimization problems of the same form as the Dantzig selector for linear models.
 
@@ -404,7 +404,7 @@ The Matrix Uncertainty Selector (MUS) was introduced by @rosenbaum2010 as a modi
 $$
 \text{minimize } ~ \|\beta\|_{1}, ~ \text{ subject to }  ~ (1/n)\| W^{T} (y - W\beta)\|_{\infty} \leq \lambda + \delta \|\beta\|_{1}.
 $$
-The MUS can be converted to a linear programming problem (@sorensen2018).
+The MUS can be converted to a linear programming problem (@sorensen2018). The `hdme` package contains a function `fit_mus` for computing the Matrix Uncertainty Selector. It uses `Rglpk` (@theuss2017) for solving the underlying linear program. In order to illustrate `fit_mus`, we generate som example data with measurement error.
 
 ```{r}
 set.seed(1)
@@ -416,17 +416,41 @@ p <- 50
 c(X, W, y, beta, sigmaUU) %<-% create_example_data(n, p, sdU = 0.2)
 ```
 
+We provide the measurement matrix and the response. The solution is computed over a grid of $\delta$ values, and with $\lambda$ set to the cross-validated optimum for the lasso, as chosen by `cv.glmnet` in the `glmnet` package. The returned object is a list with class `gmus`, which stands for *generalized matrix uncertainty selector*.
 ```{r}
-test <- fit_mus(W, y)
+mus_fit <- fit_mus(W, y)
+class(mus_fit)
+str(mus_fit)
+```
+
+The default plot method shows the number of nonzero coefficients along the grid of $\delta$ values chosen by the algorithm. 
+
+```{r}
+plot(mus_fit)
+```
+
+According to the "elbow rule" (@rosenbaum2010), a final value of $\delta$ can be chosen where the curve starts to level off. This is not always easy in practice, but in the plot above, a value between $0.05$ and $0.1$ may be reasonable. Choosing $1.0$, we can call the algorithm again, but this time setting the argument `delta = 0.1`.
+
+```{r}
+mus_fit <- fit_mus(W, y, delta = 0.1)
+```
+
+Since only one value of $\delta$ was provided, the plot method will now show all the estimated coefficients, rather than the number of nonzero coefficients, as in the previous plot.
+
+```{r}
+plot(mus_fit)
 ```
 
 
 ## Generalized Matrix Uncertainty Selector
+The Generalized Matrix Uncertainty Selector (GMUS) is an extension of the MUS to generalized linear models, introduced by @sorensen2018. It is defined as the solution to the optimization problem
 
-## Model Tuning
+$$
+\text{minimize } ~ \|\beta\|_{1}, ~ \text{ subject to } ~ (1/n)\|W^{T} (y - \mu(W \beta))\|_{\infty} \leq \lambda + \sum_{r=1}^{R}\delta^{r}(r! \sqrt{n})^{-1} \|\beta\|_{1}^{r} \|\mu^ {(r)}(W\beta)\|_{2},
+$$
+where $\mu(\cdot)$ is the vector valued mean function of the generalized linear model and $\mu^{(r)}(\cdot)$ is its $r$th derivative. $R$ is a parameter controling the number of Taylor expansion terms which are included. When $R\to\infty$, the true solution is a member of the feasible set given that the bounds $(1/n)\|W^{T}\epsilon\|_{\infty} \leq \lambda$ and $\|U\|_{\infty} \leq \delta$ hold. In practice, we set $R=1$ for computational reasons. When $R=1$, the GMUS can be solved using a sequence of linear programming problems on the same form as the MUS, with an iterative reweighing algorithm.
 
-- Elbow rule
-
+# Matrix Uncertainty Lasso
 # Interpretation of Results
 
 ## Plotting Important Features

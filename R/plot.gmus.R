@@ -9,6 +9,7 @@ plot.gmus <- function(x) {
       labs(x = "delta", y = "Nonzero coefficients", title = "Elbow plot")
   } else {
     df <- data.frame(index = seq_along(x$beta), beta = x$beta)
+
     ggplot(df, aes(index, beta)) +
       geom_point() +
       labs(x = "Coefficient number", y = "Coefficient value", title = "Estimated coefficients")

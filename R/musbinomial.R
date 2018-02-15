@@ -28,7 +28,7 @@
 #' y <- rbinom(n, 1, logit(X %*% beta))
 #'
 #' # Run the GMU Selector at lambda = 0.1 and delta = 0.1
-#' fit <- GMUSelector(W, y, 0.1, 0.1)
+#' fit <- fit_gmus(W, y, 0.1, 0.1)
 #'
 #' # Estimate the regularization parameters:
 #' # First compute the optimal cross-validated lambda value for the standard lasso
@@ -40,7 +40,7 @@
 #' delta <- seq(from = 0, to = 0.5, by = 0.02)
 #' support <- sapply(delta,
 #'                  function(x)
-#'                    sum(GMUSelector(W, y, lambdaMin, delta = x)$coefficients != 0)
+#'                    sum(fit_gmus(W, y, lambdaMin, delta = x)$coefficients != 0)
 #'                    )
 #'
 #' # Create an elbow plot
@@ -53,7 +53,7 @@
 #' # Now, according to the "elbow rule", choose the final delta where the
 #' # curve has an "elbow". In this case, the elbow is at about delta = 0.12,
 #' # so we use this to compute the final estimate:
-#' GMUSelectorFit <- GMUSelector(W, y, lambdaMin, 0.12)
+#' GMUSelectorFit <- fit_gmus(W, y, lambdaMin, 0.12)
 #'
 #' # Compare the GMUSelector fit to the Lasso fit
 #' plot(1:p, beta, xlab = "Coefficient no.", ylab = "Coefficient value", ylim = c(-0.2, 1.1))

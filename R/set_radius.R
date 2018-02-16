@@ -1,4 +1,4 @@
-setRadius <- function(W, y, noRadii) {
+set_radius <- function(W, y, noRadii) {
   # First run the naive Lasso
   lassoFit <- glmnet::cv.glmnet(W, y)
   betaNaive <- glmnet::coef.cv.glmnet(lassoFit, s = "lambda.min")

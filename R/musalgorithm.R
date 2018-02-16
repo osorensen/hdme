@@ -35,8 +35,10 @@ musalgorithm <- function(W, y, lambda, delta){
                  upper=list(ind=1:(2*p), val=rep(Inf,2*p)))
   bhat <- Rglpk_solve_LP(obj, mat, dir, rhs, bounds=bounds)$solution
 
-  value <- list(intercept = bhat[p + 1],
-                beta = bhat[(p + 2) : (2*p)])
+  # value <- list(intercept = bhat[p + 1],
+  #               beta = bhat[(p + 2) : (2*p)])
+
   return(bhat[(p+1):(2*p)])
+
 
 }

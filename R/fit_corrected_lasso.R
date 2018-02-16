@@ -8,7 +8,8 @@
 #' @param W Design matrix, measured with error. Must be a numeric matrix.
 #' @param y Vector of responses.
 #' @param sigmaUU Covariance matrix of the measurement error.
-#' @param family Response type. Character string of length 1.
+#' @param family Response type. Character string of length 1. Possible values
+#'   are "gaussian" and "binomial".
 #' @param radii Vector containing the set of radii of the l1-ball onto which the
 #'   solution is projected. If not provided, the algorithm will select an evenly
 #'   spaced vector of 20 radii.
@@ -20,9 +21,8 @@
 #'   corrected beta estimates at each radius, as well as the vector of radii
 #'   used.
 #'
-#' @references
-#' \insertRef{loh2012}{hdme}
-#'
+#' @references \insertRef{loh2012}{hdme}
+#'2
 #' \insertRef{sorensen2015}{hdme}
 #' @examples
 #' # Example with linear regression
@@ -33,7 +33,7 @@
 #' W <- X + rnorm(n, sd = diag(sigmaUU)) # Measurement matrix (this is the one we observe)
 #' beta <- c(seq(from = 0.1, to = 1, length.out = 5), rep(0, p-5)) # Coefficient
 #' y <- X %*% beta + rnorm(n, sd = 1) # Response
-#' fit <- correctedLasso(W, y, sigmaUU, family = "gaussian") # Run the corrected lasso
+#' fit <- fit_corrected_lasso(W, y, sigmaUU, family = "gaussian") # Run the corrected lasso
 #' plot(fit)
 #'
 #' # Binomial, logistic regression
@@ -44,16 +44,17 @@
 #' W <- X + rnorm(n, sd = diag(sigmaUU)) # Measurement matrix (this is the one we observe)
 #' logit <- function(x) (1+exp(-x))^(-1)
 #' y <- rbinom(n, size = 1, prob = logit(X %*% c(rep(5, 5), rep(0, p-5)))) # Response
-#' fit <- correctedLasso(W, y, sigmaUU, family = "binomial")
+#' fit <- fit_corrected_lasso(W, y, sigmaUU, family = "binomial")
 #' plot(fit)
 #'
 #'
 #' @importFrom Rdpack reprompt
 #'
 #' @export
-correctedLasso <- function(W, y, sigmaUU, family = c("gaussian", "binomial", "poisson"),
-                 radius = NULL, noRadii = 20, alpha = 0.1, maxits = 5000){
+fit_corrected_lasso <- function(W, y, sigmaUU, family = c("gaussian", "binomial"),
+                 radii = NULL, no_radii = 20, alpha = 0.1, maxits = 5000){
   family <- match.arg(family)
+
 
   if(!is.matrix(W)) {
     stop("X should be a matrix")
@@ -63,9 +64,7 @@ correctedLasso <- function(W, y, sigmaUU, family = c("gaussian", "binomial", "po
     stop("X should be a numeric matrix")
   }
 
-  if(!is.vector(y)) {
-    stop("y should be a vector")
-  }
+  y <- drop(y)
 
   if(!is.numeric(y)) {
     stop("y should be a numeric vector")
@@ -85,15 +84,17 @@ correctedLasso <- function(W, y, sigmaUU, family = c("gaussian", "binomial", "po
     stop("The length of y should equal the number of rows in W")
   }
 
-
+  if(!family %in% c("gaussian", "binomial")) {
+    stop("Argment family must have value 'gaussian' or 'binmial'")
+  }
 
 
   fit <- switch(family,
-             "gaussian" = correctedLassoGaussian(W = W, y = y, sigmaUU = sigmaUU, radius = radius, noRadii = noRadii, alpha = alpha, maxits = maxits),
-             "binomial" = correctedLassoBinomial(W = W, y = y, sigmaUU = sigmaUU, radius = radius, noRadii = noRadii, alpha = alpha, maxits = maxits)
+             "gaussian" = corrected_lasso_gaussian(W = W, y = y, sigmaUU = sigmaUU, radii = radii, no_radii = no_radii, alpha = alpha, maxits = maxits),
+             "binomial" = corrected_lasso_binomial(W = W, y = y, sigmaUU = sigmaUU, radii = radii, no_radii = no_radii, alpha = alpha, maxits = maxits)
              )
 
-  class(fit) <- c("correctedLasso", class(fit))
+  class(fit) <- c("corrected_lasso")
 
   return(fit)
 

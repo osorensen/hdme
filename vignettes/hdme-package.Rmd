@@ -1,6 +1,6 @@
 ---
 title: "The hdme package: regression methods for high-dimensional data with measurement error"
-author: "Øystein Sørensen"
+author: "Oystein Sorensen"
 date: "`r Sys.Date()`"
 output: rmarkdown::html_vignette
 bibliography: ../inst/REFERENCES.bib

@@ -1,8 +1,8 @@
 #' Generalized Matrix Uncertainty Selector
 #' @description Generalized Matrix Uncertainty Selector
 #' @import glmnet
-#' @param X Design matrix.
-#' @param y Vector of the response value.
+#' @param W Design matrix, measured with error. Must be a numeric matrix.
+#' @param y Vector of responses.
 #' @param lambda Regularization parameter.
 #' @param delta Additional regularization parameter, bounding the measurement error.
 #' @param family "gaussian" for linear regression and "binomial" for logistic regression.

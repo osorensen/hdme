@@ -7,13 +7,13 @@
 fit_mus(W, y, lambda = NULL, delta = NULL)
 }
 \arguments{
-\item{y}{Vector of the response value.}
+\item{W}{Design matrix, measured with error. Must be a numeric matrix.}
+
+\item{y}{Vector of responses.}
 
 \item{lambda}{Regularization parameter.}
 
 \item{delta}{Additional regularization parameter, bounding the measurement error.}
-
-\item{X}{Design matrix.}
 }
 \value{
 Intercept and coefficients at the values of lambda and delta specified.

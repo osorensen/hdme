@@ -8,15 +8,15 @@ fit_gmus(W, y, lambda = NULL, delta = NULL, family = c("gaussian",
   "binomial"))
 }
 \arguments{
-\item{y}{Vector of the response value.}
+\item{W}{Design matrix, measured with error. Must be a numeric matrix.}
+
+\item{y}{Vector of responses.}
 
 \item{lambda}{Regularization parameter.}
 
 \item{delta}{Additional regularization parameter, bounding the measurement error.}
 
 \item{family}{"gaussian" for linear regression and "binomial" for logistic regression.}
-
-\item{X}{Design matrix.}
 }
 \value{
 Intercept and coefficients at the values of lambda and delta specified.

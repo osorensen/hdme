@@ -6,6 +6,15 @@
 \usage{
 musalgorithm(W, y, lambda, delta)
 }
+\arguments{
+\item{W}{Matrix of measurements.}
+
+\item{y}{Response vector.}
+
+\item{lambda}{Regularization parameter due to residual.}
+
+\item{delta}{Regularization parameter due to measurement error.}
+}
 \description{
 Algorithm for mus
 }

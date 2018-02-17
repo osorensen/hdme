@@ -14,59 +14,75 @@ fit_corrected_lasso(W, y, sigmaUU, family = c("gaussian", "binomial"),
 
 \item{sigmaUU}{Covariance matrix of the measurement error.}
 
-\item{family}{Response type. Character string of length 1. Possible values
-are "gaussian" and "binomial".}
+\item{family}{Response type. Character string of length 1. Possible values are
+"gaussian" and "binomial".}
 
 \item{radii}{Vector containing the set of radii of the l1-ball onto which the
 solution is projected. If not provided, the algorithm will select an evenly
 spaced vector of 20 radii.}
 
-\item{alpha}{Step size of the projected gradient descent algorithm. Default
-is 0.1.}
+\item{no_radii}{Length of vector radii, i.e., the number of regularization
+parameters to fit the corrected lasso for.}
+
+\item{alpha}{Step size of the projected gradient descent algorithm. Default is
+0.1.}
 
 \item{maxits}{Maxium number of iterations of the project gradient descent
 algorithm for each radius. Default is 5000.}
 }
 \value{
 Returns a list containing a matrix whose columns represent the
-  corrected beta estimates at each radius, as well as the vector of radii
-  used.
+ corrected beta estimates at each radius, as well as the vector of radii
+ used.
 }
 \description{
-Lasso (L1-regularization) for generalized linear models with measurement
-error.
+Lasso (L1-regularization) for generalized linear models with
+ measurement error.
 }
 \details{
 Corrected version of the lasso for generalized linear models. The
-  method does require an estimate of the measurement error covariance matrix.
+ method does require an estimate of the measurement error covariance matrix.
 }
 \examples{
 # Example with linear regression
-n <- 100 # Number of samples
-p <- 50 # Number of covariates
-X <- matrix(rnorm(n * p), nrow = n)  # True (latent) variables
-sigmaUU <- diag(x = 0.2, nrow = p, ncol = p) # Measurement error covariance matrix (typically estimated by replicate measurements)
-W <- X + rnorm(n, sd = diag(sigmaUU)) # Measurement matrix (this is the one we observe)
-beta <- c(seq(from = 0.1, to = 1, length.out = 5), rep(0, p-5)) # Coefficient
-y <- X \%*\% beta + rnorm(n, sd = 1) # Response
-fit <- fit_corrected_lasso(W, y, sigmaUU, family = "gaussian") # Run the corrected lasso
+# Number of samples
+n <- 100
+# Number of covariates
+p <- 50
+# True (latent) variables
+X <- matrix(rnorm(n * p), nrow = n)
+# Measurement error covariance matrix
+# (typically estimated by replicate measurements)
+sigmaUU <- diag(x = 0.2, nrow = p, ncol = p)
+# Measurement matrix (this is the one we observe)
+W <- X + rnorm(n, sd = diag(sigmaUU))
+# Coefficient
+beta <- c(seq(from = 0.1, to = 1, length.out = 5), rep(0, p-5))
+# Response
+y <- X \%*\% beta + rnorm(n, sd = 1)
+# Run the corrected lasso
+fit <- fit_corrected_lasso(W, y, sigmaUU, family = "gaussian")
 plot(fit)
 
 # Binomial, logistic regression
-n <- 1000 # Number of samples
-p <- 50 # Number of covariates
-X <- matrix(rnorm(n * p), nrow = n) # True (latent) variables
-sigmaUU <- diag(x = 0.2, nrow = p, ncol = p) # Measurement error covariance matrix
-W <- X + rnorm(n, sd = diag(sigmaUU)) # Measurement matrix (this is the one we observe)
+# Number of samples
+n <- 1000
+# Number of covariates
+p <- 50
+# True (latent) variables
+X <- matrix(rnorm(n * p), nrow = n)
+# Measurement error covariance matrix
+sigmaUU <- diag(x = 0.2, nrow = p, ncol = p)
+# Measurement matrix (this is the one we observe)
+W <- X + rnorm(n, sd = diag(sigmaUU))
 logit <- function(x) (1+exp(-x))^(-1)
-y <- rbinom(n, size = 1, prob = logit(X \%*\% c(rep(5, 5), rep(0, p-5)))) # Response
+# Response
+y <- rbinom(n, size = 1, prob = logit(X \%*\% c(rep(5, 5), rep(0, p-5))))
 fit <- fit_corrected_lasso(W, y, sigmaUU, family = "binomial")
 plot(fit)
 
 
 }
 \references{
-\insertRef{loh2012}{hdme}
-2
-\insertRef{sorensen2015}{hdme}
+\insertRef{loh2012}{hdme} 2 \insertRef{sorensen2015}{hdme}
 }

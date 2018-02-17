@@ -1,7 +1,10 @@
-#' @title cv_corrected_lasso
+#' @title plot.cv_corrected_lasso
+#' @description Plot the output of cv_corrected_lasso
 #' @import ggplot2
+#' @param x The object to be plotted, returned from cv_corrected_lasso
+#' @param ... Other arguments to plot (not used).
 #' @export
-plot.cv_corrected_lasso <- function(x) {
+plot.cv_corrected_lasso <- function(x, ...) {
   df <- data.frame(x1 = c(0, 0),
                    x2 = c(x$radius_min, x$radius_1se),
                    y1 <- c(0, 0),

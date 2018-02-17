@@ -9,7 +9,7 @@
 #' @references \insertRef{candes2007}{hdme}
 #' @references \insertRef{james2009}{hdme}
 #' @examples
-#' Example with logistic regression
+#' # Example with logistic regression
 #' n <- 1000  # Number of samples
 #' p <- 10 # Number of covariates
 #' X <- matrix(rnorm(n * p), nrow = n) # True (latent) variables # Design matrix

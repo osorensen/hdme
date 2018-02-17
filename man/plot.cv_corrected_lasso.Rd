@@ -2,7 +2,15 @@
 % Please edit documentation in R/plot.cv_corrected_lasso.R
 \name{plot.cv_corrected_lasso}
 \alias{plot.cv_corrected_lasso}
-\title{cv_corrected_lasso}
+\title{plot.cv_corrected_lasso}
 \usage{
-\method{plot}{cv_corrected_lasso}(x)
+\method{plot}{cv_corrected_lasso}(x, ...)
+}
+\arguments{
+\item{x}{The object to be plotted, returned from cv_corrected_lasso}
+
+\item{...}{Other arguments to plot (not used).}
+}
+\description{
+Plot the output of cv_corrected_lasso
 }

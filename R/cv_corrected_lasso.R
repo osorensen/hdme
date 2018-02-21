@@ -37,8 +37,8 @@
 #' cvfit <- cv_corrected_lasso(W, y, sigmaUU)
 #' plot(cvfit)
 #' # Run the standard lasso using the radius found by cross-validation
-#' fit <- corrected_lasso(W, y, sigmaUU, family = "gaussian",
-#' radius = cvfit$radius.min)
+#' fit <- fit_corrected_lasso(W, y, sigmaUU, family = "gaussian",
+#' radii = cvfit$radius.min)
 #' @export
 cv_corrected_lasso <- function(W, y, sigmaUU, n_folds = 10, family = "gaussian",
                  radii = NULL, no_radii = 100, alpha = 0.1, maxits = 5000){

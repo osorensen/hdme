@@ -25,5 +25,9 @@ RdMacros: Rdpack
 Suggests: 
     knitr,
     rmarkdown,
-    testthat
+    testthat,
+    flare,
+    igraph,
+    tidyverse,
+    zeallot
 VignetteBuilder: knitr

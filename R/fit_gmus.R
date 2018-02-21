@@ -14,17 +14,23 @@
 #' set.seed(1)
 #' n <- 1000 # Number of samples
 #' p <- 200 # Number of covariates
-#' X <- matrix(rnorm(n * p), nrow = n) # True (latent) variables
-#' W <- X + matrix(rnorm(n*p, sd = 1), nrow = n, ncol = p) # Measurement matrix (this is the one we observe)
-#' beta <- c(seq(from = 0.1, to = 1, length.out = 5), rep(0, p-5)) # Coefficient vector
-#' y <- X %*% beta + rnorm(n, sd = 1) # Response
-#' gmus1 <- fit_gmus(W, y) # Run the MU Selector
-#' plot(fit) # Draw an elbow plot to select delta
+#' # True (latent) variables
+#' X <- matrix(rnorm(n * p), nrow = n)
+#' # Measurement matrix (this is the one we observe)
+#' W <- X + matrix(rnorm(n*p, sd = 1), nrow = n, ncol = p)
+#' # Coefficient vector
+#' beta <- c(seq(from = 0.1, to = 1, length.out = 5), rep(0, p-5))
+#' # Response
+#' y <- X %*% beta + rnorm(n, sd = 1)
+#' # Run the MU Selector
+#' gmus1 <- fit_gmus(W, y)
+#' # Draw an elbow plot to select delta
+#' plot(gmus1)
 #'
 #' # Now, according to the "elbow rule", choose the final delta where the curve has an "elbow".
 #' # In this case, the elbow is at about delta = 0.08, so we use this to compute the final estimate:
 #' gmus2 <- fit_gmus(W, y, delta = 0.08)
-#' plot(fit) # Plot the coefficients
+#' plot(gmus2) # Plot the coefficients
 #'
 #' @export
 fit_gmus <- function(W, y, lambda = NULL, delta = NULL, family = c("gaussian", "binomial")) {

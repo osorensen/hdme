@@ -64,5 +64,6 @@ fit <- fit_corrected_lasso(W, y, sigmaUU, family = "gaussian",
 radii = cvfit$radius.min)
 }
 \references{
-\insertRef{loh2012}{hdme} \insertRef{sorensen2015}{hdme}
+\insertRef{loh2012}{hdme}
+\insertRef{sorensen2015}{hdme}
 }

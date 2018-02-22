@@ -11,12 +11,12 @@ plot.cv_corrected_lasso <- function(x, ...) {
                    y2 = c(x$loss_min, x$loss_1se)
                    )
 
-  ggplot(as.data.frame(x$cv), aes(radii, mean_loss)) +
+  ggplot(as.data.frame(x$cv), aes_(x =~ radii, y =~ mean_loss)) +
     geom_line() +
-    geom_line(aes(radii, lower_1se), linetype = 2) +
-    geom_line(aes(radii, upper_1se), linetype = 2) +
+    geom_line(aes_(x =~ radii, y =~ lower_1se), linetype = 2) +
+    geom_line(aes_(x =~ radii, y =~ upper_1se), linetype = 2) +
     labs(x = "Radius", y = "Loss", title = "Cross-validation plot") +
-    geom_segment(data = df, aes(x = x2, xend = x2, y = y1, yend = y2), color = "red") +
-    geom_segment(data = df, aes(x = x1, xend = x2, y = y2, yend = y2), color = "red") +
-    geom_label(data = df, aes(x = x2, y = y1, label = c("R min", "R 1se")))
+    geom_segment(data = df, aes_(x =~ x2, xend =~ x2, y =~ y1, yend =~ y2), color = "red") +
+    geom_segment(data = df, aes_(x =~ x1, xend =~ x2, y =~ y2, yend =~ y2), color = "red") +
+    geom_label(data = df, aes_(x =~ x2, y =~ y1, label =~ c("R min", "R 1se")))
 }

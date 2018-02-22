@@ -17,7 +17,8 @@
 #' @param maxits Optional maxium number of iterations of the project gradient
 #'   descent algorithm for each radius. Default is 5000.
 #' @return A list
-#' @references \insertRef{loh2012}{hdme} \insertRef{sorensen2015}{hdme}
+#' @references \insertRef{loh2012}{hdme}
+#' \insertRef{sorensen2015}{hdme}
 #' @examples
 #' # Gaussian
 #' set.seed(100)

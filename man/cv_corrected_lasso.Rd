@@ -5,8 +5,7 @@
 \title{Cross-validated Corrected lasso}
 \usage{
 cv_corrected_lasso(W, y, sigmaUU, n_folds = 10, family = "gaussian",
-  radii = NULL, no_radii = 100, alpha = 0.1, maxits = 5000,
-  standardize = FALSE)
+  radii = NULL, no_radii = 100, alpha = 0.1, maxits = 5000)
 }
 \arguments{
 \item{W}{Design matrix, measured with error.}
@@ -19,11 +18,17 @@ cv_corrected_lasso(W, y, sigmaUU, n_folds = 10, family = "gaussian",
 
 \item{family}{Only "gaussian" is implemented at the moment.}
 
-\item{radii}{Optional vector containing the set of radii of the l1-ball onto which the solution is projected.}
+\item{radii}{Optional vector containing the set of radii of the l1-ball onto
+which the solution is projected.}
 
-\item{alpha}{Optional step size of the projected gradient descent algorithm. Default is 0.1.}
+\item{no_radii}{Length of vector radii, i.e., the number of regularization
+parameters to fit the corrected lasso for.}
 
-\item{maxits}{Optional maxium number of iterations of the project gradient descent algorithm for each radius. Default is 5000.}
+\item{alpha}{Optional step size of the projected gradient descent algorithm.
+Default is 0.1.}
+
+\item{maxits}{Optional maxium number of iterations of the project gradient
+descent algorithm for each radius. Default is 5000.}
 }
 \value{
 A list
@@ -32,21 +37,31 @@ A list
 Cross-validated Corrected lasso
 }
 \details{
-Corrected version of the lasso for the case of linear regression, estimated using cross-validation. The method does require an estimate of the measurement error covariance matrix.
+Corrected version of the lasso for the case of linear regression,
+  estimated using cross-validation. The method does require an estimate of
+  the measurement error covariance matrix.
 }
 \examples{
 # Gaussian
 set.seed(100)
 n <- 100; p <- 50 # Problem dimensions
-X <- matrix(rnorm(n * p), nrow = n)  # True (latent) variables
-sigmaUU <- diag(x = 0.2, nrow = p, ncol = p) # Measurement error covariance matrix (typically estimated by replicate measurements)
-W <- X + rnorm(n, sd = diag(sigmaUU)) # Measurement matrix (this is the one we observe)
-beta <- c(seq(from = 0.1, to = 1, length.out = 5), rep(0, p-5)) # Coefficient
-y <- X \%*\% beta + rnorm(n, sd = 1) # Response
-cvfit <- cv_corrected_lasso(W, y, sigmaUU) # Run the corrected lasso
+# True (latent) variables
+X <- matrix(rnorm(n * p), nrow = n)
+# Measurement error covariance matrix
+# (typically estimated by replicate measurements)
+sigmaUU <- diag(x = 0.2, nrow = p, ncol = p)
+# Measurement matrix (this is the one we observe)
+W <- X + rnorm(n, sd = diag(sigmaUU))
+# Coefficient
+beta <- c(seq(from = 0.1, to = 1, length.out = 5), rep(0, p-5))
+# Response
+y <- X \%*\% beta + rnorm(n, sd = 1)
+# Run the corrected lasso
+cvfit <- cv_corrected_lasso(W, y, sigmaUU)
 plot(cvfit)
 # Run the standard lasso using the radius found by cross-validation
-fit <- corrected_lasso(W, y, sigmaUU, family = "gaussian", radius = cvfit$radius.min)
+fit <- fit_corrected_lasso(W, y, sigmaUU, family = "gaussian",
+radii = cvfit$radius.min)
 }
 \references{
 \insertRef{loh2012}{hdme}

@@ -1,4 +1,10 @@
 #' Algorithm for mus
+#'
+#' @param W Matrix of measurements.
+#' @param y Response vector.
+#' @param lambda Regularization parameter due to residual.
+#' @param delta Regularization parameter due to measurement error.
+#'
 #' @import Rglpk
 musalgorithm <- function(W, y, lambda, delta){
   # We assume the first column of W is constants, i.e., intercept

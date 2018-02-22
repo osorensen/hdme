@@ -22,7 +22,7 @@ Intercept and coefficients at the values of lambda specified.
 Generalized Dantzig Selector
 }
 \examples{
-Example with logistic regression
+# Example with logistic regression
 n <- 1000  # Number of samples
 p <- 10 # Number of covariates
 X <- matrix(rnorm(n * p), nrow = n) # True (latent) variables # Design matrix

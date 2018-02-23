@@ -5,3 +5,9 @@ fit_mu_lasso <- function(omega, gamma, W, z, betaInit, activeSet) {
     .Call(`_hdme_fit_mu_lasso`, omega, gamma, W, z, betaInit, activeSet)
 }
 
+#' @export
+NULL
+
+#' @export
+NULL
+

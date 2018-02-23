@@ -3,6 +3,7 @@
 S3method(plot,corrected_lasso)
 S3method(plot,cv_corrected_lasso)
 S3method(plot,gmus)
+export()
 export(cv_corrected_lasso)
 export(fit_corrected_lasso)
 export(fit_gds)

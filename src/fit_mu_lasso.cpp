@@ -41,6 +41,7 @@ arma::vec fit_mu_lasso(arma::vec omega, double gamma, arma::mat W,
     error = norm(beta - betaOld);
     betaOld = beta;
 
+    // Note: Use Rcout << ... if I want a print statement about convergence here.
     ++i;
   }
 

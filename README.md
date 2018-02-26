@@ -20,6 +20,3 @@ To install this package in R:
  library(hdme) 
 ```
 
-\references{
-\insertRef{hdme}{sorensen2015}
-}

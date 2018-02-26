@@ -1,6 +1,3 @@
-logit <- function(x) (1+exp(-x))^(-1)
-dlogit <- function(x) exp(-x)*(1+exp(-x))^(-2)
-
 #' @import stats
 #' @import glmnet
 corrected_lasso_binomial <- function(W, y, sigmaUU, radii, no_radii, alpha, maxits, standardize, tol = 1e-10, maxIR = 50){

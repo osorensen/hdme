@@ -25,9 +25,9 @@ Matrix Uncertainty Selector
 # Example with linear regression
 set.seed(1)
 # Number of samples
-n <- 1000
+n <- 100
 # Number of covariates
-p <- 200
+p <- 50
 # True (latent) variables
 X <- matrix(rnorm(n * p), nrow = n)
 # Measurement matrix (this is the one we observe)
@@ -49,5 +49,6 @@ plot(mus2) # Plot the coefficients
 }
 \references{
 \insertRef{rosenbaum2010}{hdme}
+
 \insertRef{sorensen2018}{hdme}
 }

@@ -23,7 +23,8 @@
 #'  corrected beta estimates at each radius, as well as the vector of radii
 #'  used.
 #'
-#'@references \insertRef{loh2012}{hdme} 2 \insertRef{sorensen2015}{hdme}
+#'@references \insertRef{loh2012}{hdme}
+#'\insertRef{sorensen2015}{hdme}
 #' @examples
 #' # Example with linear regression
 #' # Number of samples

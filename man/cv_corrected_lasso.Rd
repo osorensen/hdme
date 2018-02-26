@@ -57,11 +57,11 @@ beta <- c(seq(from = 0.1, to = 1, length.out = 5), rep(0, p-5))
 # Response
 y <- X \%*\% beta + rnorm(n, sd = 1)
 # Run the corrected lasso
-cvfit <- cv_corrected_lasso(W, y, sigmaUU)
+cvfit <- cv_corrected_lasso(W, y, sigmaUU, no_radii = 5, n_folds = 3)
 plot(cvfit)
 # Run the standard lasso using the radius found by cross-validation
 fit <- fit_corrected_lasso(W, y, sigmaUU, family = "gaussian",
-radii = cvfit$radius.min)
+radii = cvfit$radius_min)
 }
 \references{
 \insertRef{loh2012}{hdme}

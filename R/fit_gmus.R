@@ -12,8 +12,8 @@
 #' @examples
 #' # Example with linear regression
 #' set.seed(1)
-#' n <- 1000 # Number of samples
-#' p <- 200 # Number of covariates
+#' n <- 100 # Number of samples
+#' p <- 50 # Number of covariates
 #' # True (latent) variables
 #' X <- matrix(rnorm(n * p), nrow = n)
 #' # Measurement matrix (this is the one we observe)

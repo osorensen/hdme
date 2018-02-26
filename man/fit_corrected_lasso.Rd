@@ -84,5 +84,6 @@ plot(fit)
 
 }
 \references{
-\insertRef{loh2012}{hdme} 2 \insertRef{sorensen2015}{hdme}
+\insertRef{loh2012}{hdme}
+\insertRef{sorensen2015}{hdme}
 }

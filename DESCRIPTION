@@ -3,8 +3,8 @@ Type: Package
 Title: High-Dimensional Regression with Measurement Error
 Version: 0.1.0
 Encoding: UTF-8
-Authors@R: person("Oystein", "Sorensen", email = "oystein.sorensen.1985@gmail.com",
-  role = c("aut", "cre"))
+Author: Oystein Sorensen
+Maintainer: Oystein Sorensen <oystein.sorensen.1985@gmail.com>
 Description: Penalized regression for generalized linear models for
   measurement error problems (aka. errors-in-variables). The package
   contains a version of the lasso (L1-penalization) which corrects
@@ -20,8 +20,7 @@ Imports:
   mvtnorm (>= 1.0-7), 
   ggplot2 (>= 2.2.1),
   Rdpack (>= 0.5-3),
-    Rcpp (>= 0.12.15),
-    RcppArmadillo (>= 0.8.300.1.0)
+    Rcpp (>= 0.12.15)
 URL: https://github.com/osorensen/hdme
 RdMacros: Rdpack
 Suggests:

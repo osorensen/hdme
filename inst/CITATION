@@ -1,0 +1,13 @@
+citHeader("To cite hdme in publications use:")
+
+citEntry(entry = "Manual",
+  title        = "hdme: High-Dimensional Regression with Measurement Error",
+  author       = personList(as.person("Oystein Sorensen")),
+  year         = "2018",
+  url          = "https://github.com/osorensen/hdme",
+
+  textVersion  =
+  paste("Oystein Sorensen (2018),",
+        "hdme: High-Dimensional Regression with Measurement Error",
+        "https://github.com/osorensen/hdme.")
+)

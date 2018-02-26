@@ -9,7 +9,7 @@ Description: Penalized regression for generalized linear models for
   measurement error problems (aka. errors-in-variables). The package
   contains a version of the lasso (L1-penalization) which corrects
   for measurement error. It also contains an implementation of the 
-  Genearalized Matrix Uncertainty Selector, which is a version the
+  Generalized Matrix Uncertainty Selector, which is a version the
   (Generalized) Dantzig Selector for the case of measurement error.
 License: GPL-3
 LazyData: TRUE

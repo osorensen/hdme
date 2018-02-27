@@ -9,7 +9,7 @@
 #' @references \insertRef{rosenbaum2010}{hdme}
 #' \insertRef{sorensen2018}{hdme}
 #' @examples
-#' # Example with linear regression
+#' # Example with logistic regression
 #' set.seed(1)
 #' # Number of samples
 #' n <- 100

@@ -22,7 +22,7 @@ Intercept and coefficients at the values of lambda and delta specified.
 Matrix Uncertainty Selector
 }
 \examples{
-# Example with linear regression
+# Example with logistic regression
 set.seed(1)
 # Number of samples
 n <- 100

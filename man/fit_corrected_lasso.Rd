@@ -85,5 +85,6 @@ plot(fit)
 }
 \references{
 \insertRef{loh2012}{hdme}
+
 \insertRef{sorensen2015}{hdme}
 }

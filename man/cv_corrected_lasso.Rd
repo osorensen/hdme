@@ -65,5 +65,6 @@ radii = cvfit$radius_min)
 }
 \references{
 \insertRef{loh2012}{hdme}
+
 \insertRef{sorensen2015}{hdme}
 }

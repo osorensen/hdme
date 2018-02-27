@@ -24,7 +24,9 @@
 #'  used.
 #'
 #'@references \insertRef{loh2012}{hdme}
+#'
 #'\insertRef{sorensen2015}{hdme}
+#'
 #' @examples
 #' # Example with linear regression
 #' # Number of samples

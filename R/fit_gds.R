@@ -7,7 +7,9 @@
 #' @param family Use "gaussian" for linear regression and "binomial" for logistic regression.
 #' @return Intercept and coefficients at the values of lambda specified.
 #' @references \insertRef{candes2007}{hdme}
-#' @references \insertRef{james2009}{hdme}
+#'
+#' \insertRef{james2009}{hdme}
+#'
 #' @examples
 #' # Example with logistic regression
 #' n <- 1000  # Number of samples

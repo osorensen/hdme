@@ -10,9 +10,9 @@
 #'   speed up coordinate descent algorithm.
 #'
 #' @return Coefficient vector.
-#' @export
 #'
 #' @references \insertRef{rosenbaum2010}{hdme}
+#'
 #' \insertRef{sorensen2018}{hdme}
 #'
 fit_gmu_lasso <- function(W, y, lambda, delta, family = "binomial",

@@ -8,6 +8,7 @@
 #' @param family "gaussian" for linear regression and "binomial" for logistic regression.
 #' @return Intercept and coefficients at the values of lambda and delta specified.
 #' @references \insertRef{rosenbaum2010}{hdme}
+#'
 #' \insertRef{sorensen2018}{hdme}
 #' @examples
 #' # Example with linear regression

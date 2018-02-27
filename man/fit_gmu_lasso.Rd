@@ -29,5 +29,6 @@ Generalized Matrix Uncertainty Lasso
 }
 \references{
 \insertRef{rosenbaum2010}{hdme}
+
 \insertRef{sorensen2018}{hdme}
 }

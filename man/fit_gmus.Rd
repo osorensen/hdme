@@ -50,5 +50,6 @@ plot(gmus2) # Plot the coefficients
 }
 \references{
 \insertRef{rosenbaum2010}{hdme}
+
 \insertRef{sorensen2018}{hdme}
 }

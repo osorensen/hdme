@@ -38,7 +38,7 @@ arma::vec fit_mu_lasso(arma::vec omega, double gamma, arma::mat W,
         beta(j) = denom/numerator;
       }
     }
-    error = norm(beta - betaOld);
+    error = arma::norm(beta - betaOld);
     betaOld = beta;
 
     // Note: Use Rcout << ... if I want a print statement about convergence here.

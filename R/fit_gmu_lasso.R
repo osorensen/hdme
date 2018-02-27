@@ -10,44 +10,73 @@
 #'   speed up coordinate descent algorithm.
 #'
 #' @return Coefficient vector.
-#' @export
 #'
 #' @references \insertRef{rosenbaum2010}{hdme}
+#'
 #' \insertRef{sorensen2018}{hdme}
 #'
-fit_gmu_lasso <- function(W, y, lambda, delta, family = "binomial",
-                          active_set = FALSE){
+#' @examples
+#' n <- 200
+#' p <- 500
+#' s <- 10
+#' beta <- c(rep(1,s),rep(0,p-s))
+#' sdU <- 0.2
+#'
+#' X <- matrix(rnorm(n*p),nrow = n,ncol = p)
+#' W <- X + sdU * matrix(rnorm(n * p), nrow = n, ncol = p)
+#'
+#' y <- rbinom(n, 1, (1 + exp(-X%*%beta))**(-1))
+#' bNew <- fit_gmu_lasso(W, y)
+#'
+#'
+#' @import glmnet
+fit_gmu_lasso <- function(W, y, lambda = NULL, delta = NULL,
+                          family = "binomial", active_set = FALSE){
 
   if(family == "binomial") {
+    mu <- logit
     dmu <- dlogit
   } else if(family == "poisson") {
+    mu <- pois
     dmu <- dpois
   } else {
-    stop("Currently only 'binmial' and 'possion' are supported arguments for family.")
+    stop("Currently only 'binomial' and 'possion' are supported arguments for family.")
   }
 
+  # Standardize W
+  W <- scale(W)
+  scales <- attr(W, "scaled:scale")
+  # Add intercept in first column
+  W <- cbind(rep(1,n), W)
+
+  # Run the lasso with cross validation to find a value for lambda
+  if(is.null(lambda)) lambda <- cv.glmnet(W, y, family = family)$lambda.min
+  if(is.null(delta)) delta <- seq(from = 0, to = 0.3, by = 0.02)
 
 
-  # We assume the first column in W takes the intercept
 
   n <- dim(W)[1]
   p <- dim(W)[2]
-  bOld <- rnorm(p)/p
-  bNew <- rnorm(p)/p
+  bOld <- rnorm(p)
+  bNew <- rnorm(p)
   IRLSeps <- 1e-7
   maxit <- 100
   count <- 1
   Diff1 <- 1
   Diff2 <- 1
 
-  while(Diff1 > IRLSeps & Diff2 > IRLSeps & count < maxit){
+  bhatGMUL <- matrix(nrow=p, ncol=length(delta))
+
+  for(i in seq_along(delta)) {
+    d <- delta[i]
+    while(Diff1 > IRLSeps & Diff2 > IRLSeps & count < maxit){
       bOlder <- bOld
       bOld <- bNew
-      V <- dmu(W%*%bOld)
-      z <- W%*%bOld + (y - mu(W%*%bOld))/dmu(W%*%bOld)
+      V <- dmu(W %*% bOld)
+      z <- W %*% bOld + (y - mu(W %*% bOld)) / dmu(W %*% bOld)
       Wtilde <- c(sqrt(V))*W
       ztilde <- c(sqrt(V))*c(z)
-      gamma <- delta*sqrt(sum(V^2))/2/sqrt(n)
+      gamma <- d*sqrt(sum(V^2))/2/sqrt(n)
       omega <- rep(0,p)
       omega[-1] <- sapply(2:p, function(x) { lambda + gamma * sum(abs(bOld[-x])) })
 
@@ -55,8 +84,11 @@ fit_gmu_lasso <- function(W, y, lambda, delta, family = "binomial",
       count <- count+1
       Diff1 <- sum(abs(bNew - bOld))
       Diff2 <- sum(abs(bNew - bOlder))
-      print(paste("Diff1 = ", Diff1, ", Diff2 = ", Diff2, sep=""))
+      #print(paste("Diff1 = ", Diff1, ", Diff2 = ", Diff2, sep=""))
+    }
+    if(count >= maxit) print(paste("Did not converge"))
+    bhatGMUL[ ,i] <- bNew
   }
-  if(count >= maxit) print(paste("Did not converge"))
-  return(bNew)
+
+
 }

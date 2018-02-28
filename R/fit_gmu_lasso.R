@@ -10,6 +10,7 @@
 #'   speed up coordinate descent algorithm.
 #'
 #' @return Coefficient vector.
+#' @export
 #'
 #' @references \insertRef{rosenbaum2010}{hdme}
 #'
@@ -17,7 +18,7 @@
 #'
 #' @examples
 #' n <- 200
-#' p <- 500
+#' p <- 50
 #' s <- 10
 #' beta <- c(rep(1,s),rep(0,p-s))
 #' sdU <- 0.2
@@ -31,7 +32,7 @@
 #'
 #' @import glmnet
 fit_gmu_lasso <- function(W, y, lambda = NULL, delta = NULL,
-                          family = "binomial", active_set = FALSE){
+                          family = "binomial", active_set = TRUE){
 
   if(family == "binomial") {
     mu <- logit
@@ -51,14 +52,12 @@ fit_gmu_lasso <- function(W, y, lambda = NULL, delta = NULL,
 
   # Run the lasso with cross validation to find a value for lambda
   if(is.null(lambda)) lambda <- cv.glmnet(W, y, family = family)$lambda.min
-  if(is.null(delta)) delta <- seq(from = 0, to = 0.3, by = 0.02)
-
-
+  if(is.null(delta)) delta <- seq(from = 0, to = 0.2, by = 0.05)
 
   n <- dim(W)[1]
   p <- dim(W)[2]
-  bOld <- rnorm(p)
-  bNew <- rnorm(p)
+  bOld <- rnorm(p)/p
+  bNew <- rnorm(p)/p
   IRLSeps <- 1e-7
   maxit <- 100
   count <- 1
@@ -89,6 +88,6 @@ fit_gmu_lasso <- function(W, y, lambda = NULL, delta = NULL,
     if(count >= maxit) print(paste("Did not converge"))
     bhatGMUL[ ,i] <- bNew
   }
-
-
+  ## TODO: Should return a list, including regularization parameters
+  return(bhatGMUL)
 }

@@ -5,7 +5,7 @@
 \title{Generalized Matrix Uncertainty Lasso}
 \usage{
 fit_gmu_lasso(W, y, lambda = NULL, delta = NULL, family = "binomial",
-  active_set = FALSE)
+  active_set = TRUE)
 }
 \arguments{
 \item{W}{Design matrix, measured with error. Must be a numeric matrix.}
@@ -30,7 +30,7 @@ Generalized Matrix Uncertainty Lasso
 }
 \examples{
 n <- 200
-p <- 500
+p <- 50
 s <- 10
 beta <- c(rep(1,s),rep(0,p-s))
 sdU <- 0.2

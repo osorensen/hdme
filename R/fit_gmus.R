@@ -6,8 +6,8 @@
 #' @param lambda Regularization parameter.
 #' @param delta Additional regularization parameter, bounding the measurement
 #'   error.
-#' @param family "gaussian" for linear regression and "binomial" for logistic
-#'   regression.
+#' @param family "gaussian" for linear regression, "binomial" for logistic
+#'   regression or "poisson" for Poisson regression.
 #' @return List object with intercept and coefficients at the values of lambda
 #'   and delta specified, as well as regularization parameters.
 #' @references \insertRef{rosenbaum2010}{hdme}
@@ -31,13 +31,18 @@
 #' # Draw an elbow plot to select delta
 #' plot(gmus1)
 #'
-#' # Now, according to the "elbow rule", choose the final delta where the curve has an "elbow".
-#' # In this case, the elbow is at about delta = 0.08, so we use this to compute the final estimate:
+#' # Now, according to the "elbow rule", choose
+#' # the final delta where the curve has an "elbow".
+#' # In this case, the elbow is at about delta = 0.08,
+#' # so we use this to compute the final estimate:
 #' gmus2 <- fit_gmus(W, y, delta = 0.08)
-#' plot(gmus2) # Plot the coefficients
+#' # Plot the coefficients
+#' plot(gmus2)
 #'
 #' @export
-fit_gmus <- function(W, y, lambda = NULL, delta = NULL, family = c("gaussian", "binomial")) {
+fit_gmus <- function(W, y, lambda = NULL, delta = NULL,
+                     family = c("gaussian", "binomial", "poisson")) {
+
   family <- match.arg(family)
 
   if(is.null(lambda)) lambda <- cv.glmnet(W, y, family = family)$lambda.min
@@ -49,10 +54,12 @@ fit_gmus <- function(W, y, lambda = NULL, delta = NULL, family = c("gaussian", "
   scales <- attr(W, "scaled:scale")
   W <- cbind(rep(1,n), W)
 
-  fit <- switch(family,
-                "gaussian" = sapply(delta, function(delta, W, y, lambda) musalgorithm(W, y, lambda, delta), W, y, lambda),
-                "binomial" = sapply(delta, function(delta, W, y, lambda) musbinomial(W, y, lambda, delta), W, y, lambda))
-
+  if(family == "gaussian") {
+    fit <- sapply(delta, function(delta, W, y, lambda) musalgorithm(W, y, lambda, delta),
+                  W, y, lambda)
+  } else if(family %in% c("binomial", "poisson")) {
+    fit <- sapply(delta, function(delta, W, y, lambda) mus_glm(W, y, lambda, delta), W, y, lambda)
+  }
 
 
   fit <- list(intercept = fit[1, ],

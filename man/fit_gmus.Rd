@@ -5,7 +5,7 @@
 \title{Generalized Matrix Uncertainty Selector}
 \usage{
 fit_gmus(W, y, lambda = NULL, delta = NULL, family = c("gaussian",
-  "binomial"))
+  "binomial", "poisson"))
 }
 \arguments{
 \item{W}{Design matrix, measured with error. Must be a numeric matrix.}
@@ -17,8 +17,8 @@ fit_gmus(W, y, lambda = NULL, delta = NULL, family = c("gaussian",
 \item{delta}{Additional regularization parameter, bounding the measurement
 error.}
 
-\item{family}{"gaussian" for linear regression and "binomial" for logistic
-regression.}
+\item{family}{"gaussian" for linear regression, "binomial" for logistic
+regression or "poisson" for Poisson regression.}
 }
 \value{
 List object with intercept and coefficients at the values of lambda
@@ -45,10 +45,13 @@ gmus1 <- fit_gmus(W, y)
 # Draw an elbow plot to select delta
 plot(gmus1)
 
-# Now, according to the "elbow rule", choose the final delta where the curve has an "elbow".
-# In this case, the elbow is at about delta = 0.08, so we use this to compute the final estimate:
+# Now, according to the "elbow rule", choose
+# the final delta where the curve has an "elbow".
+# In this case, the elbow is at about delta = 0.08,
+# so we use this to compute the final estimate:
 gmus2 <- fit_gmus(W, y, delta = 0.08)
-plot(gmus2) # Plot the coefficients
+# Plot the coefficients
+plot(gmus2)
 
 }
 \references{

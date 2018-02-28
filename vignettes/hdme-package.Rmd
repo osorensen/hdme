@@ -492,6 +492,9 @@ plot(gmus_fit)
 ```
 
 
+### Poisson Regression
+The Generalized Matrix Uncertainty Selector is also implemented for Poisson regression. Use the argument `family = "poisson"` to `fit_gmus`.
+
 # Generalized Matrix Uncertainty Lasso
 A "lasso equivalent" of the Generalized Matrix Uncertainty Selector can also be defined (@rosenbaum2010, @sorensen2018). We refer to @sorensen2018 for the details of this algorithm. 
 

@@ -15,7 +15,7 @@ fit_corrected_lasso(W, y, sigmaUU, family = c("gaussian", "binomial",
 \item{sigmaUU}{Covariance matrix of the measurement error.}
 
 \item{family}{Response type. Character string of length 1. Possible values are
-"gaussian" and "binomial".}
+"gaussian", "binomial" and "poisson".}
 
 \item{radii}{Vector containing the set of radii of the l1-ball onto which the
 solution is projected. If not provided, the algorithm will select an evenly

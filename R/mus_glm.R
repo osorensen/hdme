@@ -5,12 +5,21 @@
 #' @param y Vector of the binomial response value.
 #' @param lambda Regularization parameter due to model error.
 #' @param delta Regularization parameter due to measurement error.
+#' @param family "binomial" or "poisson"
 #' @return Intercept and coefficients at the values of lambda and delta specified.
 #'  @import stats
-musbinomial <- function(W, y, lambda, delta){
+mus_glm <- function(W, y, lambda, delta, family = c("binomial", "poisson")){
 
-  mu <- logit
-  dmu <- dlogit
+  family <- match.arg(family)
+
+  if(family == "binomial") {
+    mu <- logit
+    dmu <- dlogit
+  } else if(family == "poisson") {
+    mu <- pois
+    dmu <- dpois
+  }
+
 
   n <- dim(W)[1]
   p <- dim(W)[2]

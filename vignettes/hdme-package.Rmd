@@ -492,9 +492,31 @@ plot(gmus_fit)
 ```
 
 
-# Matrix Uncertainty Lasso
-A "lasso equivalent" of the Generalized Matrix Uncertainty Selector can also be defined (@rosenbaum2010, @sorensen2018). This algorithm will be added to the `hdme` package.
+# Generalized Matrix Uncertainty Lasso
+A "lasso equivalent" of the Generalized Matrix Uncertainty Selector can also be defined (@rosenbaum2010, @sorensen2018). We refer to @sorensen2018 for the details of this algorithm. 
 
+This GMU Lasso is implemented in `hdme`, and can be called with the function `fit_gmu_lasso`. The snippet below shows its use. The underlying coordinate descent algorithm is implemented in `C++` using the `RcppArmadillo` package (@eddelbuettel2014). Both logistic and Poisson regression are supported, with arguments `family = "binomial"` and `family = "poisson"`, respectively.
+
+```{r}
+set.seed(323)
+n <- 100
+p <- 50
+c(X, W, y, beta, sigmaUU) %<-% create_example_data(n, p, sdU = 0.2, family = "binomial")
+gmu_lasso_fit <- fit_gmu_lasso(W, y, family = "binomial")
+```
+
+The returned object is a list with class `gmu_lasso`.
+
+```{r}
+class(gmu_lasso_fit)
+str(gmu_lasso_fit)
+```
+
+The plotting function gives an elbow plot, which can be used to select the regularization parameter `delta`.
+
+```{r}
+plot(gmu_lasso_fit)
+```
 
 
 # References

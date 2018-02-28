@@ -1,9 +1,19 @@
 #' @import stats
 #' @import glmnet
-corrected_lasso_binomial <- function(W, y, sigmaUU, radii, no_radii, alpha, maxits, standardize, tol = 1e-10, maxIR = 50){
+corrected_lasso_glm <- function(W, y, sigmaUU, family = c("binomial", "poisson"),
+                                radii, no_radii, alpha, maxits, standardize, tol = 1e-10, maxIR = 50){
+  family <- match.arg(family)
+
+  if(family == "binomial") {
+    mean_function <- logit
+  } else if(family == "poisson") {
+    mean_function <- pois
+  }
+
+
   if( is.null(radii) ){
     # First run the naive Lasso
-    lassoFit <- cv.glmnet(W, y, family = "binomial")
+    lassoFit <- cv.glmnet(W, y, family = family)
     betaNaive <- coef.cv.glmnet(lassoFit, s = "lambda.min")
 
     no_radii <- 20
@@ -32,9 +42,9 @@ corrected_lasso_binomial <- function(W, y, sigmaUU, radii, no_radii, alpha, maxi
     #cat("Step", r, "of outer iteration loop. Radius =", radii[r], "\n")
 
     while(s <= maxIR & diff > tol){
-      tmp1vec <- sum(y - logit(muOld + W %*% betaOld + (y - 1/2) * as.vector(t(betaOld) %*% sigmaUU %*% betaOld )))
+      tmp1vec <- sum(y - mean_function(muOld + W %*% betaOld + (y - 1/2) * as.vector(t(betaOld) %*% sigmaUU %*% betaOld )))
 
-      part1 <- y - logit(muOld + W %*% betaOld + (y - 1/2) * as.vector(t(betaOld) %*% sigmaUU %*% betaOld) )
+      part1 <- y - mean_function(muOld + W %*% betaOld + (y - 1/2) * as.vector(t(betaOld) %*% sigmaUU %*% betaOld) )
       part2 <- W + y %*% (t(betaOld) %*% sigmaUU)
       tmp2vec <- as.vector(t(part1) %*% (part2))
       mu <- muOld + alpha * tmp1vec

@@ -340,7 +340,7 @@ plot(corrected_fit, type = "path")
 ```
 
 ### Poison Regression
-Poisson regression will be added in the future.
+Poisson regression is also available, by using the argument `family = "poisson"` to `fit_corrected_lasso`.
 
 ## Model Tuning
 

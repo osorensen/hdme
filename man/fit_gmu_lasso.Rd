@@ -4,7 +4,8 @@
 \alias{fit_gmu_lasso}
 \title{Generalized Matrix Uncertainty Lasso}
 \usage{
-fit_gmu_lasso(W, y, lambda, delta, family = "binomial", active_set = FALSE)
+fit_gmu_lasso(W, y, lambda = NULL, delta = NULL, family = "binomial",
+  active_set = TRUE)
 }
 \arguments{
 \item{W}{Design matrix, measured with error. Must be a numeric matrix.}
@@ -26,6 +27,21 @@ Coefficient vector.
 }
 \description{
 Generalized Matrix Uncertainty Lasso
+}
+\examples{
+n <- 200
+p <- 50
+s <- 10
+beta <- c(rep(1,s),rep(0,p-s))
+sdU <- 0.2
+
+X <- matrix(rnorm(n*p),nrow = n,ncol = p)
+W <- X + sdU * matrix(rnorm(n * p), nrow = n, ncol = p)
+
+y <- rbinom(n, 1, (1 + exp(-X\%*\%beta))**(-1))
+bNew <- fit_gmu_lasso(W, y)
+
+
 }
 \references{
 \insertRef{rosenbaum2010}{hdme}

@@ -11,8 +11,7 @@
 double softThres(double a, double b);
 
 // [[Rcpp::export]]
-arma::vec fit_mu_lasso(arma::vec omega, double gamma, arma::mat W,
-                  arma::vec z, arma::vec betaInit, bool activeSet){
+arma::vec fit_mu_lasso(arma::vec omega, double gamma, arma::mat W, arma::vec z, arma::vec betaInit, bool activeSet){
   // We assume the first column of W is ones, which represent the intercept
   arma::vec beta = betaInit;
   arma::vec betaOld = betaInit;
@@ -25,34 +24,43 @@ arma::vec fit_mu_lasso(arma::vec omega, double gamma, arma::mat W,
   int i=0, j;
   while((i < maxit) & (error > epsilon)){
     j = 0;
-    denom = 1.0/n*sum(W.col(j) % (z - W*beta + W.col(j)*beta(j)));
-    numerator = 1.0/n*as_scalar(sum(pow(W.col(j),2)));
+    denom = 1.0/n*arma::sum(W.col(j) % (z - W*beta + W.col(j)*beta(j)));
+    numerator = 1.0/n*arma::as_scalar(arma::sum(arma::pow(W.col(j),2)));
     beta(j) = denom/numerator;
+
 
     for(j=1; j<p; ++j){
       if(!activeSet || (beta(j) != 0) || (i % 30 == 0)){
-        a = 1.0/n*sum(W.col(j) % (z - W*beta + W.col(j)*beta(j)));
+        a = 1.0/n*arma::sum(W.col(j) % (z - W*beta + W.col(j)*beta(j)));
         b = omega(j);
+
         denom = softThres(a,b);
-        numerator = 1.0/n*as_scalar(sum(pow(W.col(j),2))) + 2*gamma;
+
+        numerator = 1.0/n*arma::as_scalar(sum(pow(W.col(j),2))) + 2*gamma;
         beta(j) = denom/numerator;
       }
     }
-    error = norm(beta - betaOld);
-    betaOld = beta;
+    // Check if user has pressed STOP or CTRL+C
+    Rcpp::checkUserInterrupt();
 
-    // Note: Use Rcout << ... if I want a print statement about convergence here.
+    error = arma::norm(beta - betaOld);
+    betaOld = beta;
     ++i;
+  }
+  if(i < maxit){
+    Rcpp::Rcout << "Coordinate descent converged after " << i << " iterations." << std::endl;
+  } else {
+    Rcpp::Rcout << "Coordinate descent did not converge." << std::endl;
   }
 
   return beta;
 }
 
-// Soft thresholding function
+
 double softThres(double a, double b){
-  if( (a > 0) & (b < abs(a)) ){
+  if( (a > 0) & (b < std::abs(a)) ){
     return a-b;
-  } else if( (a < 0) & (b < abs(a)) ){
+  } else if( (a < 0) & (b < std::abs(a)) ){
     return a+b;
   } else {
     return 0;

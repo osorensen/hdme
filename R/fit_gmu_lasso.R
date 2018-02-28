@@ -10,6 +10,7 @@
 #'   speed up coordinate descent algorithm.
 #'
 #' @return Coefficient vector.
+#' @export
 #'
 #' @references \insertRef{rosenbaum2010}{hdme}
 #'
@@ -26,7 +27,7 @@
 #' W <- X + sdU * matrix(rnorm(n * p), nrow = n, ncol = p)
 #'
 #' y <- rbinom(n, 1, (1 + exp(-X%*%beta))**(-1))
-#' bNew <- fit_gmu_lasso(W, y)
+#' gmu_lasso <- fit_gmu_lasso(W, y)
 #'
 #'
 #' @import glmnet
@@ -88,5 +89,15 @@ fit_gmu_lasso <- function(W, y, lambda = NULL, delta = NULL,
     bhatGMUL[ ,i] <- bNew
   }
   ## TODO: Should return a list, including regularization parameters
-  return(bhatGMUL)
+
+  fit <- list(intercept = bhatGMUL[1, ],
+              beta = bhatGMUL[-1, ] / scales,
+              family = family,
+              delta = delta,
+              lambda = lambda,
+              num_non_zero = colSums(bhatGMUL[-1, , drop = FALSE] > 0)
+  )
+
+  class(fit) <- "gmu_lasso"
+  return(fit)
 }

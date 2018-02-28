@@ -39,7 +39,7 @@ X <- matrix(rnorm(n*p),nrow = n,ncol = p)
 W <- X + sdU * matrix(rnorm(n * p), nrow = n, ncol = p)
 
 y <- rbinom(n, 1, (1 + exp(-X\%*\%beta))**(-1))
-bNew <- fit_gmu_lasso(W, y)
+gmu_lasso <- fit_gmu_lasso(W, y)
 
 
 }

@@ -4,12 +4,15 @@
 #' @param W Design matrix, measured with error. Must be a numeric matrix.
 #' @param y Vector of responses.
 #' @param lambda Regularization parameter.
-#' @param delta Additional regularization parameter, bounding the measurement error.
-#' @param family "gaussian" for linear regression and "binomial" for logistic regression.
-#' @return Intercept and coefficients at the values of lambda and delta specified.
+#' @param delta Additional regularization parameter, bounding the measurement
+#'   error.
+#' @param family "gaussian" for linear regression and "binomial" for logistic
+#'   regression.
+#' @return List object with intercept and coefficients at the values of lambda
+#'   and delta specified, as well as regularization parameters.
 #' @references \insertRef{rosenbaum2010}{hdme}
 #'
-#' \insertRef{sorensen2018}{hdme}
+#'   \insertRef{sorensen2018}{hdme}
 #' @examples
 #' # Example with linear regression
 #' set.seed(1)

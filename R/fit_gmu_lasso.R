@@ -2,32 +2,45 @@
 #'
 #' @param W Design matrix, measured with error. Must be a numeric matrix.
 #' @param y Vector of responses.
-#' @param lambda Regularization parameter.
+#' @param lambda Regularization parameter. If not set, lambda.min from
+#'   glmnet::cv.glmnet is used.
 #' @param delta Additional regularization parameter, bounding the measurement
 #'   error.
-#' @param family Character string. Currently "binomial" and "poisson" are supported.
+#' @param family Character string. Currently "binomial" and "poisson" are
+#'   supported.
 #' @param active_set Logical. Whether or not to use an active set strategy to
 #'   speed up coordinate descent algorithm.
 #'
-#' @return Coefficient vector.
+#' @return List object with intercept and coefficients at the values of lambda
+#'   and delta specified, as well as regularization parameters.
 #' @export
 #'
 #' @references \insertRef{rosenbaum2010}{hdme}
 #'
-#' \insertRef{sorensen2018}{hdme}
+#'   \insertRef{sorensen2018}{hdme}
 #'
 #' @examples
+#' set.seed(1)
+#' # Number of samples
 #' n <- 200
-#' p <- 50
+#' # Number of covariates
+#' p <- 100
+#' # Number of nonzero features
 #' s <- 10
+#' # True coefficient vector
 #' beta <- c(rep(1,s),rep(0,p-s))
+#' # Standard deviation of measurement error
 #' sdU <- 0.2
-#'
+#' # True data, not observed
 #' X <- matrix(rnorm(n*p),nrow = n,ncol = p)
+#' # Measured data, with error
 #' W <- X + sdU * matrix(rnorm(n * p), nrow = n, ncol = p)
-#'
+#' # Binomial response
 #' y <- rbinom(n, 1, (1 + exp(-X%*%beta))**(-1))
-#' gmu_lasso <- fit_gmu_lasso(W, y)
+#' # Run the GMU Lasso
+#' gmu_lasso <- fit_gmu_lasso(W, y, delta = NULL)
+#' # Get an elbow plot, in order to choose delta.
+#' plot(gmu_lasso)
 #'
 #'
 #' @import glmnet
@@ -60,14 +73,16 @@ fit_gmu_lasso <- function(W, y, lambda = NULL, delta = NULL,
   bNew <- rnorm(p)/p
   IRLSeps <- 1e-7
   maxit <- 100
-  count <- 1
-  Diff1 <- 1
-  Diff2 <- 1
+
 
   bhatGMUL <- matrix(nrow=p, ncol=length(delta))
 
   for(i in seq_along(delta)) {
     d <- delta[i]
+
+    count <- 1
+    Diff1 <- 1
+    Diff2 <- 1
     while(Diff1 > IRLSeps & Diff2 > IRLSeps & count < maxit){
       bOlder <- bOld
       bOld <- bNew

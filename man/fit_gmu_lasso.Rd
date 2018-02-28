@@ -12,39 +12,52 @@ fit_gmu_lasso(W, y, lambda = NULL, delta = NULL, family = "binomial",
 
 \item{y}{Vector of responses.}
 
-\item{lambda}{Regularization parameter.}
+\item{lambda}{Regularization parameter. If not set, lambda.min from
+glmnet::cv.glmnet is used.}
 
 \item{delta}{Additional regularization parameter, bounding the measurement
 error.}
 
-\item{family}{Character string. Currently "binomial" and "poisson" are supported.}
+\item{family}{Character string. Currently "binomial" and "poisson" are
+supported.}
 
 \item{active_set}{Logical. Whether or not to use an active set strategy to
 speed up coordinate descent algorithm.}
 }
 \value{
-Coefficient vector.
+List object with intercept and coefficients at the values of lambda
+  and delta specified, as well as regularization parameters.
 }
 \description{
 Generalized Matrix Uncertainty Lasso
 }
 \examples{
+set.seed(1)
+# Number of samples
 n <- 200
-p <- 50
+# Number of covariates
+p <- 100
+# Number of nonzero features
 s <- 10
+# True coefficient vector
 beta <- c(rep(1,s),rep(0,p-s))
+# Standard deviation of measurement error
 sdU <- 0.2
-
+# True data, not observed
 X <- matrix(rnorm(n*p),nrow = n,ncol = p)
+# Measured data, with error
 W <- X + sdU * matrix(rnorm(n * p), nrow = n, ncol = p)
-
+# Binomial response
 y <- rbinom(n, 1, (1 + exp(-X\%*\%beta))**(-1))
-gmu_lasso <- fit_gmu_lasso(W, y)
+# Run the GMU Lasso
+gmu_lasso <- fit_gmu_lasso(W, y, delta = NULL)
+# Get an elbow plot, in order to choose delta.
+plot(gmu_lasso)
 
 
 }
 \references{
 \insertRef{rosenbaum2010}{hdme}
 
-\insertRef{sorensen2018}{hdme}
+  \insertRef{sorensen2018}{hdme}
 }

@@ -14,12 +14,15 @@ fit_gmus(W, y, lambda = NULL, delta = NULL, family = c("gaussian",
 
 \item{lambda}{Regularization parameter.}
 
-\item{delta}{Additional regularization parameter, bounding the measurement error.}
+\item{delta}{Additional regularization parameter, bounding the measurement
+error.}
 
-\item{family}{"gaussian" for linear regression and "binomial" for logistic regression.}
+\item{family}{"gaussian" for linear regression and "binomial" for logistic
+regression.}
 }
 \value{
-Intercept and coefficients at the values of lambda and delta specified.
+List object with intercept and coefficients at the values of lambda
+  and delta specified, as well as regularization parameters.
 }
 \description{
 Generalized Matrix Uncertainty Selector
@@ -51,5 +54,5 @@ plot(gmus2) # Plot the coefficients
 \references{
 \insertRef{rosenbaum2010}{hdme}
 
-\insertRef{sorensen2018}{hdme}
+  \insertRef{sorensen2018}{hdme}
 }

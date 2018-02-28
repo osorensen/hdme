@@ -48,7 +48,8 @@ arma::vec fit_mu_lasso(arma::vec omega, double gamma, arma::mat W, arma::vec z, 
     ++i;
   }
   if(i < maxit){
-    Rcpp::Rcout << "Coordinate descent converged after " << i << " iterations." << std::endl;
+    // Commenting out because it gets annoying.
+    //Rcpp::Rcout << "Coordinate descent converged after " << i << " iterations." << std::endl;
   } else {
     Rcpp::Rcout << "Coordinate descent did not converge." << std::endl;
   }

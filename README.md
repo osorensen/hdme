@@ -1,22 +1,43 @@
-# hdme
-The R-package `hdme` contains penalized regression methods for High-Dimensional Measurement Error problems (errors-in-variables).
 
-The methods implemented in the package include
-* Corrected Lasso for Linear Models [Loh and Wainwright 2012](https://projecteuclid.org/euclid.aos/1346850068)
-* Corrected Lasso for Generalized Linear Models [Sorensen, Frigessi, and Thoresen 2015](http://www3.stat.sinica.edu.tw/statistica/j25n2/j25n220/j25n220.html)
-* Matrix Uncertainty Selector for Linear Models [Rosenbaum and Tsybakov 2010](https://projecteuclid.org/euclid.aos/1278861455)
-* Matrix Uncertainty Selector for Generalized Linear Models [Sorensen, Hellton, Frigessi, and Thoresen 2016](http://www.tandfonline.com/doi/full/10.1080/10618600.2018.1425626)
-* Matrix Uncertainty Lasso for Generalized Linear Models [Sorensen, Hellton, Frigessi, and Thoresen 2016](https://arxiv.org/abs/1407.1070)
-* Generalized Dantzig Selector [James and Radchenko 2009](http://biomet.oxfordjournals.org/content/96/2/323.full.pdf?keytype=ref&ijkey=fqYKS2eOTNpmWmd)
+<!-- README.md is generated from README.Rmd. Please edit that file -->
+hdme
+====
 
+The goal of hdme is to provide penalized regression methods for High-Dimensional Measurement Error problems (errors-in-variables).
 
-To install this package in R:
-```r
- # Run this line if you do not have the devtools package installed already
- install.packages("devtools") 
- # Install the hdme package
- devtools::install_github("osorensen/hdme")
- # Load the hdme package
- library(hdme) 
+Installation
+------------
+
+You can install hdme from github with:
+
+``` r
+# install.packages("devtools")
+devtools::install_github("osorensen/hdme")
 ```
 
+Methods
+-------
+
+hdme provides implementations of the following algorithms:
+
+The methods implemented in the package include
+
+-   Corrected Lasso for Linear Models (Loh and Wainwright (2012))
+-   Corrected Lasso for Generalized Linear Models (Sorensen, Frigessi, and Thoresen (2015))
+-   Matrix Uncertainty Selector for Linear Models (Rosenbaum and Tsybakov (2010))
+-   Matrix Uncertainty Selector for Generalized Linear Models (Sorensen et al. (2018))
+-   Matrix Uncertainty Lasso for Generalized Linear Models (Sorensen et al. (2018))
+-   Generalized Dantzig Selector (James and Radchenko (2009))
+
+References
+----------
+
+James, Gareth M., and Peter Radchenko. 2009. “A Generalized Dantzig Selector with Shrinkage Tuning.” *Biometrika* 96 (2): 323–37.
+
+Loh, Po-Ling, and Martin J. Wainwright. 2012. “High-Dimensional Regression with Noisy and Missing Data: Provable Guarantees with Nonconvexity.” *Ann. Statist.* 40 (3). The Institute of Mathematical Statistics: 1637–64.
+
+Rosenbaum, Mathieu, and Alexandre B. Tsybakov. 2010. “Sparse Recovery Under Matrix Uncertainty.” *Ann. Statist.* 38 (5): 2620–51.
+
+Sorensen, Oystein, Arnoldo Frigessi, and Magne Thoresen. 2015. “Measurement Error in Lasso: Impact and Likelihood Bias Correction.” *Statistica Sinica* 25 (2). Institute of Statistical Science, Academia Sinica: 809–29.
+
+Sorensen, Oystein, Kristoffer Herland Hellton, Arnoldo Frigessi, and Magne Thoresen. 2018. “Covariate Selection in High-Dimensional Generalized Linear Models with Measurement Error.” *Journal of Computational and Graphical Statistics*. Taylor & Francis.

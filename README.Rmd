@@ -1,0 +1,42 @@
+---
+output: github_document
+bibliography: ./inst/REFERENCES.bib
+---
+
+<!-- README.md is generated from README.Rmd. Please edit that file -->
+
+```{r, echo = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>",
+  fig.path = "README-"
+)
+```
+
+# hdme
+
+The goal of hdme is to provide penalized regression methods for High-Dimensional Measurement Error problems (errors-in-variables).
+
+## Installation
+
+You can install hdme from github with:
+
+```{r gh-installation, eval = FALSE}
+# install.packages("devtools")
+devtools::install_github("osorensen/hdme")
+```
+
+## Methods
+hdme provides implementations of the following algorithms:
+
+The methods implemented in the package include
+
+* Corrected Lasso for Linear Models (@loh2012)
+* Corrected Lasso for Generalized Linear Models (@sorensen2015)
+* Matrix Uncertainty Selector for Linear Models (@rosenbaum2010)
+* Matrix Uncertainty Selector for Generalized Linear Models (@sorensen2018)
+* Matrix Uncertainty Lasso for Generalized Linear Models (@sorensen2018)
+* Generalized Dantzig Selector (@james2009)
+
+
+## References

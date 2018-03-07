@@ -1,5 +1,6 @@
 ## Test environments
 * local Windows 10 install, R 3.4.3
+* local Ubuntu 16.04 LTS install, R 3.4.3
 * win-builder (devel and release)
 
 ## R CMD check results

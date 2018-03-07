@@ -16,7 +16,7 @@ LazyData: TRUE
 RoxygenNote: 6.0.1
 Imports:
   glmnet (>= 2.0-13), 
-  Rglpk (>= 0.6-3), 
+  Rglpk (>= 0.6-1), 
   ggplot2 (>= 2.2.1),
   Rdpack, 
     Rcpp (>= 0.12.15)

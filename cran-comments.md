@@ -6,6 +6,8 @@
 ## R CMD check results
 There were no ERRORs or WARNINGs.
 
+Local Windows 10 and local Ubuntu 16.04 LTS returned no NOTEs.
+
 There was 1 NOTE from win-builder:
 
 * checking CRAN incoming feasibility ... NOTE

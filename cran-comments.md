@@ -1,3 +1,8 @@
+## Resubmission
+This is a resubmission. In this version I have:
+
+* Added references for the methods in the 'Description' field of the DESCRIPTION.
+
 ## Test environments
 * local Windows 10 install, R 3.4.3
 * local Ubuntu 16.04 LTS install, R 3.4.3

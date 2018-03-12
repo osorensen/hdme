@@ -19,7 +19,13 @@ The goal of hdme is to provide penalized regression methods for High-Dimensional
 
 ## Installation
 
-You can install hdme from github with:
+Install `hdme` from CRAN using.
+```{r}
+install.packages("hdme")
+```
+
+
+You can install the latest development version from github with:
 
 ```{r gh-installation, eval = FALSE}
 # install.packages("devtools")

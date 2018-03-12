@@ -20,7 +20,7 @@ The goal of hdme is to provide penalized regression methods for High-Dimensional
 ## Installation
 
 Install `hdme` from CRAN using.
-```{r}
+```{r, eval=FALSE}
 install.packages("hdme")
 ```
 

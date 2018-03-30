@@ -1,7 +1,7 @@
 ## Resubmission
 This is a resubmission. In this version I have:
 
-* Removed tidyverse from the Suggests field of DESCRIPTION, and instead added explicitly the packages dplyr and tidyr.
+* Removed tidyverse from the Suggests field of DESCRIPTION, and instead added the packages dplyr and tidyr explicitly.
 * Replaced library(tidyverse) in the vignette with library(dplyr), library(tidyr), and library(ggplot2).
 
 ## Test environments

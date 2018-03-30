@@ -44,6 +44,8 @@ Then install `Rglpk` using
 install.packages("Rglpk")
 ```
 
+Then install `hdme` as described above.
+
 ## Methods
 hdme provides implementations of the following algorithms:
 

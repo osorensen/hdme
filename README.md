@@ -21,6 +21,14 @@ You can install the latest development version from github with:
 devtools::install_github("osorensen/hdme")
 ```
 
+### Note when installing on macOS
+
+`hdme` depends on `Rglpk`. In order to install `Rglpk` on macOS, you may need to first install `GLPK`
+
+``` bash
+brew 
+```
+
 Methods
 -------
 

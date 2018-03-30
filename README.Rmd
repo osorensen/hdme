@@ -24,12 +24,22 @@ Install `hdme` from CRAN using.
 install.packages("hdme")
 ```
 
-
 You can install the latest development version from github with:
 
 ```{r gh-installation, eval = FALSE}
 # install.packages("devtools")
 devtools::install_github("osorensen/hdme")
+```
+
+### Note when installing on macOS
+`hdme` depends on `Rglpk`. In order to install `Rglpk` on macOS, you may need to first install `GLPK` with the following command on the command line.
+```{r, engine='bash', eval=FALSE}
+$ brew install glpk
+```
+
+Then install `Rglpk` using
+```{r, eval=FALSE}
+install.packages("Rglpk")
 ```
 
 ## Methods

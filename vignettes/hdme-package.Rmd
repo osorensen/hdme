@@ -136,7 +136,7 @@ Next we run the lasso with cross-validation on the true covariates and on the no
 
 ```{r, message=FALSE}
 library(glmnet)
-library(tidyverse)
+library(dplyr)
 # Lasso with cross-validation on data without measurement error
 fit1 <- cv.glmnet(X, y)
 # Lasso with cross-validation on data with measurement error
@@ -153,6 +153,7 @@ lassoEstimates <- tibble(
 By plotting all the estimated regression coefficients, we see that when the data are subject to measurement error, the number of false postives may increase. Note that this is not necessarily the case for all choices of parameters.
 
 ```{r}
+library(ggplot2)
 ggplot(lassoEstimates, aes(x = index, y = beta, color = label)) +
   geom_point() +
   xlab("p") +
@@ -163,6 +164,7 @@ ggplot(lassoEstimates, aes(x = index, y = beta, color = label)) +
 We can also focus on the `r sum(beta != 0)` parameters which are truly nonzero. In this case, we see that in the absence of measurement error, the lasso estimates values quite close to truth. With measurement error, on the other hand, the attenuation is quite clear: the estimates are biased toward zero.
 
 ```{r}
+library(tidyr) 
 estimatesOfNonzero <- lassoEstimates %>% 
   spread(key = label, value = beta) %>% 
   filter(`True values` != 0) %>% 

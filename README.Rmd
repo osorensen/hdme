@@ -32,7 +32,12 @@ devtools::install_github("osorensen/hdme")
 ```
 
 ### Note when installing on macOS
-`hdme` depends on `Rglpk`. In order to install `Rglpk` on macOS, you may need to first install `GLPK` by issuing `brew install glpk` on the command line.
+`hdme` depends on `Rglpk`. In order to install `Rglpk` on macOS, you may need to first install `GLPK` by issuing on the command line.
+
+```{r, engine='bash', eval=FALSE}
+brew install glpk
+```
+
 
 Then install `Rglpk` using
 ```{r, eval=FALSE}

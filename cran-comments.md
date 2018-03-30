@@ -1,28 +1,25 @@
 ## Resubmission
 This is a resubmission. In this version I have:
 
-* Added references for the methods in the 'Description' field of the DESCRIPTION.
+* Removed tidyverse from the Suggests field of DESCRIPTION, and instead added explicitly the packages dplyr and tidyr.
+* Replaced library(tidyverse) in the vignette with library(dplyr), library(tidyr), and library(ggplot2).
 
 ## Test environments
-* local Windows 10 install, R 3.4.3
-* local Ubuntu 16.04 LTS install, R 3.4.3
+* local OS X install, R 3.4.4
 * win-builder (devel and release)
 
 ## R CMD check results
 There were no ERRORs or WARNINGs.
 
-Local Windows 10 and local Ubuntu 16.04 LTS returned no NOTEs.
-
-There was 1 NOTE from win-builder:
+There was 1 NOTE from win-builder (release):
 
 * checking CRAN incoming feasibility ... NOTE
-Maintainer: 'Oystein Sorensen <oystein.sorensen.1985@gmail.com>'
-
-New submission
 
 Possibly mis-spelled words in DESCRIPTION:
-  Dantzig (13:17)
-  
+  Dantzig (13:50)
+  Sorensen (11:26, 14:30)
+  al (11:38, 14:42)
+  et (11:35, 14:39)
 
 ## Downstream dependencies
 There are currently no downstream dependencies of this package.

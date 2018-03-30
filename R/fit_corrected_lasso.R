@@ -17,7 +17,7 @@
 #'  parameters to fit the corrected lasso for.
 #'@param alpha Step size of the projected gradient descent algorithm. Default is
 #'  0.1.
-#'@param maxits Maxium number of iterations of the project gradient descent
+#'@param maxits Maximum number of iterations of the project gradient descent
 #'  algorithm for each radius. Default is 5000.
 #'@return Returns a list containing a matrix whose columns represent the
 #'  corrected beta estimates at each radius, as well as the vector of radii

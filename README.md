@@ -23,17 +23,27 @@ devtools::install_github("osorensen/hdme")
 
 ### Note when installing on macOS
 
-`hdme` depends on `Rglpk`. In order to install `Rglpk` on macOS, you may need to first install `GLPK` by issuing on the command line.
+The package `Rglpk` is suggested when installing `hdme`. In order to install `Rglpk` on macOS, you may need to first install `GLPK` by issuing the following statement on the command line:
 
 ``` bash
 brew install glpk
 ```
 
-Then install `Rglpk` using
+Then install `Rglpk`:
 
 ``` r
 install.packages("Rglpk")
 ```
+
+If you are not able to install `Rglpk`, then please install the suggested package `lpSolveAPI` instead, using the command
+
+``` r
+install.packages("lpSolveAPI")
+```
+
+The functions in `hdme` that use `Rglpk`, will switch to `lpSolveAPI` automatically if the former is not available.
+
+When either `hdme` or `lpSolveAPI` is installed, then install `hdme` using the commands described above.
 
 Methods
 -------

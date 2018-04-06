@@ -38,10 +38,33 @@ musalgorithm <- function(W, y, lambda, delta){
   dir <- rep("<=",4*p)
   bounds <- list(lower=list(ind=1:(2*p), val=rep(-Inf,2*p)),
                  upper=list(ind=1:(2*p), val=rep(Inf,2*p)))
-  bhat <- Rglpk::Rglpk_solve_LP(obj, mat, dir, rhs, bounds=bounds)$solution
 
-  # value <- list(intercept = bhat[p + 1],
-  #               beta = bhat[(p + 2) : (2*p)])
+
+  if (requireNamespace("Rglpk", quietly = TRUE)) {
+    bhat <- Rglpk::Rglpk_solve_LP(obj = obj, mat = mat, dir = dir,
+                                  rhs = rhs, bounds = bounds)$solution
+  } else if (requireNamespace("lpSolveAPI", quietly = TRUE)) {
+    #message("Package Rglpk not found. Using package lpSolveAPI instead.")
+    # If Rglpk is not installed, but lpSolveAPI is, then use that instead
+    lpmodel <- lpSolveAPI::make.lp(nrow = nrow(mat), ncol = ncol(mat))
+
+    for(col in seq(1, ncol(mat), by = 1)) {
+      lpSolveAPI::set.column(lpmodel, col, mat[, col])
+    }
+
+    lpSolveAPI::set.rhs(lpmodel, rhs)
+    lpSolveAPI::set.bounds(lpmodel, lower = bounds$lower$val, upper = bounds$upper$val)
+    lpSolveAPI::set.objfn(lpmodel, obj)
+    lpSolveAPI::set.constr.type(lpmodel, dir)
+
+    status <- lpSolveAPI::solve.lpExtPtr(lpmodel)
+
+    bhat <- lpSolveAPI::get.variables(lpmodel)
+    #lpSolveAPI::delete.lp(lpmodel)
+  } else {
+    stop("Package Rglpk or lpSolveAPI needed for this function to work. Please install one of them.",
+         call. = FALSE)
+  }
 
   return(bhat[(p+1):(2*p)])
 

@@ -1,6 +1,5 @@
 #' Generalized Matrix Uncertainty Selector
 #' @description Generalized Matrix Uncertainty Selector
-#' @import glmnet
 #' @param W Design matrix, measured with error. Must be a numeric matrix.
 #' @param y Vector of responses.
 #' @param lambda Regularization parameter.
@@ -45,7 +44,7 @@ fit_gmus <- function(W, y, lambda = NULL, delta = NULL,
 
   family <- match.arg(family)
 
-  if(is.null(lambda)) lambda <- cv.glmnet(W, y, family = family)$lambda.min
+  if(is.null(lambda)) lambda <- glmnet::cv.glmnet(W, y, family = family)$lambda.min
   if(is.null(delta)) delta <- seq(from = 0, to = 0.5, by = 0.02)
 
   n <- dim(W)[1]

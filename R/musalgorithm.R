@@ -5,7 +5,6 @@
 #' @param lambda Regularization parameter due to residual.
 #' @param delta Regularization parameter due to measurement error.
 #'
-#' @import Rglpk
 musalgorithm <- function(W, y, lambda, delta){
   # We assume the first column of W is constants, i.e., intercept
   n <- dim(W)[1]
@@ -39,7 +38,7 @@ musalgorithm <- function(W, y, lambda, delta){
   dir <- rep("<=",4*p)
   bounds <- list(lower=list(ind=1:(2*p), val=rep(-Inf,2*p)),
                  upper=list(ind=1:(2*p), val=rep(Inf,2*p)))
-  bhat <- Rglpk_solve_LP(obj, mat, dir, rhs, bounds=bounds)$solution
+  bhat <- Rglpk::Rglpk_solve_LP(obj, mat, dir, rhs, bounds=bounds)$solution
 
   # value <- list(intercept = bhat[p + 1],
   #               beta = bhat[(p + 2) : (2*p)])

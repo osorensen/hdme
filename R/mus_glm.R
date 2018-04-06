@@ -7,7 +7,7 @@
 #' @param delta Regularization parameter due to measurement error.
 #' @param family "binomial" or "poisson"
 #' @return Intercept and coefficients at the values of lambda and delta specified.
-#'  @import stats
+#'
 mus_glm <- function(W, y, lambda, delta, family = c("binomial", "poisson")){
 
   family <- match.arg(family)
@@ -24,8 +24,8 @@ mus_glm <- function(W, y, lambda, delta, family = c("binomial", "poisson")){
   n <- dim(W)[1]
   p <- dim(W)[2]
 
-  bOld <- rnorm(p)/p
-  bNew <- rnorm(p)/p
+  bOld <- stats::rnorm(p)/p
+  bNew <- stats::rnorm(p)/p
   IRLSeps <- 1e-7
   maxit <- 100
   count <- 1

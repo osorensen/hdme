@@ -63,9 +63,9 @@ cv_corrected_lasso <- function(W, y, sigmaUU, n_folds = 10, family = "gaussian",
   cv <- data.frame(
     radii = radii,
     mean_loss = rowMeans(loss),
-    sd_loss = apply(loss, 1, sd),
-    upper_1se = rowMeans(loss) + apply(loss, 1, sd) / sqrt(n_folds),
-    lower_1se = rowMeans(loss) - apply(loss, 1, sd) / sqrt(n_folds)
+    sd_loss = apply(loss, 1, stats::sd),
+    upper_1se = rowMeans(loss) + apply(loss, 1, stats::sd) / sqrt(n_folds),
+    lower_1se = rowMeans(loss) - apply(loss, 1, stats::sd) / sqrt(n_folds)
   )
 
   ind1 <- min(which(cv$mean_loss == min(cv$mean_loss)))

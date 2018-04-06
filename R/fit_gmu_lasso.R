@@ -43,7 +43,6 @@
 #' plot(gmu_lasso)
 #'
 #'
-#' @import glmnet
 fit_gmu_lasso <- function(W, y, lambda = NULL, delta = NULL,
                           family = "binomial", active_set = TRUE){
 
@@ -64,13 +63,13 @@ fit_gmu_lasso <- function(W, y, lambda = NULL, delta = NULL,
   W <- cbind(rep(1,n), W)
 
   # Run the lasso with cross validation to find a value for lambda
-  if(is.null(lambda)) lambda <- cv.glmnet(W, y, family = family)$lambda.min
+  if(is.null(lambda)) lambda <- glmnet::cv.glmnet(W, y, family = family)$lambda.min
   if(is.null(delta)) delta <- seq(from = 0, to = 0.2, by = 0.05)
 
   n <- dim(W)[1]
   p <- dim(W)[2]
-  bOld <- rnorm(p)/p
-  bNew <- rnorm(p)/p
+  bOld <- stats::rnorm(p)/p
+  bNew <- stats::rnorm(p)/p
   IRLSeps <- 1e-7
   maxit <- 100
 

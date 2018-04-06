@@ -4,7 +4,6 @@
 #'   delta has length 1.
 #' @param x An object of class gmus
 #' @param ... Other arguments to plot (not used).
-#' @import ggplot2
 #' @examples
 #' # Example with linear regression
 #' set.seed(1)
@@ -37,15 +36,15 @@
 plot.gmus <- function(x, ...) {
   if(length(x$delta) > 1) {
     df <- data.frame(delta = x$delta, nonzero = x$num_non_zero)
-    ggplot(df, aes_(x =~ delta, y =~ nonzero)) +
-      geom_line() +
-      labs(x = "delta", y = "Nonzero coefficients", title = "Elbow plot")
+    ggplot2::ggplot(df, ggplot2::aes_(x =~ delta, y =~ nonzero)) +
+      ggplot2::geom_line() +
+      ggplot2::labs(x = "delta", y = "Nonzero coefficients", title = "Elbow plot")
   } else {
     df <- data.frame(index = seq_along(x$beta), beta = x$beta)
 
-    ggplot(df, aes_(x =~ index, y =~ beta)) +
-      geom_point() +
-      labs(x = "Coefficient number", y = "Coefficient value", title = "Estimated coefficients")
+    ggplot2::ggplot(df, ggplot2::aes_(x =~ index, y =~ beta)) +
+      ggplot2::geom_point() +
+      ggplot2::labs(x = "Coefficient number", y = "Coefficient value", title = "Estimated coefficients")
   }
 
 }

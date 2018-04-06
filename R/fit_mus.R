@@ -1,6 +1,5 @@
 #' Matrix Uncertainty Selector
 #' @description Matrix Uncertainty Selector
-#' @import glmnet
 #' @param W Design matrix, measured with error. Must be a numeric matrix.
 #' @param y Vector of responses.
 #' @param lambda Regularization parameter.

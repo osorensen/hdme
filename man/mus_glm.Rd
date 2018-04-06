@@ -19,7 +19,6 @@ mus_glm(W, y, lambda, delta, family = c("binomial", "poisson"))
 }
 \value{
 Intercept and coefficients at the values of lambda and delta specified.
- @import stats
 }
 \description{
 Internal function.

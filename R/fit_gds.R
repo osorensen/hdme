@@ -1,6 +1,5 @@
 #' Generalized Dantzig Selector
 #' @description Generalized Dantzig Selector
-#' @import glmnet
 #' @param X Design matrix.
 #' @param y Vector of the continuous response value.
 #' @param lambda Regularization parameter. Only a single value is supported.

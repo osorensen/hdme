@@ -4,8 +4,8 @@
 #'   delta has length 1.
 #' @param x An object of class gmu_lasso
 #' @param ... Other arguments to plot (not used).
-#' @import ggplot2
 #' @examples
+#' set.seed(1)
 #' n <- 200
 #' p <- 50
 #' s <- 10

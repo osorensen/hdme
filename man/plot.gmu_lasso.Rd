@@ -17,6 +17,7 @@ Plot the number of nonzero coefficients along a range of delta
   delta has length 1.
 }
 \examples{
+set.seed(1)
 n <- 200
 p <- 50
 s <- 10

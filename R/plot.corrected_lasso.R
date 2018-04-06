@@ -22,24 +22,23 @@
 #' fit <- fit_corrected_lasso(W, y, sigmaUU, family = "gaussian")
 #' plot(fit)
 #'
-#' @import ggplot2
 #' @export
 plot.corrected_lasso <- function(x, type = "nonzero", ...) {
 
   if(type == "nonzero") {
     df <- data.frame(radius = x$radii, nonZero = colSums(abs(x$betaCorr) > 0))
-    ggplot(df, aes_(x =~ radius, y =~ nonZero)) +
-      geom_line() +
-      labs(x = "radius", y = "Nonzero coefficients", title = "Number of nonzero coefficients")
+    ggplot2::ggplot(df, ggplot2::aes_(x =~ radius, y =~ nonZero)) +
+      ggplot2::geom_line() +
+      ggplot2::labs(x = "radius", y = "Nonzero coefficients", title = "Number of nonzero coefficients")
   } else if (type == "path") {
     df <- data.frame(radius = rep(x$radii, nrow(x$betaCorr)),
                      coefficient_id = as.factor(rep(seq_along(1:nrow(x$betaCorr)), each = length(x$radii))),
                      beta_corr = as.vector(t(x$betaCorr)))
 
-    ggplot(df, aes_(x =~ radius, y =~ beta_corr, color =~ coefficient_id)) +
-      geom_path() +
-      labs(x = "radius", y = "Coefficient estimate", title = "Coefficient paths") +
-      theme(legend.position="none")
+    ggplot2::ggplot(df, ggplot2::aes_(x =~ radius, y =~ beta_corr, color =~ coefficient_id)) +
+      ggplot2::geom_path() +
+      ggplot2::labs(x = "radius", y = "Coefficient estimate", title = "Coefficient paths") +
+      ggplot2::theme(legend.position="none")
   } else {
     stop("type argument must have value 'nonzero' or 'path'")
   }

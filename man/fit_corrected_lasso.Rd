@@ -27,7 +27,7 @@ parameters to fit the corrected lasso for.}
 \item{alpha}{Step size of the projected gradient descent algorithm. Default is
 0.1.}
 
-\item{maxits}{Maxium number of iterations of the project gradient descent
+\item{maxits}{Maximum number of iterations of the project gradient descent
 algorithm for each radius. Default is 5000.}
 }
 \value{

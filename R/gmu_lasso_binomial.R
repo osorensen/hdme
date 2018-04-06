@@ -15,8 +15,8 @@ gmu_lasso_binomial <- function(W, y, lambda = NULL, delta = NULL, activeSet=FALS
     # We assume the first column in W takes the intercept
     n <- dim(W)[1]
     p <- dim(W)[2]
-    bOld <- rnorm(p)/p
-    bNew <- rnorm(p)/p
+    bOld <- stats::rnorm(p)/p
+    bNew <- stats::rnorm(p)/p
     IRLSeps <- 1e-7
     maxit <- 100
     count <- 1

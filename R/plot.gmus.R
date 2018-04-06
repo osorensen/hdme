@@ -1,6 +1,6 @@
 #' @title Plot the estimates returned by fit_gmus and fit_mus
 #' @description Plot the number of nonzero coefficients along a range of delta
-#'   values if delta has length larger than 1, or the estimated coefficients of
+#'   values if delta has length larger than 1, or the estimated coefficients if
 #'   delta has length 1.
 #' @param x An object of class gmus
 #' @param ... Other arguments to plot (not used).

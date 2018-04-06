@@ -13,7 +13,7 @@
 }
 \description{
 Plot the number of nonzero coefficients along a range of delta
-  values if delta has length larger than 1, or the estimated coefficients of
+  values if delta has length larger than 1, or the estimated coefficients if
   delta has length 1.
 }
 \examples{

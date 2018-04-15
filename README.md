@@ -41,9 +41,11 @@ If you are not able to install `Rglpk`, then please install the suggested packag
 install.packages("lpSolveAPI")
 ```
 
-The functions in `hdme` that use `Rglpk`, will switch to `lpSolveAPI` automatically if the former is not available.
+The functions in `hdme` that use `Rglpk`, will switch to `lpSolveAPI` automatically if the former is not available. When either `Rglpk` or `lpSolveAPI` is installed, then install the **development version** of `hdme` using
 
-When either `hdme` or `lpSolveAPI` is installed, then install `hdme` using the commands described above.
+``` r
+devtools::install_github("osorensen/hdme")
+```
 
 Methods
 -------

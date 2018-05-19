@@ -1,11 +1,12 @@
 ## Resubmission
 This is a resubmission. In this version I have:
 
-* Removed tidyverse from the Suggests field of DESCRIPTION, and instead added the packages dplyr and tidyr explicitly.
-* Replaced library(tidyverse) in the vignette with library(dplyr), library(tidyr), and library(ggplot2).
+* Removed Rglpk from **Imports** to **Suggests** in DESCRIPTION. lpSolveAPI has been added to **Suggests**. The reason is that the dependence on Rglpk causes the build to fail on OS X in the CRAN package Checks. In the underlying code, I have implemented a solution which uses lpSolveAPI rather than Rglpk in cases where the user does not have Rglpk. This should cause the package to pass the CRAN checks also for OS X, as it no longer import Rglpk.
 
 ## Test environments
-* local OS X install, R 3.4.4
+* local OS X install, R 3.5.0
+* local Windows 10 install, R 3.5.0
+* local Ubuntu 16.04 install, R 3.4.4
 * win-builder (devel and release)
 
 ## R CMD check results

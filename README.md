@@ -3,7 +3,7 @@
 hdme
 ====
 
-[![CRAN\_Status\_Badge](http://www.r-pkg.org/badges/version/hdme)](http://cran.r-project.org/package=hdme)
+[![CRAN\_Status\_Badge](http://www.r-pkg.org/badges/version/hdme)](https://cran.r-project.org/package=hdme)
 
 The goal of hdme is to provide penalized regression methods for High-Dimensional Measurement Error problems (errors-in-variables).
 

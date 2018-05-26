@@ -70,7 +70,7 @@
 #'
 #'@export
 fit_corrected_lasso <- function(W, y, sigmaUU, family = c("gaussian", "binomial", "poisson"),
-                 radii = NULL, no_radii = 20, alpha = 0.1, maxits = 5000){
+                 radii = NULL, no_radii = NULL, alpha = 0.1, maxits = 5000){
   family <- match.arg(family)
 
 

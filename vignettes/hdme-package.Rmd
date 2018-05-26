@@ -163,7 +163,7 @@ ggplot(lassoEstimates, aes(x = index, y = beta, color = label)) +
 
 We can also focus on the `r sum(beta != 0)` parameters which are truly nonzero. In this case, we see that in the absence of measurement error, the lasso estimates values quite close to truth. With measurement error, on the other hand, the attenuation is quite clear: the estimates are biased toward zero.
 
-```{r}
+```{r, message=FALSE, warning=FALSE}
 library(tidyr) 
 estimatesOfNonzero <- lassoEstimates %>% 
   spread(key = label, value = beta) %>% 

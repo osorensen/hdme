@@ -10,18 +10,11 @@ corrected_lasso_glm <- function(W, y, sigmaUU, family = c("binomial", "poisson")
 
 
   if( is.null(radii) ){
-    # First run the naive Lasso
-    lassoFit <- glmnet::cv.glmnet(W, y, family = family)
-    betaNaive <- glmnet::coef.cv.glmnet(lassoFit, s = "lambda.min")
-
-    no_radii <- 20
-    # Use the estimated vector to find the upper radii for cross-validation
-    R <- sum( abs( betaNaive ) )
-    # Set the cross-validation range
-    radii <- seq(from = 1e-6 * R, to = R, length.out = no_radii)
-  } else {
-    no_radii <- length(radii)
+    radii <- set_radius(W, y, family = family, no_radii = no_radii,
+                        limit_factors = c(1e-6, 1))
   }
+
+  no_radii <- length(radii)
 
   n <- dim(W)[1]
   p <- dim(W)[2]

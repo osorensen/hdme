@@ -8,19 +8,10 @@ corrected_lasso_gaussian <- function(W, y,sigmaUU, radii, no_radii, alpha, maxit
 
 
   if( is.null(radii) ){
-    no_radii <- ifelse(is.null(no_radii), 20, no_radii)
-    # First run the naive Lasso
-    lassoFit <- glmnet::cv.glmnet(W, y)
-    betaNaive <- glmnet::coef.cv.glmnet(lassoFit, s = "lambda.min")
-
-    # Use the estimated vector to find the upper radii for cross-validation
-    R <- 2 * sum( abs( betaNaive ) )
-
-    # Set the cross-validation range
-    radii <- seq(from = 1e-3 * R, to = R, length.out = no_radii)
-  } else {
-    no_radii <- length(radii)
+    radii <- set_radius(W, y, no_radii = no_radii)
   }
+
+  no_radii <- length(radii)
 
   n <- dim(W)[1]
   p <- dim(W)[2]

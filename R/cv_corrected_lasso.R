@@ -51,7 +51,7 @@ cv_corrected_lasso <- function(W, y, sigmaUU, n_folds = 10, family = "gaussian",
   outlist = as.list(seq(n_folds))
 
 
-  if(is.null(radii)) radii <- set_radius(W, y, no_radii)
+  if(is.null(radii)) radii <- set_radius(W, y, no_radii = no_radii)
   loss <- matrix(nrow = no_radii, ncol = n_folds)
 
   for(i in seq(n_folds)) {

@@ -4,8 +4,8 @@
 # hdme
 
 [![CRAN\_Status\_Badge](http://www.r-pkg.org/badges/version/hdme)](https://cran.r-project.org/package=hdme)
-[![Travis build
-status](https://travis-ci.org/osorensen/hdme.svg?branch=master)](https://travis-ci.org/osorensen/hdme)
+[![Build
+Status](https://travis-ci.org/osorensen/hdme.svg?branch=master)](https://travis-ci.org/osorensen/hdme)
 
 The goal of hdme is to provide penalized regression methods for
 High-Dimensional Measurement Error problems (errors-in-variables).

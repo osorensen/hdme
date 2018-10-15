@@ -1,13 +1,18 @@
 ## Resubmission
-This is a resubmission. In this version I have:
+This is a resubmission, with the goal of fixing the following issues which the following NOTE in the check results on `r-devel-linux-x86_64-debian-clang`, `r-devel-linux-x86_64-debian-gcc`, `r-devel-linux-x86_64-fedora-clang`, and `r-devel-linux-x86_64-fedora-gcc`:
 
-* Removed Rglpk from **Imports** to **Suggests** in DESCRIPTION. lpSolveAPI has been added to **Suggests**. The reason is that the dependence on Rglpk causes the build to fail on OS X in the CRAN Checks. 
+    checking use of SHLIB_OPENMP_*FLAGS in Makefiles ... NOTE
+      src/Makevars.win: SHLIB_OPENMP_CXXFLAGS is included in PKG_CXXFLAGS but not in PKG_LIBS
+      src/Makevars.win: SHLIB_OPENMP_CFLAGS is included in PKG_LIBS but not in PKG_CFLAGS
+    Use of these macros is discussed in sect 1.2.1.1 of ???Writing R
+    Extensions???. The macros for different languages may differ so the
+    matching macro must be used in PKG_CXXFLAGS (etc) and match that used
+    in PKG_LIBS (except for F77: see the manual).
 
-In the underlying code, I have implemented a solution which uses lpSolveAPI rather than Rglpk in cases where the user does not have Rglpk. Hence, users who do not have Rglpk can still use the package.
 
 ## Test environments
-* local Windows 10 install, R 3.5.0
-* local Ubuntu 16.04 install, R 3.4.4
+* local os X install, R 3.5.1
+* Ubuntu 14.04 install (on travis-ci), R 3.5.1
 * win-builder (devel and release)
 
 ## R CMD check results

@@ -14,7 +14,7 @@ Description: Penalized regression for generalized linear models for
   case of measurement error (Sorensen et al. (2018) <doi:10.1080/10618600.2018.1425626>).
 License: GPL-3
 LazyData: TRUE
-RoxygenNote: 6.0.1
+RoxygenNote: 6.1.1
 Imports:
   glmnet (>= 2.0-13), 
   ggplot2 (>= 2.2.1),

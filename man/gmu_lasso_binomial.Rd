@@ -4,7 +4,8 @@
 \alias{gmu_lasso_binomial}
 \title{Generalized Matrix Uncertainty Lasso}
 \usage{
-gmu_lasso_binomial(W, y, lambda = NULL, delta = NULL, activeSet = FALSE)
+gmu_lasso_binomial(W, y, lambda = NULL, delta = NULL,
+  activeSet = FALSE)
 }
 \arguments{
 \item{W}{Design matrix, measured with error. Must be a numeric matrix.}

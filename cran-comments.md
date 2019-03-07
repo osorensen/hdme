@@ -1,22 +1,19 @@
 ## Resubmission
-This is a resubmission, with the goal of fixing the following issues which the following NOTE in the check results on `r-devel-linux-x86_64-debian-clang`, `r-devel-linux-x86_64-debian-gcc`, `r-devel-linux-x86_64-fedora-clang`, and `r-devel-linux-x86_64-fedora-gcc`:
-
-    checking use of SHLIB_OPENMP_*FLAGS in Makefiles ... NOTE
-      src/Makevars.win: SHLIB_OPENMP_CXXFLAGS is included in PKG_CXXFLAGS but not in PKG_LIBS
-      src/Makevars.win: SHLIB_OPENMP_CFLAGS is included in PKG_LIBS but not in PKG_CFLAGS
-    Use of these macros is discussed in sect 1.2.1.1 of ???Writing R
-    Extensions???. The macros for different languages may differ so the
-    matching macro must be used in PKG_CXXFLAGS (etc) and match that used
-    in PKG_LIBS (except for F77: see the manual).
-
+This is a resubmission, with the goal of fixing an issue related to random numbers in the development version of R. The package currently on CRAN has a test that relies on the random number seed, which fails on r-devel, as pointed out in an e-mail from Knut Hornik. The issue was first reproduced on R-hub, and then fixed.
 
 ## Test environments
-* local os X install, R 3.5.1
-* Ubuntu 14.04 install (on travis-ci), R 3.5.1
+* local os X install, R 3.5.2
+* Ubuntu 14.04 install (on travis-ci), R 3.5.2
 * win-builder (devel and release)
+* R-hub (devel)
 
 ## R CMD check results
-There were no ERRORs, WARNINGs or NOTEs.
+There were no ERRORs or WARNINGs.
+
+There was one NOTE:
+
+  * checking package dependencies ... NOTE
+  Package suggested but not available for checking: ???Rglpk???
 
 ## Downstream dependencies
 There are currently no downstream dependencies of this package.

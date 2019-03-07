@@ -1,5 +1,6 @@
 context("Testing corrected lasso")
 
+suppressWarnings(RNGversion("3.5.0"))
 set.seed(100)
 n <- 100 # Number of samples
 p <- 5 # Number of covariates

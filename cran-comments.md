@@ -3,17 +3,16 @@ This is a resubmission, with the goal of fixing an issue related to random numbe
 
 ## Test environments
 * local os X install, R 3.5.2
-* Ubuntu 14.04 install (on travis-ci), R 3.5.2
 * win-builder (devel and release)
 * R-hub (devel)
 
 ## R CMD check results
 There were no ERRORs or WARNINGs.
 
-There was one NOTE:
+There was one NOTE on R-hub (devel):
 
   * checking package dependencies ... NOTE
-  Package suggested but not available for checking: ???Rglpk???
+  Package suggested but not available for checking: Rglpk
 
 ## Downstream dependencies
 There are currently no downstream dependencies of this package.

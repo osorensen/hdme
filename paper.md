@@ -13,11 +13,12 @@ affiliations:
  - name: Center for Lifespan Changes in Brain and Cognition, Department of Psychology, University of Oslo
    index: 1
 date: 12 April 2019
-bibliography: paper.bib
+bibliography: inst/REFERENCES.bib
 ---
 
 # Summary
 
+Many problems in science involve explaining an outcome of interest, denoted $y$, by measured covariates, denoted $x$. In 
 
 The forces on stars, galaxies, and dark matter under external gravitational
 fields lead to the dynamical evolution of structures in the universe. The orbits

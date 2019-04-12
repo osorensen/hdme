@@ -43,3 +43,4 @@ test_that("fit_corrected_lasso has right dimension in beta vectors", {
           expect_equal(dim(fit$betaCorr), c(5, 6))
           expect_equal(length(fit$radii), 6L)
           })
+

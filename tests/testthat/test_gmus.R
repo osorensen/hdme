@@ -23,30 +23,18 @@ test_that("fit_mus returns right object", {
   expect_equal(class(fit2), "gmus")
 })
 
-cv_fit <- cv_corrected_lasso(W, y, sigmaUU, n_folds = 2, no_radii = 10)
-
-test_that("cv_corrected_lasso returns right object", {
-  expect_output(str(cv_fit), "List of 5")
-  expect_equal(class(cv_fit), "cv_corrected_lasso")
-})
-
-test_that("cv_corrected_lasso computes correctly", {
-  expect_equal(round(cv_fit$radius_min, 2), round(2.19, 2))
-  expect_equal(round(cv_fit$loss_min, 2), round(1.13, 2))
-  expect_equal(round(cv_fit$radius_1se, 2), round(1.10, 2))
-  expect_equal(round(cv_fit$loss_1se, 2), round(1.52, 2))
-})
-
 # Now check the logistic version
 y <- rbinom(n, size = 1, prob = hdme:::logit(X %*% c(rep(5, 2), rep(0, p-2))))
-fit <- fit_corrected_lasso(W, y, sigmaUU, family = "binomial", no_radii = 6)
+deltavec <- seq(from = 0, to = 0.5, length.out = 10)
+fit <- fit_gmus(W, y, family = "binomial", delta = deltavec, lambda = 0.001)
 
-test_that("fit_corrected_lasso returns right object for logistic regression", {
-  expect_output(str(fit), "List of 2")
-  expect_equal(class(fit), "corrected_lasso")
+test_that("fit_gmus returns right object for logistic regression", {
+  expect_output(str(fit), "List of 6")
+  expect_equal(class(fit), "gmus")
 })
 
-test_that("fit_corrected_lasso has right dimension in beta vectors", {
-          expect_equal(dim(fit$betaCorr), c(5, 6))
-          expect_equal(length(fit$radii), 6L)
+test_that("gmus has right dimension in beta vectors", {
+          expect_equal(dim(fit$beta), c(ncol(W), length(deltavec)))
+          expect_equal(length(fit$delta), length(deltavec))
+          expect_equal(fit$lambda, 0.001)
           })

@@ -27,7 +27,7 @@ You can install the latest development version from github with:
 
 ``` r
 # install.packages("devtools")
-devtools::install_github("osorensen/hdme")
+devtools::install_github("osorensen/hdme", build_vignettes = TRUE)
 ```
 
 ## Methods

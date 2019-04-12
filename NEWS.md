@@ -1,5 +1,8 @@
-# hdme 0.2.2.9000
-Added `Rglpk` back to **Imports** and removed **lpSolveAPI**, as the latest version of `Rglpk` passes all tests on CRAN, including osX.
+# hdme 0.2.3
+- Added `Rglpk` back to **Imports** and removed **lpSolveAPI**, as the latest version of `Rglpk` passes all tests on CRAN, including osX.
+- Updated vignette.
+- Cleaned up documentation, hiding internal functions from the index.
+- Created unit tests.
 
 # hdme 0.2.2
 Fixed random number seed issue which caused test to fail in R-devel.

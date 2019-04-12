@@ -96,11 +96,12 @@ Using the `glmnet` package, we can illustrate the impact of measurement error in
 First we set up the parameters and generate random data. In order to repeat the procedure, we create the function `create_example_data` for doing this. For illustration purposes, we set the true coefficient vector to $\beta = (-2, -1, 0.5, 1, 2, 0, \dots, 0)^{T}$.
 
 ```{r}
-create_example_data <- function(n, p, s = 5, sdX = 1, sdU = 0.5, sdEpsilon = 0.1, family = "gaussian") {
+create_example_data <- function(n, p, s = 5, sdX = 1, sdU = 0.5, 
+                                sdEpsilon = 0.1, family = "gaussian") {
   # Independent true covariates with mean zero and standard deviation sdX
   X <- matrix(rnorm(n * p, sd = sdX), nrow = n, ncol = p)
-  # if Gaussian, response has standard deviation sdEpsilon, and the intercept is zero
-  # if binomial, the response is binomially distributed with mean (1 + exp(-X %*% beta))^(-1)
+  # if Gaussian, response has standard deviation sdEpsilon, and zero intercept
+  # if binomial, response is binomial with mean (1 + exp(-X %*% beta))^(-1)
   beta <- c(-2, -1, 0.5, 1, 2, rep(0, p - s))
   
   if(family == "gaussian") {
@@ -112,23 +113,21 @@ create_example_data <- function(n, p, s = 5, sdX = 1, sdU = 0.5, sdEpsilon = 0.1
     y <- rbinom(n, size = 1, prob = (1 + exp(-X %*% beta))**(-1))
   }
   
-  # The measurements W have mean X and standard deviation sdU. We assume uncorrelated measurment errors
+  # The measurements W have mean X and standard deviation sdU. 
+  # We assume uncorrelated measurement errors
   W <- X + matrix(rnorm(n * p, sd = sdU), nrow = n, ncol = p)
   
   return(list(X = X, W = W, y = y, beta = beta, sigmaUU = diag(p) * sdU))  
 }
 ```
 
-We then call the function to get the data. I use the `%<-%` from the `zeallot` package (@zeallot_package) to get all elements of the list directly from the function call. 
+We then call the function to get the data and put the result in the list `ll`.
 
 ```{r, message=FALSE}
-# Need to attach igraph before zeallot, because of a conflict in the %<-% operator
-library(igraph) 
-library(zeallot)
 n <- 100
 p <- 500
 set.seed(1000)
-c(X, W, y, beta, sigmaUU) %<-% create_example_data(n, p)
+ll <- create_example_data(n, p)
 ```
 
 
@@ -138,13 +137,13 @@ Next we run the lasso with cross-validation on the true covariates and on the no
 library(glmnet)
 library(dplyr)
 # Lasso with cross-validation on data without measurement error
-fit1 <- cv.glmnet(X, y)
+fit1 <- cv.glmnet(ll$X, ll$y)
 # Lasso with cross-validation on data with measurement error
-fit2 <- cv.glmnet(W, y)
+fit2 <- cv.glmnet(ll$W, ll$y)
 # Create a data frame with results ([-1] because we drop the intercept)
 lassoEstimates <- tibble(
   index = rep(1:p, times = 3),
-  beta = c(beta, as.numeric(coef(fit1)[-1]), coef(fit2)[-1]),
+  beta = c(ll$beta, as.numeric(coef(fit1)[-1]), coef(fit2)[-1]),
   label = c(rep("True values", p), rep("No measurement error", p), rep("Measurement error", p))
   )
 
@@ -161,7 +160,7 @@ ggplot(lassoEstimates, aes(x = index, y = beta, color = label)) +
   ggtitle("Measurement error leading to false positives")
 ```
 
-We can also focus on the `r sum(beta != 0)` parameters which are truly nonzero. In this case, we see that in the absence of measurement error, the lasso estimates values quite close to truth. With measurement error, on the other hand, the attenuation is quite clear: the estimates are biased toward zero.
+We can also focus on the `r sum(ll$beta != 0)` parameters which are truly nonzero. In this case, we see that in the absence of measurement error, the lasso estimates values quite close to truth. With measurement error, on the other hand, the attenuation is quite clear: the estimates are biased toward zero.
 
 ```{r, message=FALSE, warning=FALSE}
 library(tidyr) 
@@ -182,23 +181,14 @@ The Dantzig selector @candes2007 is closely related to the lasso. It is defined 
 $$
 \text{minimize } ~ \|\beta\|_{1}, ~ \text{ subject to }  ~ (1/n)\| X^{T} (y - X\beta)\|_{\infty} \leq \lambda,
 $$
-where $\|\cdot\|_{\infty}$ denotes the maximum component norm. An `R` implentation of the Dantzig selector can be found in the `flare` package @flare_package. We illustrate it with the same data as in the previous section.
-
-```{r, message=FALSE}
-library(flare)
-n <- 100
-p <- 500
-set.seed(1000)
-c(X, W, y, beta, sigmaUU) %<-% create_example_data(n, p)
-```
-
-Calling the `slim` method in the `flare` package yields the Dantzig selector solution for the default values of $\lambda$. We can compare the methods for data with and without measurement error.
+where $\|\cdot\|_{\infty}$ denotes the maximum component norm. An `R` implentation of the Dantzig selector can be found in the `flare` package @flare_package. We illustrate it with the same data as in the previous section. Calling the `slim` method in the `flare` package yields the Dantzig selector solution for the default values of $\lambda$. We can compare the methods for data with and without measurement error.
 
 ```{r}
+library(flare)
 # No measurement error, using X
-dantzig_fit_x <- slim(X, y, nlambda = 10, method = "dantzig", verbose = FALSE, lambda.min.ratio = 0.3)
+dantzig_fit_x <- slim(ll$X, ll$y, nlambda = 10, method = "dantzig", verbose = FALSE, lambda.min.ratio = 0.3)
 # Measurement error, using W
-dantzig_fit_w <- slim(W, y, nlambda = 10, method = "dantzig", verbose = FALSE, lambda.min.ratio = 0.3)
+dantzig_fit_w <- slim(ll$W, ll$y, nlambda = 10, method = "dantzig", verbose = FALSE, lambda.min.ratio = 0.3)
 ```
 
 Below is the regularization path for the Dantzig selector in the case of no measurement error.
@@ -228,7 +218,7 @@ n <- 1000
 # Number of covariates
 p <- 50
 # Create example data
-c(X, W, y, beta, sigmaUU) %<-% create_example_data(n, p, family = "binomial")
+ll <- create_example_data(n, p, family = "binomial")
 ```
 
 Arguments to `fit_gds`. Only $X$ and $y$ are required.
@@ -240,7 +230,7 @@ args(fit_gds)
 Fit the generalized Dantzig selector on the data.
 ```{r}
 # Fit the Generalized Dantzig Selector
-gds_estimate <- fit_gds(X, y, family = "binomial")
+gds_estimate <- fit_gds(ll$X, ll$y, family = "binomial")
 ```
 
 
@@ -263,7 +253,8 @@ When an estimate of the measurement error covariance matrix $\Sigma_{uu}$ is ava
 $$
 \text{minimize } ~ L(\beta) = \|y - W \beta \|^{2} - \beta^{T} \Sigma_{uu} \beta + \lambda \|\beta\|_{1} ~\text{ subject to } \|\beta\|_{1} \leq R.
 $$
-Because we subtract the positive semidefinite matrix $\Sigma_{uu}$ from the convex function $\|y - W\beta\|^{2}$, this corrected lasso may be non-convex. In fact, when $p>n$ is is always non-convex. Hence, in order to avoid non-trivial solution, we must constrain the solution to lie in some L1-ball with radius $R$. Since this problem involves two regularization parameters, $\lambda$ and $R$, it is more convenient to use the constrained version of the lasso
+Because we subtract the positive semidefinite matrix $\Sigma_{uu}$ from the convex function $\|y - W\beta\|^{2}$, this corrected lasso may be non-convex. In fact, when $p>n$ is is always non-convex. Hence, in order to avoid non-trivial solutions, we must constrain the solution to lie in some L1-ball with radius $R$. Since this problem involves two regularization parameters, $\lambda$ and $R$, it is more convenient to use the constrained version of the lasso
+
 $$
 \text{minimize } ~ L(\beta) = \|y - W \beta \|^{2} - \beta^{T} \Sigma_{uu} \beta  ~\text{ subject to } \|\beta\|_{1} \leq R.
 $$
@@ -277,9 +268,9 @@ This package implements the projected gradient descent algorithm proposed by @lo
 ```{r}
 set.seed(1000)
 # Generate example data
-c(X, W, y, beta, sigmaUU) %<-% create_example_data(n, p)
+ll <- create_example_data(n, p)
 # Fit the corrected lasso
-corrected_fit <- fit_corrected_lasso(W = W, y = y, sigmaUU = sigmaUU)
+corrected_fit <- fit_corrected_lasso(W = ll$W, y = ll$y, sigmaUU = ll$sigmaUU)
 ```
 
 The object returned is a `list` with class `corrected_lasso`.
@@ -313,7 +304,7 @@ plot(corrected_fit, type = "path")
 
 
 ## Corrected Lasso for Generalized Linear Models
-@sorensen2015 show how we can also corrected for measurement error in the lasso for generalized linear models, using the conditional score method introduced by @stefanski1987, combined with the projected gradient descent algorithm used by @loh2012 for the corrected lasso for linear models.
+@sorensen2015 show how we can also correct for measurement error in the lasso for generalized linear models, using the conditional score method introduced by @stefanski1987, combined with the projected gradient descent algorithm used by @loh2012 for the corrected lasso for linear models.
 
 ### Logistic Regression
 The corrected lasso for logistic regression is implemented in `hdme`. To illustrate its use, we start by generating some measurement error data with binomially distributed response.
@@ -321,13 +312,13 @@ The corrected lasso for logistic regression is implemented in `hdme`. To illustr
 set.seed(323)
 n <- 100
 p <- 50
-c(X, W, y, beta, sigmaUU) %<-% create_example_data(n, p, sdU = 0.2, family = "binomial")
+ll <- create_example_data(n, p, sdU = 0.2, family = "binomial")
 ```
 
 We get logistic regression by specifying `family = "binomial"` in the call the `fit_corrected_lasso()`. 
 
 ```{r}
-corrected_fit <- fit_corrected_lasso(W, y, sigmaUU, family = "binomial")
+corrected_fit <- fit_corrected_lasso(ll$W, ll$y, ll$sigmaUU, family = "binomial")
 ```
 
 The plot functions work the same way as for linear regression. By default, the argument `type = "nonzero"`.
@@ -350,16 +341,16 @@ The corrected lasso for linear regression has a clearly defined loss function,
 $$
 L(\beta) = \|y - W\beta\|_{2}^{2} - \beta^{T} \Sigma_{uu} \beta.
 $$
-In order to find the optimal value of the regulaization parameter $R$, we can hence use cross-validation to minimize $L(\beta)$. This is implemented in the fucntion `cv_corrected_lasso`. We illustrate its use below.
+In order to find the optimal value of the regularization parameter $R$, we can hence use cross-validation to minimize $L(\beta)$. This is implemented in the function `cv_corrected_lasso`. We illustrate its use below.
 
 For generalized linear models, we are using the conditional score approach, which does not yield a well defined loss function. Hence, cross-validation is not straightforward in these cases.
 
 ```{r}
 set.seed(1000)
 # Generate example data
-c(X, W, y, beta, sigmaUU) %<-% create_example_data(n, p)
+ll <- create_example_data(n, p)
 # Run lasso with cross-validation
-cv_corrected_fit <- cv_corrected_lasso(W = W, y = y, sigmaUU = sigmaUU)
+cv_corrected_fit <- cv_corrected_lasso(W = ll$W, y = ll$y, sigmaUU = ll$sigmaUU)
 ```
 
 The result is a list of class `cv_corrected_lasso`.
@@ -391,7 +382,7 @@ plot(cv_corrected_fit)
 Having used `cv_corrected_lasso` to find the right value of the constraint parameter $R$, we can use `fit_corrected_lasso` on this single value. The snippet below shows how to compute the solution using $R_{1se}$.
 
 ```{r}
-corrected_fit <- fit_corrected_lasso(W, y, sigmaUU, radii = cv_corrected_fit$radius_1se)
+corrected_fit <- fit_corrected_lasso(ll$W, ll$y, ll$sigmaUU, radii = cv_corrected_fit$radius_1se)
 ```
 
 The final parameter estimates can be found in `corrected_fit$betaCorr`.
@@ -408,7 +399,7 @@ $$
 $$
 Note that the MUS does not require an estimate of the measurement error covariance matrix $\Sigma_{uu}$. This might be a practical advantage in some cases, when an estimate of $\Sigma_{uu}$ is hard to obtain.
 
-The MUS can be converted to a linear programming problem (@sorensen2018). The `hdme` package contains a function `fit_mus` for computing the Matrix Uncertainty Selector. It uses `Rglpk` (@theuss2017) for solving the underlying linear program. In order to illustrate `fit_mus`, we generate som example data with measurement error.
+The MUS can be converted to a linear programming problem (@sorensen2018). The `hdme` package contains a function `fit_mus` for computing the Matrix Uncertainty Selector. It uses `Rglpk` (@theussl2019) for solving the underlying linear program. In order to illustrate `fit_mus`, we generate som example data with measurement error.
 
 ```{r}
 set.seed(1)
@@ -417,12 +408,12 @@ n <- 1000
 # Number of covariates
 p <- 50
 # Generate data
-c(X, W, y, beta, sigmaUU) %<-% create_example_data(n, p, sdU = 0.2)
+ll <- create_example_data(n, p, sdU = 0.2)
 ```
 
 We provide the measurement matrix and the response. The solution is computed over a grid of $\delta$ values, and with $\lambda$ set to the cross-validated optimum for the lasso, as chosen by `cv.glmnet` in the `glmnet` package. The returned object is a list with class `gmus`, which stands for *generalized matrix uncertainty selector*.
 ```{r}
-mus_fit <- fit_mus(W, y)
+mus_fit <- fit_mus(ll$W, ll$y)
 class(mus_fit)
 str(mus_fit)
 ```
@@ -436,7 +427,7 @@ plot(mus_fit)
 According to the "elbow rule" (@rosenbaum2010), a final value of $\delta$ can be chosen where the curve starts to level off. This is not always easy in practice, but in the plot above, a value between $0.05$ and $0.1$ may be reasonable. Choosing $1.0$, we can call the algorithm again, but this time setting the argument `delta = 0.1`.
 
 ```{r}
-mus_fit <- fit_mus(W, y, delta = 0.1)
+mus_fit <- fit_mus(ll$W, ll$y, delta = 0.1)
 ```
 
 Since only one value of $\delta$ was provided, the plot method will now show all the estimated coefficients, rather than the number of nonzero coefficients, as in the previous plot.
@@ -466,8 +457,8 @@ We illustrate `fit_gmus` using logistic regression. First, we generate some samp
 set.seed(323)
 n <- 100
 p <- 50
-c(X, W, y, beta, sigmaUU) %<-% create_example_data(n, p, sdU = 0.2, family = "binomial")
-gmus_fit <- fit_gmus(W, y, family = "binomial")
+ll <- create_example_data(n, p, sdU = 0.2, family = "binomial")
+gmus_fit <- fit_gmus(ll$W, ll$y, family = "binomial")
 ```
 
 The returned object is again a list with class `gmus`.
@@ -484,7 +475,7 @@ plot(gmus_fit)
 Again we see that the number of nonzero coefficients decreases in $\delta$. Following the elbow rule, a reasonable choice for $\delta$ might here be $0.1$. To obtain a final estimate, we might therefore run `fit_gmus` again with this value.
 
 ```{r}
-gmus_fit <- fit_gmus(W, y, delta = 0.1, family = "binomial")
+gmus_fit <- fit_gmus(ll$W, ll$y, delta = 0.1, family = "binomial")
 ```
 
 The plot will now show the estimated coefficients.
@@ -506,8 +497,8 @@ This GMU Lasso is implemented in `hdme`, and can be called with the function `fi
 set.seed(323)
 n <- 100
 p <- 50
-c(X, W, y, beta, sigmaUU) %<-% create_example_data(n, p, sdU = 0.2, family = "binomial")
-gmu_lasso_fit <- fit_gmu_lasso(W, y, family = "binomial")
+ll <- create_example_data(n, p, sdU = 0.2, family = "binomial")
+gmu_lasso_fit <- fit_gmu_lasso(ll$W, ll$y, family = "binomial")
 ```
 
 The returned object is a list with class `gmu_lasso`.

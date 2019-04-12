@@ -3,9 +3,14 @@
 
 # hdme
 
+<!-- badges: start -->
+
 [![CRAN\_Status\_Badge](http://www.r-pkg.org/badges/version/hdme)](https://cran.r-project.org/package=hdme)
 [![Build
 Status](https://travis-ci.org/osorensen/hdme.svg?branch=master)](https://travis-ci.org/osorensen/hdme)
+[![Codecov test
+coverage](https://codecov.io/gh/osorensen/hdme/branch/master/graph/badge.svg)](https://codecov.io/gh/osorensen/hdme?branch=master)
+<!-- badges: end -->
 
 The goal of hdme is to provide penalized regression methods for
 High-Dimensional Measurement Error problems (errors-in-variables).
@@ -83,8 +88,7 @@ Selector with Shrinkage Tuning.” *Biometrika* 96 (2): 323–37.
 
 Loh, Po-Ling, and Martin J. Wainwright. 2012. “High-Dimensional
 Regression with Noisy and Missing Data: Provable Guarantees with
-Nonconvexity.” *Ann. Statist.* 40 (3). The Institute of Mathematical
-Statistics: 1637–64.
+Nonconvexity.” *Ann. Statist.* 40 (3): 1637–64.
 
 </div>
 
@@ -99,8 +103,7 @@ Under Matrix Uncertainty.” *Ann. Statist.* 38 (5): 2620–51.
 
 Sorensen, Oystein, Arnoldo Frigessi, and Magne Thoresen. 2015.
 “Measurement Error in Lasso: Impact and Likelihood Bias Correction.”
-*Statistica Sinica* 25 (2). Institute of Statistical Science, Academia
-Sinica: 809–29.
+*Statistica Sinica* 25 (2): 809–29.
 
 </div>
 
@@ -109,7 +112,8 @@ Sinica: 809–29.
 Sorensen, Oystein, Kristoffer Herland Hellton, Arnoldo Frigessi, and
 Magne Thoresen. 2018. “Covariate Selection in High-Dimensional
 Generalized Linear Models with Measurement Error.” *Journal of
-Computational and Graphical Statistics*. Taylor & Francis.
+Computational and Graphical Statistics* 27 (4): 739–49.
+<https://doi.org/10.1080/10618600.2018.1425626>.
 
 </div>
 

@@ -1,6 +1,9 @@
+^LICENSE\.md$
+^CRAN-RELEASE$
 ^.*\.Rproj$
 ^\.Rproj\.user$
 ^\.travis\.yml$
 cran-comments.md$
 ^README\.Rmd$
 ^README-.*\.png$
+^codecov\.yml$

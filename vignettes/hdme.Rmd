@@ -149,7 +149,7 @@ lassoEstimates <- tibble(
 
 ```
 
-By plotting all the estimated regression coefficients, we see that when the data are subject to measurement error, the number of false postives may increase. Note that this is not necessarily the case for all choices of parameters.
+By plotting all the estimated regression coefficients, we see that when the data are subject to measurement error, the number of false positives may increase. Note that this is not necessarily the case for all choices of parameters.
 
 ```{r}
 library(ggplot2)
@@ -373,7 +373,7 @@ The element `cv` contains all the details of the cross-validation runs.
 
 Next, `loss_min` gives the minimum of the mean loss, and `radius_min` is the corresponding radius. `loss_1se` gives the smallest loss within one standard error of `loss_min`, and `radius_1se` is a smallest radius given a loss less than or equal to `loss_1se`.
 
-The result of performing cross-validation can be illustrated using the `plot` function. It shows the cross-validated loss over the grid of radii. $R_{min}$ and $R_{1se}$ are shown with labels, and the corresponing loss as horizontal red lines.
+The result of performing cross-validation can be illustrated using the `plot` function. It shows the cross-validated loss over the grid of radii. $R_{min}$ and $R_{1se}$ are shown with labels, and the corresponding loss as horizontal red lines.
 
 ```{r}
 plot(cv_corrected_fit)
@@ -393,13 +393,13 @@ str(corrected_fit)
 
 
 # Matrix Uncertainty Selector
-The Matrix Uncertainty Selector (MUS) was introduced by @rosenbaum2010 as a modification of the Dantzig Selector for data with measurement error. The key insight behind the MUS, is that when $X$ is measured with error, the true coefficient vector $\beta$ may not be part of the feasible set, even when $\lambda$ is set to its theorically optimal value. The reason is that $\lambda$ is a bound on the residual of the linear model, while in the case of measurement error, a bound on $\delta$ the measurementer error matrix $U$ is also needed. The MUS is defined as the optimization problem
+The Matrix Uncertainty Selector (MUS) was introduced by @rosenbaum2010 as a modification of the Dantzig Selector for data with measurement error. The key insight behind the MUS, is that when $X$ is measured with error, the true coefficient vector $\beta$ may not be part of the feasible set, even when $\lambda$ is set to its theorically optimal value. The reason is that $\lambda$ is a bound on the residual of the linear model, while in the case of measurement error, a bound on $\delta$ the measurement error matrix $U$ is also needed. The MUS is defined as the optimization problem
 $$
 \text{minimize } ~ \|\beta\|_{1}, ~ \text{ subject to }  ~ (1/n)\| W^{T} (y - W\beta)\|_{\infty} \leq \lambda + \delta \|\beta\|_{1}.
 $$
 Note that the MUS does not require an estimate of the measurement error covariance matrix $\Sigma_{uu}$. This might be a practical advantage in some cases, when an estimate of $\Sigma_{uu}$ is hard to obtain.
 
-The MUS can be converted to a linear programming problem (@sorensen2018). The `hdme` package contains a function `fit_mus` for computing the Matrix Uncertainty Selector. It uses `Rglpk` (@theussl2019) for solving the underlying linear program. In order to illustrate `fit_mus`, we generate som example data with measurement error.
+The MUS can be converted to a linear programming problem (@sorensen2018). The `hdme` package contains a function `fit_mus` for computing the Matrix Uncertainty Selector. It uses `Rglpk` (@theussl2019) for solving the underlying linear program. In order to illustrate `fit_mus`, we generate some example data with measurement error.
 
 ```{r}
 set.seed(1)
@@ -443,7 +443,7 @@ The Generalized Matrix Uncertainty Selector (GMUS) is an extension of the MUS to
 $$
 \text{minimize } ~ \|\beta\|_{1}, ~ \text{ subject to } ~ (1/n)\|W^{T} (y - \mu(W \beta))\|_{\infty} \leq \lambda + \sum_{r=1}^{R}\delta^{r}(r! \sqrt{n})^{-1} \|\beta\|_{1}^{r} \|\mu^ {(r)}(W\beta)\|_{2},
 $$
-where $\mu(\cdot)$ is the vector valued mean function of the generalized linear model and $\mu^{(r)}(\cdot)$ is its $r$th derivative. $R$ is a parameter controling the number of Taylor expansion terms which are included. When $R\to\infty$, the true solution is a member of the feasible set given that the bounds $(1/n)\|W^{T}\epsilon\|_{\infty} \leq \lambda$ and $\|U\|_{\infty} \leq \delta$ hold. In practice, we set $R=1$ for computational reasons. When $R=1$, the GMUS can be solved using a sequence of linear programming problems on the same form as the MUS, with an iterative reweighing algorithm.
+where $\mu(\cdot)$ is the vector valued mean function of the generalized linear model and $\mu^{(r)}(\cdot)$ is its $r$th derivative. $R$ is a parameter controlling the number of Taylor expansion terms which are included. When $R\to\infty$, the true solution is a member of the feasible set given that the bounds $(1/n)\|W^{T}\epsilon\|_{\infty} \leq \lambda$ and $\|U\|_{\infty} \leq \delta$ hold. In practice, we set $R=1$ for computational reasons. When $R=1$, the GMUS can be solved using a sequence of linear programming problems on the same form as the MUS, with an iterative reweighing algorithm.
 
 The `fit_gmus` function in the `hdme` package implements the GMUS for $R=1$, which is defined as
 $$

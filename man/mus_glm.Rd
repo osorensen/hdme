@@ -23,3 +23,4 @@ Intercept and coefficients at the values of lambda and delta specified.
 \description{
 Internal function.
 }
+\keyword{internal}

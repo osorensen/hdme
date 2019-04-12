@@ -9,7 +9,7 @@
 #'
 #' \insertRef{sorensen2018}{hdme}
 #' @examples
-#' # Example with logistic regression
+#' # Example with Gaussian response
 #' set.seed(1)
 #' # Number of samples
 #' n <- 100

@@ -5,6 +5,8 @@
 #' @param lambda Regularization parameter due to residual.
 #' @param delta Regularization parameter due to measurement error.
 #'
+#' @keywords internal
+#'
 musalgorithm <- function(W, y, lambda, delta){
   # We assume the first column of W is constants, i.e., intercept
   n <- dim(W)[1]

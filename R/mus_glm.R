@@ -8,6 +8,8 @@
 #' @param family "binomial" or "poisson"
 #' @return Intercept and coefficients at the values of lambda and delta specified.
 #'
+#' @keywords internal
+#'
 mus_glm <- function(W, y, lambda, delta, family = c("binomial", "poisson")){
 
   family <- match.arg(family)

@@ -50,5 +50,8 @@ The methods implemented in the package include
 * Matrix Uncertainty Lasso for Generalized Linear Models (@sorensen2018)
 * Generalized Dantzig Selector (@james2009)
 
+## Contributions
+
+Contributions to `hdme` are very welcome. If you have a question or suspect you have found a bug, please [open an Issue](https://github.com/osorensen/hdme/issues). Code contribution by pull requests are also appreciated.
 
 ## References

@@ -47,6 +47,13 @@ The methods implemented in the package include
     al. (2018))
   - Generalized Dantzig Selector (James and Radchenko (2009))
 
+## Contributions
+
+Contributions to `hdme` are very welcome. If you have a question or
+suspect you have found a bug, please [open an
+Issue](https://github.com/osorensen/hdme/issues). Code contribution by
+pull requests are also appreciated.
+
 ## References
 
 <div id="refs" class="references">

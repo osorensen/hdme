@@ -5,5 +5,3 @@ sudo: false
 cache:
   packages: false
 
-env:
-  - _R_CHECK_FORCE_SUGGESTS_=0

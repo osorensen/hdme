@@ -13,12 +13,12 @@ affiliations:
  - name: Center for Lifespan Changes in Brain and Cognition, Department of Psychology, University of Oslo
    index: 1
 date: 12 April 2019
-bibliography: inst/REFERENCES.bib
+bibliography: paper.bib
 ---
 
 # Summary
 
-Many problems in science involve explaining an outcome of interest, denoted $y$, by measured covariates, denoted $x$. In 
+Many problems in science involve explaining an outcome of interest by measured covariates. In high-dimensional problems, the number of covariates is very large, and it is often of interest to find a subset which has large explantory power. An example from cancer research is finding gene expressions or other biomarkers which can explain disease progression, from a large set of candidates [@Kristensen2014]. In customer analytics, it is of interest to find out which variables predict whether customers will return or not, and variables of interest include factors like previous purchasing patterns, demographics, and satisifaction measures. The lasso [@tibshirani1996] and the Dantzig selector [@candes2007;@james2009] are popular methods for variable selection in this type of problems, combining computational speed with good statistical properties [@buhlmann2011]. In practice, however, the covariates of interest are often subject to measurement error. Such measurement error has been shown to lead to worse variable selection properties of the lasso [@sorensen2015], typically involving an increased number of false positive selections. Correction methods for the lasso have been proposed by @loh2012 and @sorensen2015 for the lasso, and by @rosenbaum2010 and @sorensen2018 for the Dantzig selector.
 
 The forces on stars, galaxies, and dark matter under external gravitational
 fields lead to the dynamical evolution of structures in the universe. The orbits

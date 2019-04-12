@@ -5,6 +5,12 @@ sudo: false
 cache:
   packages: false
 
+r_packages:
+  - covr
+
+after_success:
+  - Rscript -e 'library(covr); codecov()'
+
 env:
   global:
   - _R_CHECK_FORCE_SUGGESTS_=false

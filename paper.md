@@ -18,44 +18,12 @@ bibliography: paper.bib
 
 # Summary
 
-Many problems in science involve explaining an outcome of interest by measured covariates. In high-dimensional problems, the number of covariates is very large, and it is often of interest to find a subset which has large explantory power. An example from cancer research is finding gene expressions or other biomarkers which can explain disease progression, from a large set of candidates [@Kristensen2014]. In customer analytics, it is of interest to find out which variables predict whether customers will return or not, and variables of interest include factors like previous purchasing patterns, demographics, and satisifaction measures. The lasso [@tibshirani1996] and the Dantzig selector [@candes2007;@james2009] are popular methods for variable selection in this type of problems, combining computational speed with good statistical properties [@buhlmann2011]. In practice, however, the covariates of interest are often subject to measurement error. Such measurement error has been shown to lead to worse variable selection properties of the lasso [@sorensen2015], typically involving an increased number of false positive selections. Correction methods for the lasso have been proposed by @loh2012 and @sorensen2015 for the lasso, and by @rosenbaum2010 and @sorensen2018 for the Dantzig selector.
+Many problems in science involve using measured variables to explain an outcome of interest, using some statistical regression model. In high-dimensional problems, characterized by having a very large number of variables, one often focuses on finding a subset of variables with good explantory power. An example from cancer research involves finding gene expressions or other biomarkers which can explain disease progression, from a large set of candidates [@Kristensen2014]. Another example is customer analytics, where it may be of interest to find out which variables predict whether customers will return or not, and variables of interest include factors like previous purchasing patterns, demographics, and satisifaction measures [@baesens2014]. 
 
-The forces on stars, galaxies, and dark matter under external gravitational
-fields lead to the dynamical evolution of structures in the universe. The orbits
-of these bodies are therefore key to understanding the formation, history, and
-future state of galaxies. The field of "galactic dynamics," which aims to model
-the gravitating components of galaxies to study their structure and evolution,
-is now well-established, commonly taught, and frequently used in astronomy.
-Aside from toy problems and demonstrations, the majority of problems require
-efficient numerical tools, many of which require the same base code (e.g., for
-performing numerical orbit integration).
+The lasso [@tibshirani1996] and the Dantzig selector [@candes2007;@james2009] are popular methods for variable selection in this type of problems, combining computational speed with good statistical properties [@buhlmann2011]. In many practical applications, the process of measuring the variables of interest is subject to measurement error [@carroll2006], but this additional source of noise is neglected by the aforementioned models. Such measurement error has been shown to lead to worse variable selection properties of the lasso [@sorensen2015], typically involving an increased number of false positive selections. A corrected lasso has been proposed and analyzed by @loh2012 for linear models and @sorensen2015 for generalized linear models. It has been applied by @vasquez2019 in a problem involving measurement of serum biomarkers. For the Dantzig selector, @rosenbaum2010 proposed the Matrix Uncertainty Selector (MUS) for linear models, which was extended to the generalized linear model case by @sorensen2018 with an algorithm named GMUS (Generalized MUS).
 
-``Gala`` is an Astropy-affiliated Python package for galactic dynamics. Python
-enables wrapping low-level languages (e.g., C) for speed without losing
-flexibility or ease-of-use in the user-interface. The API for ``Gala`` was
-designed to provide a class-based and user-friendly interface to fast (C or
-Cython-optimized) implementations of common operations such as gravitational
-potential and force evaluation, orbit integration, dynamical transformations,
-and chaos indicators for nonlinear dynamics. ``Gala`` also relies heavily on and
-interfaces well with the implementations of physical units and astronomical
-coordinate systems in the ``Astropy`` package [@astropy] (``astropy.units`` and
-``astropy.coordinates``).
+``hdme`` is an R [@rbib] package containing implementations of both the corrected lasso and the MU selector for high-dimensional measurement error problems. Its main functions are `fit_gmus()` and `fit_corrected_lasso()`. Additional functions provide opportunities for hyperparameter tuning using cross-validation or the elbow rule [@rosenbaum2010], and plotting tools for visualizing the model fit. The underlying numerical procedures are implemented in ``C++`` using the ``RcppArmadillo`` package [@eddelbuettel2014] and linear programming with ``Rglpk`` [@theussl2019]. Version 0.2.3 of ``hdme`` is available from the comprehensive R archive network (CRAN) at https://CRAN.R-project.org, and the latest development version is available at https://github.com/osorensen/hdme. The package vignette, which can be opened in ``R`` with the command `vignette("hdme")`, contains a step-by-step introduction to the models implemented in the package.
 
-``Gala`` was designed to be used by both astronomical researchers and by
-students in courses on gravitational dynamics or astronomy. It has already been
-used in a number of scientific publications [@Pearson:2017] and has also been
-used in graduate courses on Galactic dynamics to, e.g., provide interactive
-visualizations of textbook material [@Binney:2008]. The combination of speed,
-design, and support for Astropy functionality in ``Gala`` will enable exciting
-scientific explorations of forthcoming data releases from the *Gaia* mission
-[@gaia] by students and experts alike.
-
-
-# Citations
-
-Citations to entries in paper.bib should be in
-[rMarkdown](http://rmarkdown.rstudio.com/authoring_bibliographies_and_citations.html)
-format.
 
 # Acknowledgements
 

@@ -6,7 +6,7 @@ tags:
   - variable selection
   - measurement error
 authors:
-  - name: Oystein Sorensen
+  - name: Oystein Sørensen
     orcid: 0000-0003-0724-3542
     affiliation: 1 # (Multiple affiliations must be quoted)
 affiliations:
@@ -18,7 +18,7 @@ bibliography: paper.bib
 
 # Summary
 
-Many problems in science involve using measured variables to explain an outcome of interest, using some statistical regression model. In high-dimensional problems, characterized by having a very large number of variables, one often focuses on finding a subset of variables with good explantory power. An example from cancer research involves finding gene expressions or other biomarkers which can explain disease progression, from a large set of candidates [@Kristensen2014]. Another example is customer analytics, where it may be of interest to find out which variables predict whether customers will return or not, and variables of interest include factors like previous purchasing patterns, demographics, and satisifaction measures [@baesens2014]. 
+Many problems in science involve using measured variables to explain an outcome of interest, using some statistical regression model. In high-dimensional problems, characterized by having a very large number of variables, one often focuses on finding a subset of variables with good explantory power. An example from cancer research involves finding gene expressions or other biomarkers which can explain disease progression, from a large set of candidates [@kristensen2014]. Another example is customer analytics, where it may be of interest to find out which variables predict whether customers will return or not, and variables of interest include factors like previous purchasing patterns, demographics, and satisifaction measures [@baesens2014]. 
 
 The lasso [@tibshirani1996] and the Dantzig selector [@candes2007;@james2009] are popular methods for variable selection in this type of problems, combining computational speed with good statistical properties [@buhlmann2011]. In many practical applications, the process of measuring the variables of interest is subject to measurement error [@carroll2006], but this additional source of noise is neglected by the aforementioned models. Such measurement error has been shown to lead to worse variable selection properties of the lasso [@sorensen2015], typically involving an increased number of false positive selections. A corrected lasso has been proposed and analyzed by @loh2012 for linear models and @sorensen2015 for generalized linear models. It has been applied by @vasquez2019 in a problem involving measurement of serum biomarkers. For the Dantzig selector, @rosenbaum2010 proposed the Matrix Uncertainty Selector (MUS) for linear models, which was extended to the generalized linear model case by @sorensen2018 with an algorithm named GMUS (Generalized MUS).
 

@@ -1,5 +1,8 @@
+# hdme 0.2.3.9000
+- It turns out that travis CI is not able to install `Rglpk`. Hence, for the development version `Rglpk` is back in **Suggests**, together with `lpSolveAPI`.
+
 # hdme 0.2.3
-- Added `Rglpk` back to **Imports** and removed **lpSolveAPI**, as the latest version of `Rglpk` passes all tests on CRAN, including osX.
+- Added `Rglpk` back to **Imports** and removed `lpSolveAPI`, as the latest version of `Rglpk` passes all tests on CRAN, including osX.
 - Updated vignette.
 - Cleaned up documentation, hiding internal functions from the index.
 - Created unit tests.

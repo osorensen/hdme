@@ -30,6 +30,25 @@ You can install the latest development version from github with:
 devtools::install_github("osorensen/hdme", build_vignettes = TRUE)
 ```
 
+### Dependency on Rglpk
+
+`hdme` uses the [Rglpk
+package](https://cran.r-project.org/package=Rglpk), which requires the
+GLPK library package to be installed. On some platforms this requires a
+manual installation.
+
+On Debian/Ubuntu, you might use:
+
+``` sh
+sudo apt-get install libglpk-dev
+```
+
+On macOS, you might use:
+
+``` sh
+brew install glpk
+```
+
 ## Methods
 
 hdme provides implementations of the following algorithms:

@@ -1,3 +1,7 @@
+# hdme 0.2.3.9001
+
+- Figured out how to install `Rglpk` on travis CI, so now this package is back in **Imports**, and `lpSolveAPI` is no longer used.
+
 # hdme 0.2.3.9000
 - It turns out that travis CI is not able to install `Rglpk`. Hence, for the development version `Rglpk` is back in **Suggests**, together with `lpSolveAPI`.
 

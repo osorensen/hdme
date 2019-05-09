@@ -11,8 +11,7 @@
 #' @param active_set Logical. Whether or not to use an active set strategy to
 #'   speed up coordinate descent algorithm.
 #'
-#' @return List object with intercept and coefficients at the values of lambda
-#'   and delta specified, as well as regularization parameters.
+#' @return An object of class "gmu_lasso".
 #' @export
 #'
 #' @references \insertRef{rosenbaum2010}{hdme}
@@ -39,6 +38,9 @@
 #' y <- rbinom(n, 1, (1 + exp(-X%*%beta))**(-1))
 #' # Run the GMU Lasso
 #' fit <- gmu_lasso(W, y, delta = NULL)
+#' print(fit)
+#' plot(fit)
+#' coef(fit)
 #' # Get an elbow plot, in order to choose delta.
 #' plot(fit)
 #'

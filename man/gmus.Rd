@@ -21,8 +21,7 @@ error.}
 regression or "poisson" for Poisson regression.}
 }
 \value{
-List object with intercept and coefficients at the values of lambda
-  and delta specified, as well as regularization parameters.
+An object of class "gmus".
 }
 \description{
 Generalized Matrix Uncertainty Selector
@@ -44,6 +43,7 @@ y <- X \%*\% beta + rnorm(n, sd = 1)
 fit1 <- gmus(W, y)
 # Draw an elbow plot to select delta
 plot(fit1)
+coef(fit1)
 
 # Now, according to the "elbow rule", choose
 # the final delta where the curve has an "elbow".
@@ -52,6 +52,8 @@ plot(fit1)
 fit2 <- gmus(W, y, delta = 0.08)
 # Plot the coefficients
 plot(fit2)
+coef(fit2)
+coef(fit2, all = TRUE)
 
 }
 \references{

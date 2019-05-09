@@ -16,10 +16,14 @@ mus(W, y, lambda = NULL, delta = NULL)
 \item{delta}{Additional regularization parameter, bounding the measurement error.}
 }
 \value{
-Intercept and coefficients at the values of lambda and delta specified.
+An object of class "gmus".
 }
 \description{
-Matrix Uncertainty Selector
+Matrix Uncertainty Selector for linear regression.
+}
+\details{
+This function is just a
+wrapper for \code{gmus(W, y, lambda, delta, family = "gaussian")}.
 }
 \examples{
 # Example with Gaussian response
@@ -40,11 +44,14 @@ y <- X \%*\% beta + rnorm(n, sd = 1)
 fit1 <- mus(W, y)
 # Draw an elbow plot to select delta
 plot(fit1)
+coef(fit1)
 
 # Now, according to the "elbow rule", choose the final delta where the curve has an "elbow".
 # In this case, the elbow is at about delta = 0.08, so we use this to compute the final estimate:
 fit2 <- mus(W, y, delta = 0.08)
 plot(fit2) # Plot the coefficients
+coef(fit2)
+coef(fit2, all = TRUE)
 
 }
 \references{

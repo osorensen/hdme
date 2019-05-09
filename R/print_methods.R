@@ -49,3 +49,39 @@ print.gds <- function(x, ...){
       "regularization parameter ", x$lambda, ".\n", sep = "")
   cat("Use functions plot() and coef() for more information about the fitted values.\n")
 }
+
+
+#' Print a GMU Lasso object
+#'
+#' Default print method for a \code{gmu_lasso} object.
+#'
+#' @param x Fitted model object returned by \code{\link{gmu_lasso}}.
+#' @param ... Other arguments (not used).
+#'
+#' @export
+#'
+#'
+#'
+print.gmu_lasso <- function(x, ...){
+  cat("Generalized MU Lasso with family ", x$family, ", with ", length(x$beta), " variables fitted with ",
+      "regularization parameters lambda = ", x$lambda, " and ", length(x$delta), " delta values.\n", sep = "")
+  cat("Use functions plot() and coef() for more information about the fitted values.\n")
+}
+
+
+#' Print a GMUS object
+#'
+#' Default print method for a \code{gmus} object.
+#'
+#' @param x Fitted model object returned by \code{\link{gmus}}.
+#' @param ... Other arguments (not used).
+#'
+#' @export
+#'
+#'
+#'
+print.gmus <- function(x, ...){
+  cat("Generalized MU Selector with family ", x$family, ", with ", length(x$beta), " variables fitted with ",
+      "regularization parameters lambda = ", x$lambda, " and ", length(x$delta), " delta values.\n", sep = "")
+  cat("Use functions plot() and coef() for more information about the fitted values.\n")
+}

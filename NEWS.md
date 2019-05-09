@@ -2,8 +2,8 @@
 
 ## S3 methods
 
-- Added `coef.corrected_lasso`, `coef.gds`. 
-- Added `print.corrected_lasso` and `print.cv_corrected_lasso`.
+- Added coef methods `coef.corrected_lasso`, `coef.gds`, `coef.gmu_lasso`, and `coef.gmus`. 
+- Added print methods `print.corrected_lasso`, `print.cv_corrected_lasso`, `print.gds`, `print.gmu_lasso`, and `print.gmus`.
 - Improved `plot.corrected_lasso` to also handle the case of a single regularization parameter.
 
 ## Dependencies

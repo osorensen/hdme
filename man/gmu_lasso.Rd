@@ -25,8 +25,7 @@ supported.}
 speed up coordinate descent algorithm.}
 }
 \value{
-List object with intercept and coefficients at the values of lambda
-  and delta specified, as well as regularization parameters.
+An object of class "gmu_lasso".
 }
 \description{
 Generalized Matrix Uncertainty Lasso
@@ -51,6 +50,9 @@ W <- X + sdU * matrix(rnorm(n * p), nrow = n, ncol = p)
 y <- rbinom(n, 1, (1 + exp(-X\%*\%beta))**(-1))
 # Run the GMU Lasso
 fit <- gmu_lasso(W, y, delta = NULL)
+print(fit)
+plot(fit)
+coef(fit)
 # Get an elbow plot, in order to choose delta.
 plot(fit)
 

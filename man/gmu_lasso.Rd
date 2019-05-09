@@ -50,9 +50,9 @@ W <- X + sdU * matrix(rnorm(n * p), nrow = n, ncol = p)
 # Binomial response
 y <- rbinom(n, 1, (1 + exp(-X\%*\%beta))**(-1))
 # Run the GMU Lasso
-gmu_lasso <- gmu_lasso(W, y, delta = NULL)
+fit <- gmu_lasso(W, y, delta = NULL)
 # Get an elbow plot, in order to choose delta.
-plot(gmu_lasso)
+plot(fit)
 
 
 }

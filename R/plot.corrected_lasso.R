@@ -1,7 +1,8 @@
 #' @title plot.corrected_lasso
 #' @description Plot the output of corrected_lasso
 #' @param x Object of class corrected_lasso, returned from calling corrected_lasso()
-#' @param type Type of plot. Either "nonzero" or "path".
+#' @param type Type of plot. Either "nonzero" or "path". Ignored if \code{length(x$radii) == 1},
+#' in case of which all coefficient estimates are plotted at the given regularization parameter.
 #' @param ... Other arguments to plot (not used)
 #' @examples
 #' # Example with linear regression
@@ -25,7 +26,15 @@
 #' @export
 plot.corrected_lasso <- function(x, type = "nonzero", ...) {
 
-  if(type == "nonzero") {
+  if(length(x$radii) == 1){
+    message("Only one regularization parameter. Plotting all coefficients.\n")
+    df <- data.frame(
+      coefficient = 1:length(x$betaCorr),
+      estimate = x$betaCorr
+    )
+    ggplot2::ggplot(df, ggplot2::aes_(x =~ coefficient, y =~ estimate)) +
+      ggplot2::geom_point()
+  } else if(type == "nonzero") {
     df <- data.frame(radius = x$radii, nonZero = colSums(abs(x$betaCorr) > 0))
     ggplot2::ggplot(df, ggplot2::aes_(x =~ radius, y =~ nonZero)) +
       ggplot2::geom_line() +

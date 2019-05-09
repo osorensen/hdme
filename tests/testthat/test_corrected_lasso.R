@@ -12,7 +12,7 @@ y <- X %*% beta + rnorm(n, sd = 1) # Response
 fit <- corrected_lasso(W, y, sigmaUU, family = "gaussian", no_radii = 2) # Run the corrected lasso
 
 test_that("corrected_lasso returns right object", {
-  expect_output(str(fit), "List of 2")
+  expect_output(str(fit), "List of 3")
   expect_equal(class(fit), "corrected_lasso")
 })
 
@@ -35,7 +35,7 @@ y <- rbinom(n, size = 1, prob = hdme:::logit(X %*% c(rep(5, 2), rep(0, p-2))))
 fit <- corrected_lasso(W, y, sigmaUU, family = "binomial", no_radii = 6)
 
 test_that("corrected_lasso returns right object for logistic regression", {
-  expect_output(str(fit), "List of 2")
+  expect_output(str(fit), "List of 3")
   expect_equal(class(fit), "corrected_lasso")
 })
 

@@ -16,7 +16,7 @@
 #'   Default is 0.1.
 #' @param maxits Optional maximum number of iterations of the project gradient
 #'   descent algorithm for each radius. Default is 5000.
-#' @return A list
+#' @return An object of class "cv_corrected_lasso".
 #' @references \insertRef{loh2012}{hdme}
 #'
 #' \insertRef{sorensen2015}{hdme}
@@ -39,9 +39,12 @@
 #' # Run the corrected lasso
 #' cvfit <- cv_corrected_lasso(W, y, sigmaUU, no_radii = 5, n_folds = 3)
 #' plot(cvfit)
+#' print(cvfit)
 #' # Run the standard lasso using the radius found by cross-validation
 #' fit <- corrected_lasso(W, y, sigmaUU, family = "gaussian",
 #' radii = cvfit$radius_min)
+#' coef(fit)
+#' plot(fit)
 #' @export
 cv_corrected_lasso <- function(W, y, sigmaUU, n_folds = 10, family = "gaussian",
                  radii = NULL, no_radii = 100, alpha = 0.1, maxits = 5000){

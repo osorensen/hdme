@@ -26,17 +26,17 @@
 #' # Response
 #' y <- X %*% beta + rnorm(n, sd = 1)
 #' # Run the MU Selector
-#' gmus1 <- gmus(W, y)
+#' fit1 <- gmus(W, y)
 #' # Draw an elbow plot to select delta
-#' plot(gmus1)
+#' plot(fit1)
 #'
 #' # Now, according to the "elbow rule", choose
 #' # the final delta where the curve has an "elbow".
 #' # In this case, the elbow is at about delta = 0.08,
 #' # so we use this to compute the final estimate:
-#' gmus2 <- gmus(W, y, delta = 0.08)
+#' fit2 <- gmus(W, y, delta = 0.08)
 #' # Plot the coefficients
-#' plot(gmus2)
+#' plot(fit2)
 #'
 #' @export
 gmus <- function(W, y, lambda = NULL, delta = NULL,

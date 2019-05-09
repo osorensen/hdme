@@ -32,9 +32,7 @@ parameters to fit the corrected lasso for.}
 algorithm for each radius. Default is 5000.}
 }
 \value{
-Returns a list containing a matrix whose columns represent the
- corrected beta estimates at each radius, as well as the vector of radii
- used.
+An object of class "corrected_lasso".
 }
 \description{
 Lasso (L1-regularization) for generalized linear models with
@@ -63,7 +61,9 @@ beta <- c(seq(from = 0.1, to = 1, length.out = 5), rep(0, p-5))
 y <- X \%*\% beta + rnorm(n, sd = 1)
 # Run the corrected lasso
 fit <- corrected_lasso(W, y, sigmaUU, family = "gaussian")
+coef(fit)
 plot(fit)
+plot(fit, type = "path")
 
 # Binomial, logistic regression
 # Number of samples
@@ -81,7 +81,7 @@ logit <- function(x) (1+exp(-x))^(-1)
 y <- rbinom(n, size = 1, prob = logit(X \%*\% c(rep(5, 5), rep(0, p-5))))
 fit <- corrected_lasso(W, y, sigmaUU, family = "binomial")
 plot(fit)
-
+coef(fit)
 
 }
 \references{

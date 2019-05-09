@@ -16,8 +16,15 @@
 #' X <- matrix(rnorm(n * p), nrow = n) # True (latent) variables # Design matrix
 #' beta <- c(seq(from = 0.1, to = 1, length.out = 5), rep(0, p-5)) # True regression coefficients
 #' y <- rbinom(n, 1, (1 + exp(-X %*% beta))^(-1)) # Binomially distributed response
-#' gds <- gds(X, y, family = "binomial")
+#' fit <- gds(X, y, family = "binomial")
+#' print(fit)
+#' plot(fit)
+#' coef(fit)
 #'
+#' # Try with more penalization
+#' fit <- gds(X, y, family = "binomial", lambda = 0.1)
+#' coef(fit)
+#' coef(fit, all = TRUE)
 #' @export
 gds <- function(X, y, lambda = NULL, family = c("gaussian", "binomial")) {
 

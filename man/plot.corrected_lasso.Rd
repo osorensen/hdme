@@ -9,7 +9,8 @@
 \arguments{
 \item{x}{Object of class corrected_lasso, returned from calling corrected_lasso()}
 
-\item{type}{Type of plot. Either "nonzero" or "path".}
+\item{type}{Type of plot. Either "nonzero" or "path". Ignored if \code{length(x$radii) == 1},
+in case of which all coefficient estimates are plotted at the given regularization parameter.}
 
 \item{...}{Other arguments to plot (not used)}
 }

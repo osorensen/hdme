@@ -2,15 +2,21 @@
 
 language: R
 sudo: false
-cache:
-  packages: false
+cache: packages
 
 r_packages:
   - covr
+
+addons:
+  apt:
+    update: true
+    packages:
+      - libglpk-dev
+
 
 after_success:
   - Rscript -e 'library(covr); codecov()'
 
 env:
   global:
-  - _R_CHECK_FORCE_SUGGESTS_=false
+  - _R_CHECK_FORCE_SUGGESTS_=true

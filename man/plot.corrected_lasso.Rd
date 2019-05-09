@@ -7,14 +7,15 @@
 \method{plot}{corrected_lasso}(x, type = "nonzero", ...)
 }
 \arguments{
-\item{x}{Object of class corrected_lasso, returned from calling fit_corrected_lasso()}
+\item{x}{Object of class corrected_lasso, returned from calling corrected_lasso()}
 
-\item{type}{Type of plot. Either "nonzero" or "path".}
+\item{type}{Type of plot. Either "nonzero" or "path". Ignored if \code{length(x$radii) == 1},
+in case of which all coefficient estimates are plotted at the given regularization parameter.}
 
 \item{...}{Other arguments to plot (not used)}
 }
 \description{
-Plot the output of fit_corrected_lasso
+Plot the output of corrected_lasso
 }
 \examples{
 # Example with linear regression
@@ -32,7 +33,7 @@ beta <- c(seq(from = 0.1, to = 1, length.out = 5), rep(0, p-5))
 # Response
 y <- X \%*\% beta + rnorm(n, sd = 1)
 # Run the corrected lasso
-fit <- fit_corrected_lasso(W, y, sigmaUU, family = "gaussian")
+fit <- corrected_lasso(W, y, sigmaUU, family = "gaussian")
 plot(fit)
 
 }

@@ -7,8 +7,7 @@
 #'   error.
 #' @param family "gaussian" for linear regression, "binomial" for logistic
 #'   regression or "poisson" for Poisson regression.
-#' @return List object with intercept and coefficients at the values of lambda
-#'   and delta specified, as well as regularization parameters.
+#' @return An object of class "gmus".
 #' @references \insertRef{rosenbaum2010}{hdme}
 #'
 #'   \insertRef{sorensen2018}{hdme}
@@ -26,20 +25,23 @@
 #' # Response
 #' y <- X %*% beta + rnorm(n, sd = 1)
 #' # Run the MU Selector
-#' gmus1 <- fit_gmus(W, y)
+#' fit1 <- gmus(W, y)
 #' # Draw an elbow plot to select delta
-#' plot(gmus1)
+#' plot(fit1)
+#' coef(fit1)
 #'
 #' # Now, according to the "elbow rule", choose
 #' # the final delta where the curve has an "elbow".
 #' # In this case, the elbow is at about delta = 0.08,
 #' # so we use this to compute the final estimate:
-#' gmus2 <- fit_gmus(W, y, delta = 0.08)
+#' fit2 <- gmus(W, y, delta = 0.08)
 #' # Plot the coefficients
-#' plot(gmus2)
+#' plot(fit2)
+#' coef(fit2)
+#' coef(fit2, all = TRUE)
 #'
 #' @export
-fit_gmus <- function(W, y, lambda = NULL, delta = NULL,
+gmus <- function(W, y, lambda = NULL, delta = NULL,
                      family = c("gaussian", "binomial", "poisson")) {
 
   family <- match.arg(family)

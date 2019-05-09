@@ -1,4 +1,4 @@
-#' @title Plot the estimates returned by fit_gds
+#' @title Plot the estimates returned by gds
 #' @description Plot the number of nonzero coefficients at the given lambda.
 #' @param x An object of class gds
 #' @param ... Other arguments to plot (not used).
@@ -16,7 +16,7 @@
 #' # Binomially distributed response
 #' y <- rbinom(n, 1, (1 + exp(-X %*% beta))^(-1))
 #' # Fit the generalized Dantzig Selector
-#' gds <- fit_gds(X, y, family = "binomial")
+#' gds <- gds(X, y, family = "binomial")
 #' # Plot the estimated coefficients at the chosen lambda
 #' plot(gds)
 #'

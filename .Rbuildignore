@@ -7,3 +7,5 @@ cran-comments.md$
 ^README\.Rmd$
 ^README-.*\.png$
 ^codecov\.yml$
+paper.bib
+paper.md

@@ -31,7 +31,7 @@ Default is 0.1.}
 descent algorithm for each radius. Default is 5000.}
 }
 \value{
-A list
+An object of class "cv_corrected_lasso".
 }
 \description{
 Cross-validated Corrected lasso
@@ -59,9 +59,12 @@ y <- X \%*\% beta + rnorm(n, sd = 1)
 # Run the corrected lasso
 cvfit <- cv_corrected_lasso(W, y, sigmaUU, no_radii = 5, n_folds = 3)
 plot(cvfit)
+print(cvfit)
 # Run the standard lasso using the radius found by cross-validation
-fit <- fit_corrected_lasso(W, y, sigmaUU, family = "gaussian",
+fit <- corrected_lasso(W, y, sigmaUU, family = "gaussian",
 radii = cvfit$radius_min)
+coef(fit)
+plot(fit)
 }
 \references{
 \insertRef{loh2012}{hdme}

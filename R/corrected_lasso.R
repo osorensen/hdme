@@ -19,9 +19,7 @@
 #'  0.1.
 #'@param maxits Maximum number of iterations of the project gradient descent
 #'  algorithm for each radius. Default is 5000.
-#'@return Returns a list containing a matrix whose columns represent the
-#'  corrected beta estimates at each radius, as well as the vector of radii
-#'  used.
+#'@return An object of class "corrected_lasso".
 #'
 #'@references \insertRef{loh2012}{hdme}
 #'
@@ -45,8 +43,10 @@
 #' # Response
 #' y <- X %*% beta + rnorm(n, sd = 1)
 #' # Run the corrected lasso
-#' fit <- fit_corrected_lasso(W, y, sigmaUU, family = "gaussian")
+#' fit <- corrected_lasso(W, y, sigmaUU, family = "gaussian")
+#' coef(fit)
 #' plot(fit)
+#' plot(fit, type = "path")
 #'
 #' # Binomial, logistic regression
 #' # Number of samples
@@ -62,14 +62,14 @@
 #' logit <- function(x) (1+exp(-x))^(-1)
 #' # Response
 #' y <- rbinom(n, size = 1, prob = logit(X %*% c(rep(5, 5), rep(0, p-5))))
-#' fit <- fit_corrected_lasso(W, y, sigmaUU, family = "binomial")
+#' fit <- corrected_lasso(W, y, sigmaUU, family = "binomial")
 #' plot(fit)
-#'
+#' coef(fit)
 #'
 #'@importFrom Rdpack reprompt
 #'
 #'@export
-fit_corrected_lasso <- function(W, y, sigmaUU, family = c("gaussian", "binomial", "poisson"),
+corrected_lasso <- function(W, y, sigmaUU, family = c("gaussian", "binomial", "poisson"),
                  radii = NULL, no_radii = NULL, alpha = 0.1, maxits = 5000){
   family <- match.arg(family)
 
@@ -110,7 +110,7 @@ fit_corrected_lasso <- function(W, y, sigmaUU, family = c("gaussian", "binomial"
                                alpha = alpha, maxits = maxits)
   }
 
-
+  fit$family <- family
 
   class(fit) <- c("corrected_lasso")
 

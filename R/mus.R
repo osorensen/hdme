@@ -1,10 +1,12 @@
 #' Matrix Uncertainty Selector
-#' @description Matrix Uncertainty Selector
+#' @description Matrix Uncertainty Selector for linear regression.
+#' @details This function is just a
+#' wrapper for \code{gmus(W, y, lambda, delta, family = "gaussian")}.
 #' @param W Design matrix, measured with error. Must be a numeric matrix.
 #' @param y Vector of responses.
 #' @param lambda Regularization parameter.
 #' @param delta Additional regularization parameter, bounding the measurement error.
-#' @return Intercept and coefficients at the values of lambda and delta specified.
+#' @return An object of class "gmus".
 #' @references \insertRef{rosenbaum2010}{hdme}
 #'
 #' \insertRef{sorensen2018}{hdme}
@@ -24,18 +26,21 @@
 #' # Response
 #' y <- X %*% beta + rnorm(n, sd = 1)
 #' # Run the MU Selector
-#' mus1 <- fit_mus(W, y)
+#' fit1 <- mus(W, y)
 #' # Draw an elbow plot to select delta
-#' plot(mus1)
+#' plot(fit1)
+#' coef(fit1)
 #'
 #' # Now, according to the "elbow rule", choose the final delta where the curve has an "elbow".
 #' # In this case, the elbow is at about delta = 0.08, so we use this to compute the final estimate:
-#' mus2 <- fit_mus(W, y, delta = 0.08)
-#' plot(mus2) # Plot the coefficients
+#' fit2 <- mus(W, y, delta = 0.08)
+#' plot(fit2) # Plot the coefficients
+#' coef(fit2)
+#' coef(fit2, all = TRUE)
 #'
 #' @export
-fit_mus <- function(W, y, lambda = NULL, delta = NULL) {
-  fit <- fit_gmus(W, y, lambda = lambda, delta = delta, family = "gaussian")
+mus <- function(W, y, lambda = NULL, delta = NULL) {
+  fit <- gmus(W, y, lambda = lambda, delta = delta, family = "gaussian")
   return(fit)
 }
 

@@ -1,5 +1,13 @@
 # hdme 0.2.3.9001
 
+## S3 methods
+
+- Added coef methods `coef.corrected_lasso`, `coef.gds`, `coef.gmu_lasso`, and `coef.gmus`. 
+- Added print methods `print.corrected_lasso`, `print.cv_corrected_lasso`, `print.gds`, `print.gmu_lasso`, and `print.gmus`.
+- Improved `plot.corrected_lasso` to also handle the case of a single regularization parameter.
+
+## Dependencies
+
 - Figured out how to install `Rglpk` on travis CI, so now this package is back in **Imports**, and `lpSolveAPI` is no longer used.
 
 # hdme 0.2.3.9000

@@ -210,7 +210,7 @@ $$
 where $\mu(\cdot) \in \mathbb{R}^{n}$ is the vector valued mean function of the generalized linear model. Examples include logistic regression with $\mu(x) = (1+\exp(-x))^{-1}$ and Poisson regression with $\mu(x) = \exp(x)$. Using an iterative reweighing algorithm, the generalized Dantzig selector can be solved as a sequence of linear optimization problems of the same form as the Dantzig selector for linear models.
 
 #### Generalized Dantzig Selector
-To our knowledge, no R package to date contains an implementation of the Generalized Dantzig Selector (GDS), although code is available on [Professor Gareth James' homepage](http://www-bcf.usc.edu/~gareth/research/gdscode). Since the Generalized Matrix Uncertainty Selector (GMUS) presented later in this vignette is a generalization of the GDS, we have included a function for computing the GDS, called `fit_gds`.
+To our knowledge, no R package to date contains an implementation of the Generalized Dantzig Selector (GDS), although code is available on [Professor Gareth James' homepage](http://www-bcf.usc.edu/~gareth/research/gdscode). Since the Generalized Matrix Uncertainty Selector (GMUS) presented later in this vignette is a generalization of the GDS, we have included a function for computing the GDS, called `gds`.
 
 ```{r}
 # Number of samples
@@ -221,16 +221,16 @@ p <- 50
 ll <- create_example_data(n, p, family = "binomial")
 ```
 
-Arguments to `fit_gds`. Only $X$ and $y$ are required.
+Arguments to `gds`. Only $X$ and $y$ are required.
 ```{r}
-args(fit_gds)
+args(gds)
 ```
 
 
 Fit the generalized Dantzig selector on the data.
 ```{r}
 # Fit the Generalized Dantzig Selector
-gds_estimate <- fit_gds(ll$X, ll$y, family = "binomial")
+gds_estimate <- gds(ll$X, ll$y, family = "binomial")
 ```
 
 
@@ -238,7 +238,7 @@ The result is a list of class `gds`.
 ```{r}
 class(gds_estimate)
 ```
-The list contains the intercept (which has not been penalized), the regression coefficients `beta`, the family, the value of `lambda` and the number of nonzero components of `beta`. By default, `fit_gds` uses the value $\lambda_{min}$ corresponding to the minimum cross-validated loss for the lasso, using `cv.glmnet`.
+The list contains the intercept (which has not been penalized), the regression coefficients `beta`, the family, the value of `lambda` and the number of nonzero components of `beta`. By default, `gds` uses the value $\lambda_{min}$ corresponding to the minimum cross-validated loss for the lasso, using `cv.glmnet`.
 ```{r}
 str(gds_estimate)
 ```
@@ -263,14 +263,14 @@ $$
 @sorensen2015 analyzed the covariate selection properties of the same model, and similarly showed that results very similar to those for covariate selection with the standard lasso in the absence of measurement, also hold for this corrected lasso.
 
 ### Linear Regression
-This package implements the projected gradient descent algorithm proposed by @loh2012. It can be found in the `fit_corrected_lasso` function. Using the `create_example_data` function defined above, we illustrate its use.
+This package implements the projected gradient descent algorithm proposed by @loh2012. It can be found in the `corrected_lasso` function. Using the `create_example_data` function defined above, we illustrate its use.
 
 ```{r}
 set.seed(1000)
 # Generate example data
 ll <- create_example_data(n, p)
 # Fit the corrected lasso
-corrected_fit <- fit_corrected_lasso(W = ll$W, y = ll$y, sigmaUU = ll$sigmaUU)
+corrected_fit <- corrected_lasso(W = ll$W, y = ll$y, sigmaUU = ll$sigmaUU)
 ```
 
 The object returned is a `list` with class `corrected_lasso`.
@@ -284,7 +284,7 @@ typeof(corrected_fit)
 
 The arguments to the function are shown below.
 ```{r}
-args(fit_corrected_lasso)
+args(corrected_lasso)
 ```
 
 If the `radii` argument is not set, a naive lasso is run on the measurement error data, using cross-validation to find $\hat{\beta}_{naive}$. The maximum of $R$ is set to $R_{max}=2\|\hat{\beta}_{naive}\|_{1}$, i.e., the maximum possible solution to the corrected lasso is twice as large as the naive solution, as measured by the L1-norm. The minimum of $R$ is by default set to $R_{min} = 10^{-3}R_{max}$. The corrected lasso solution is then computed on an equally spaced grid between $R_{min}$ and $R_{max}$. The length of the grid is set by the `no_radii` argument, which by default equals $20$. 
@@ -315,10 +315,10 @@ p <- 50
 ll <- create_example_data(n, p, sdU = 0.2, family = "binomial")
 ```
 
-We get logistic regression by specifying `family = "binomial"` in the call the `fit_corrected_lasso()`. 
+We get logistic regression by specifying `family = "binomial"` in the call the `corrected_lasso()`. 
 
 ```{r}
-corrected_fit <- fit_corrected_lasso(ll$W, ll$y, ll$sigmaUU, family = "binomial")
+corrected_fit <- corrected_lasso(ll$W, ll$y, ll$sigmaUU, family = "binomial")
 ```
 
 The plot functions work the same way as for linear regression. By default, the argument `type = "nonzero"`.
@@ -333,7 +333,7 @@ plot(corrected_fit, type = "path")
 ```
 
 ### Poison Regression
-Poisson regression is also available, by using the argument `family = "poisson"` to `fit_corrected_lasso`.
+Poisson regression is also available, by using the argument `family = "poisson"` to `corrected_lasso`.
 
 ## Model Tuning
 
@@ -379,10 +379,10 @@ The result of performing cross-validation can be illustrated using the `plot` fu
 plot(cv_corrected_fit)
 ```
 
-Having used `cv_corrected_lasso` to find the right value of the constraint parameter $R$, we can use `fit_corrected_lasso` on this single value. The snippet below shows how to compute the solution using $R_{1se}$.
+Having used `cv_corrected_lasso` to find the right value of the constraint parameter $R$, we can use `corrected_lasso` on this single value. The snippet below shows how to compute the solution using $R_{1se}$.
 
 ```{r}
-corrected_fit <- fit_corrected_lasso(ll$W, ll$y, ll$sigmaUU, radii = cv_corrected_fit$radius_1se)
+corrected_fit <- corrected_lasso(ll$W, ll$y, ll$sigmaUU, radii = cv_corrected_fit$radius_1se)
 ```
 
 The final parameter estimates can be found in `corrected_fit$betaCorr`.
@@ -399,7 +399,7 @@ $$
 $$
 Note that the MUS does not require an estimate of the measurement error covariance matrix $\Sigma_{uu}$. This might be a practical advantage in some cases, when an estimate of $\Sigma_{uu}$ is hard to obtain.
 
-The MUS can be converted to a linear programming problem (@sorensen2018). The `hdme` package contains a function `fit_mus` for computing the Matrix Uncertainty Selector. It uses `Rglpk` (@theussl2019) for solving the underlying linear program. In order to illustrate `fit_mus`, we generate some example data with measurement error.
+The MUS can be converted to a linear programming problem (@sorensen2018). The `hdme` package contains a function `mus` for computing the Matrix Uncertainty Selector. It uses `Rglpk` (@theussl2019) for solving the underlying linear program. In order to illustrate `mus`, we generate some example data with measurement error.
 
 ```{r}
 set.seed(1)
@@ -413,7 +413,7 @@ ll <- create_example_data(n, p, sdU = 0.2)
 
 We provide the measurement matrix and the response. The solution is computed over a grid of $\delta$ values, and with $\lambda$ set to the cross-validated optimum for the lasso, as chosen by `cv.glmnet` in the `glmnet` package. The returned object is a list with class `gmus`, which stands for *generalized matrix uncertainty selector*.
 ```{r}
-mus_fit <- fit_mus(ll$W, ll$y)
+mus_fit <- mus(ll$W, ll$y)
 class(mus_fit)
 str(mus_fit)
 ```
@@ -427,7 +427,7 @@ plot(mus_fit)
 According to the "elbow rule" (@rosenbaum2010), a final value of $\delta$ can be chosen where the curve starts to level off. This is not always easy in practice, but in the plot above, a value between $0.05$ and $0.1$ may be reasonable. Choosing $1.0$, we can call the algorithm again, but this time setting the argument `delta = 0.1`.
 
 ```{r}
-mus_fit <- fit_mus(ll$W, ll$y, delta = 0.1)
+mus_fit <- mus(ll$W, ll$y, delta = 0.1)
 ```
 
 Since only one value of $\delta$ was provided, the plot method will now show all the estimated coefficients, rather than the number of nonzero coefficients, as in the previous plot.
@@ -445,20 +445,20 @@ $$
 $$
 where $\mu(\cdot)$ is the vector valued mean function of the generalized linear model and $\mu^{(r)}(\cdot)$ is its $r$th derivative. $R$ is a parameter controlling the number of Taylor expansion terms which are included. When $R\to\infty$, the true solution is a member of the feasible set given that the bounds $(1/n)\|W^{T}\epsilon\|_{\infty} \leq \lambda$ and $\|U\|_{\infty} \leq \delta$ hold. In practice, we set $R=1$ for computational reasons. When $R=1$, the GMUS can be solved using a sequence of linear programming problems on the same form as the MUS, with an iterative reweighing algorithm.
 
-The `fit_gmus` function in the `hdme` package implements the GMUS for $R=1$, which is defined as
+The `gmus` function in the `hdme` package implements the GMUS for $R=1$, which is defined as
 $$
 \text{minimize } ~ \|\beta\|_{1}, ~ \text{ subject to } ~ (1/n)\|W^{T} (y - \mu(W \beta))\|_{\infty} \leq \lambda + \delta n^{-(1/2)} \|\beta\|_{1} \|\mu^ {(1)}(W\beta)\|_{2}.
 $$
 As the MUS, the GMUS does not require an estimate of $\Sigma_{uu}$.
 
-We illustrate `fit_gmus` using logistic regression. First, we generate some sample data.
+We illustrate `gmus` using logistic regression. First, we generate some sample data.
 
 ```{r}
 set.seed(323)
 n <- 100
 p <- 50
 ll <- create_example_data(n, p, sdU = 0.2, family = "binomial")
-gmus_fit <- fit_gmus(ll$W, ll$y, family = "binomial")
+gmus_fit <- gmus(ll$W, ll$y, family = "binomial")
 ```
 
 The returned object is again a list with class `gmus`.
@@ -472,10 +472,10 @@ The model fitting works the same way as for the MUS. A $\lambda$ value is found 
 plot(gmus_fit)
 ```
 
-Again we see that the number of nonzero coefficients decreases in $\delta$. Following the elbow rule, a reasonable choice for $\delta$ might here be $0.1$. To obtain a final estimate, we might therefore run `fit_gmus` again with this value.
+Again we see that the number of nonzero coefficients decreases in $\delta$. Following the elbow rule, a reasonable choice for $\delta$ might here be $0.1$. To obtain a final estimate, we might therefore run `gmus` again with this value.
 
 ```{r}
-gmus_fit <- fit_gmus(ll$W, ll$y, delta = 0.1, family = "binomial")
+gmus_fit <- gmus(ll$W, ll$y, delta = 0.1, family = "binomial")
 ```
 
 The plot will now show the estimated coefficients.
@@ -486,19 +486,19 @@ plot(gmus_fit)
 
 
 ### Poisson Regression
-The Generalized Matrix Uncertainty Selector is also implemented for Poisson regression. Use the argument `family = "poisson"` to `fit_gmus`.
+The Generalized Matrix Uncertainty Selector is also implemented for Poisson regression. Use the argument `family = "poisson"` to `gmus`.
 
 # Generalized Matrix Uncertainty Lasso
 A "lasso equivalent" of the Generalized Matrix Uncertainty Selector can also be defined (@rosenbaum2010, @sorensen2018). We refer to @sorensen2018 for the details of this algorithm. 
 
-This GMU Lasso is implemented in `hdme`, and can be called with the function `fit_gmu_lasso`. The snippet below shows its use. The underlying coordinate descent algorithm is implemented in `C++` using the `RcppArmadillo` package (@eddelbuettel2014). Both logistic and Poisson regression are supported, with arguments `family = "binomial"` and `family = "poisson"`, respectively.
+This GMU Lasso is implemented in `hdme`, and can be called with the function `gmu_lasso`. The snippet below shows its use. The underlying coordinate descent algorithm is implemented in `C++` using the `RcppArmadillo` package (@eddelbuettel2014). Both logistic and Poisson regression are supported, with arguments `family = "binomial"` and `family = "poisson"`, respectively.
 
 ```{r}
 set.seed(323)
 n <- 100
 p <- 50
 ll <- create_example_data(n, p, sdU = 0.2, family = "binomial")
-gmu_lasso_fit <- fit_gmu_lasso(ll$W, ll$y, family = "binomial")
+gmu_lasso_fit <- gmu_lasso(ll$W, ll$y, family = "binomial")
 ```
 
 The returned object is a list with class `gmu_lasso`.

@@ -11,8 +11,7 @@
 #' @param active_set Logical. Whether or not to use an active set strategy to
 #'   speed up coordinate descent algorithm.
 #'
-#' @return List object with intercept and coefficients at the values of lambda
-#'   and delta specified, as well as regularization parameters.
+#' @return An object of class "gmu_lasso".
 #' @export
 #'
 #' @references \insertRef{rosenbaum2010}{hdme}
@@ -38,12 +37,15 @@
 #' # Binomial response
 #' y <- rbinom(n, 1, (1 + exp(-X%*%beta))**(-1))
 #' # Run the GMU Lasso
-#' gmu_lasso <- fit_gmu_lasso(W, y, delta = NULL)
+#' fit <- gmu_lasso(W, y, delta = NULL)
+#' print(fit)
+#' plot(fit)
+#' coef(fit)
 #' # Get an elbow plot, in order to choose delta.
-#' plot(gmu_lasso)
+#' plot(fit)
 #'
 #'
-fit_gmu_lasso <- function(W, y, lambda = NULL, delta = NULL,
+gmu_lasso <- function(W, y, lambda = NULL, delta = NULL,
                           family = "binomial", active_set = TRUE){
 
   if(family == "binomial") {
@@ -93,7 +95,7 @@ fit_gmu_lasso <- function(W, y, lambda = NULL, delta = NULL,
       omega <- rep(0,p)
       omega[-1] <- sapply(2:p, function(x) { lambda + gamma * sum(abs(bOld[-x])) })
 
-      bNew <- fit_mu_lasso(omega, gamma, Wtilde, ztilde, bOld, active_set)
+      bNew <- mu_lasso(omega, gamma, Wtilde, ztilde, bOld, active_set)
       count <- count+1
       Diff1 <- sum(abs(bNew - bOld))
       Diff2 <- sum(abs(bNew - bOlder))

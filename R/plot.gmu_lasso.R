@@ -1,4 +1,4 @@
-#' @title Plot the estimates returned by fit_gmu_lasso
+#' @title Plot the estimates returned by gmu_lasso
 #' @description Plot the number of nonzero coefficients along a range of delta
 #'   values if delta has length larger than 1, or the estimated coefficients of
 #'   delta has length 1.
@@ -16,7 +16,7 @@
 #' W <- X + sdU * matrix(rnorm(n * p), nrow = n, ncol = p)
 #'
 #' y <- rbinom(n, 1, (1 + exp(-X%*%beta))**(-1))
-#' gmu_lasso <- fit_gmu_lasso(W, y)
+#' gmu_lasso <- gmu_lasso(W, y)
 #'
 #' plot(gmu_lasso)
 #'

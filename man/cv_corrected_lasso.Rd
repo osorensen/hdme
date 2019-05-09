@@ -60,7 +60,7 @@ y <- X \%*\% beta + rnorm(n, sd = 1)
 cvfit <- cv_corrected_lasso(W, y, sigmaUU, no_radii = 5, n_folds = 3)
 plot(cvfit)
 # Run the standard lasso using the radius found by cross-validation
-fit <- fit_corrected_lasso(W, y, sigmaUU, family = "gaussian",
+fit <- corrected_lasso(W, y, sigmaUU, family = "gaussian",
 radii = cvfit$radius_min)
 }
 \references{

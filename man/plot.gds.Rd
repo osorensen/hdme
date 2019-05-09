@@ -2,7 +2,7 @@
 % Please edit documentation in R/plot.gds.R
 \name{plot.gds}
 \alias{plot.gds}
-\title{Plot the estimates returned by fit_gds}
+\title{Plot the estimates returned by gds}
 \usage{
 \method{plot}{gds}(x, ...)
 }
@@ -28,7 +28,7 @@ beta <- c(seq(from = 0.1, to = 1, length.out = 5), rep(0, p-5))
 # Binomially distributed response
 y <- rbinom(n, 1, (1 + exp(-X \%*\% beta))^(-1))
 # Fit the generalized Dantzig Selector
-gds <- fit_gds(X, y, family = "binomial")
+gds <- gds(X, y, family = "binomial")
 # Plot the estimated coefficients at the chosen lambda
 plot(gds)
 

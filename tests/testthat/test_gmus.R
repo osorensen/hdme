@@ -9,16 +9,16 @@ sigmaUU <- diag(x = 0.2, nrow = p, ncol = p) # Measurement error covariance matr
 W <- X + rnorm(n, sd = diag(sigmaUU)) # Measurement matrix (this is the one we observe)
 beta <- c(seq(from = 0.1, to = 1, length.out = 5), rep(0, p-5)) # Coefficient
 y <- X %*% beta + rnorm(n, sd = 1) # Response
-fit <- fit_gmus(W, y, family = "gaussian") # Run the GMUS
+fit <- gmus(W, y, family = "gaussian") # Run the GMUS
 
-test_that("fit_gmus returns right object", {
+test_that("gmus returns right object", {
   expect_output(str(fit), "List of 6")
   expect_equal(class(fit), "gmus")
 })
 
-# Try the shorthand fit_mus
-fit2 <- fit_mus(W, y)
-test_that("fit_mus returns right object", {
+# Try the shorthand mus
+fit2 <- mus(W, y)
+test_that("mus returns right object", {
   expect_output(str(fit2), "List of 6")
   expect_equal(class(fit2), "gmus")
 })
@@ -26,9 +26,9 @@ test_that("fit_mus returns right object", {
 # Now check the logistic version
 y <- rbinom(n, size = 1, prob = hdme:::logit(X %*% c(rep(5, 2), rep(0, p-2))))
 deltavec <- seq(from = 0, to = 0.5, length.out = 10)
-fit <- fit_gmus(W, y, family = "binomial", delta = deltavec, lambda = 0.001)
+fit <- gmus(W, y, family = "binomial", delta = deltavec, lambda = 0.001)
 
-test_that("fit_gmus returns right object for logistic regression", {
+test_that("gmus returns right object for logistic regression", {
   expect_output(str(fit), "List of 6")
   expect_equal(class(fit), "gmus")
 })

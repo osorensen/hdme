@@ -2,7 +2,7 @@
 % Please edit documentation in R/plot.gmu_lasso.R
 \name{plot.gmu_lasso}
 \alias{plot.gmu_lasso}
-\title{Plot the estimates returned by fit_gmu_lasso}
+\title{Plot the estimates returned by gmu_lasso}
 \usage{
 \method{plot}{gmu_lasso}(x, ...)
 }
@@ -28,7 +28,7 @@ X <- matrix(rnorm(n*p),nrow = n,ncol = p)
 W <- X + sdU * matrix(rnorm(n * p), nrow = n, ncol = p)
 
 y <- rbinom(n, 1, (1 + exp(-X\%*\%beta))**(-1))
-gmu_lasso <- fit_gmu_lasso(W, y)
+gmu_lasso <- gmu_lasso(W, y)
 
 plot(gmu_lasso)
 

@@ -38,12 +38,12 @@
 #' # Binomial response
 #' y <- rbinom(n, 1, (1 + exp(-X%*%beta))**(-1))
 #' # Run the GMU Lasso
-#' gmu_lasso <- fit_gmu_lasso(W, y, delta = NULL)
+#' gmu_lasso <- gmu_lasso(W, y, delta = NULL)
 #' # Get an elbow plot, in order to choose delta.
 #' plot(gmu_lasso)
 #'
 #'
-fit_gmu_lasso <- function(W, y, lambda = NULL, delta = NULL,
+gmu_lasso <- function(W, y, lambda = NULL, delta = NULL,
                           family = "binomial", active_set = TRUE){
 
   if(family == "binomial") {
@@ -93,7 +93,7 @@ fit_gmu_lasso <- function(W, y, lambda = NULL, delta = NULL,
       omega <- rep(0,p)
       omega[-1] <- sapply(2:p, function(x) { lambda + gamma * sum(abs(bOld[-x])) })
 
-      bNew <- fit_mu_lasso(omega, gamma, Wtilde, ztilde, bOld, active_set)
+      bNew <- mu_lasso(omega, gamma, Wtilde, ztilde, bOld, active_set)
       count <- count+1
       Diff1 <- sum(abs(bNew - bOld))
       Diff2 <- sum(abs(bNew - bOlder))

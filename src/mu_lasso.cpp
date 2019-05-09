@@ -11,7 +11,7 @@
 double softThres(double a, double b);
 
 // [[Rcpp::export]]
-arma::vec fit_mu_lasso(arma::vec omega, double gamma, arma::mat W, arma::vec z, arma::vec betaInit, bool activeSet){
+arma::vec mu_lasso(arma::vec omega, double gamma, arma::mat W, arma::vec z, arma::vec betaInit, bool activeSet){
   // We assume the first column of W is ones, which represent the intercept
   arma::vec beta = betaInit;
   arma::vec betaOld = betaInit;

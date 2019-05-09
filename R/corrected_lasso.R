@@ -45,7 +45,7 @@
 #' # Response
 #' y <- X %*% beta + rnorm(n, sd = 1)
 #' # Run the corrected lasso
-#' fit <- fit_corrected_lasso(W, y, sigmaUU, family = "gaussian")
+#' fit <- corrected_lasso(W, y, sigmaUU, family = "gaussian")
 #' plot(fit)
 #'
 #' # Binomial, logistic regression
@@ -62,14 +62,14 @@
 #' logit <- function(x) (1+exp(-x))^(-1)
 #' # Response
 #' y <- rbinom(n, size = 1, prob = logit(X %*% c(rep(5, 5), rep(0, p-5))))
-#' fit <- fit_corrected_lasso(W, y, sigmaUU, family = "binomial")
+#' fit <- corrected_lasso(W, y, sigmaUU, family = "binomial")
 #' plot(fit)
 #'
 #'
 #'@importFrom Rdpack reprompt
 #'
 #'@export
-fit_corrected_lasso <- function(W, y, sigmaUU, family = c("gaussian", "binomial", "poisson"),
+corrected_lasso <- function(W, y, sigmaUU, family = c("gaussian", "binomial", "poisson"),
                  radii = NULL, no_radii = NULL, alpha = 0.1, maxits = 5000){
   family <- match.arg(family)
 

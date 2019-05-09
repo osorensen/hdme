@@ -40,7 +40,7 @@
 #' cvfit <- cv_corrected_lasso(W, y, sigmaUU, no_radii = 5, n_folds = 3)
 #' plot(cvfit)
 #' # Run the standard lasso using the radius found by cross-validation
-#' fit <- fit_corrected_lasso(W, y, sigmaUU, family = "gaussian",
+#' fit <- corrected_lasso(W, y, sigmaUU, family = "gaussian",
 #' radii = cvfit$radius_min)
 #' @export
 cv_corrected_lasso <- function(W, y, sigmaUU, n_folds = 10, family = "gaussian",
@@ -56,7 +56,7 @@ cv_corrected_lasso <- function(W, y, sigmaUU, n_folds = 10, family = "gaussian",
 
   for(i in seq(n_folds)) {
     test = (fold_id == i)
-    outlist[[i]] <- fit_corrected_lasso(W = W[!test, , drop = FALSE], y = y[!test], sigmaUU = sigmaUU, radii = radii)
+    outlist[[i]] <- corrected_lasso(W = W[!test, , drop = FALSE], y = y[!test], sigmaUU = sigmaUU, radii = radii)
     loss[, i] <- gauss_loss(W = W[test, , drop = FALSE], y = y[test], sigmaUU = sigmaUU, beta = outlist[[i]]$betaCorr)
   }
 

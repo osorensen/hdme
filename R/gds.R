@@ -16,13 +16,13 @@
 #' X <- matrix(rnorm(n * p), nrow = n) # True (latent) variables # Design matrix
 #' beta <- c(seq(from = 0.1, to = 1, length.out = 5), rep(0, p-5)) # True regression coefficients
 #' y <- rbinom(n, 1, (1 + exp(-X %*% beta))^(-1)) # Binomially distributed response
-#' gds <- fit_gds(X, y, family = "binomial")
+#' gds <- gds(X, y, family = "binomial")
 #'
 #' @export
-fit_gds <- function(X, y, lambda = NULL, family = c("gaussian", "binomial")) {
+gds <- function(X, y, lambda = NULL, family = c("gaussian", "binomial")) {
 
   if(!is.null(lambda) & length(lambda) != 1) stop("lambda must be a single value")
-  fit <- fit_gmus(X, y, lambda = lambda, delta = 0, family = family)
+  fit <- gmus(X, y, lambda = lambda, delta = 0, family = family)
 
   # In the Dantzig selector case, delta is not of interest
   fit$delta <- NULL

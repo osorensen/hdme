@@ -1,6 +1,6 @@
 #' @title plot.corrected_lasso
-#' @description Plot the output of fit_corrected_lasso
-#' @param x Object of class corrected_lasso, returned from calling fit_corrected_lasso()
+#' @description Plot the output of corrected_lasso
+#' @param x Object of class corrected_lasso, returned from calling corrected_lasso()
 #' @param type Type of plot. Either "nonzero" or "path".
 #' @param ... Other arguments to plot (not used)
 #' @examples
@@ -19,7 +19,7 @@
 #' # Response
 #' y <- X %*% beta + rnorm(n, sd = 1)
 #' # Run the corrected lasso
-#' fit <- fit_corrected_lasso(W, y, sigmaUU, family = "gaussian")
+#' fit <- corrected_lasso(W, y, sigmaUU, family = "gaussian")
 #' plot(fit)
 #'
 #' @export

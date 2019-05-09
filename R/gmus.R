@@ -26,7 +26,7 @@
 #' # Response
 #' y <- X %*% beta + rnorm(n, sd = 1)
 #' # Run the MU Selector
-#' gmus1 <- fit_gmus(W, y)
+#' gmus1 <- gmus(W, y)
 #' # Draw an elbow plot to select delta
 #' plot(gmus1)
 #'
@@ -34,12 +34,12 @@
 #' # the final delta where the curve has an "elbow".
 #' # In this case, the elbow is at about delta = 0.08,
 #' # so we use this to compute the final estimate:
-#' gmus2 <- fit_gmus(W, y, delta = 0.08)
+#' gmus2 <- gmus(W, y, delta = 0.08)
 #' # Plot the coefficients
 #' plot(gmus2)
 #'
 #' @export
-fit_gmus <- function(W, y, lambda = NULL, delta = NULL,
+gmus <- function(W, y, lambda = NULL, delta = NULL,
                      family = c("gaussian", "binomial", "poisson")) {
 
   family <- match.arg(family)

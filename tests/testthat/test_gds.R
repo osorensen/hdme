@@ -27,6 +27,7 @@ test_that("gds returns correct object", {
 # Next test that it fails when it should
 test_that("gds fails when it should", {
   expect_error(gds(X))
+  expect_error(gds(X, lambda = 1:10))
   expect_error(gds(X, y, family = "gamma"))
   expect_error(gds(list(X), y))
   expect_error(gds(X, y, lambda = -1))

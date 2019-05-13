@@ -26,7 +26,7 @@ test_that("corrected_lasso returns correct object", {
 # Next test that it fails when it should
 test_that("corrected_lasso fails when it should", {
   expect_error(corrected_lasso(W, y))
-  expect_error(corrected_lasso(as.character(W), y, sigmaUU))
+  expect_error(corrected_lasso(as.matrix(as.character(W)), y, sigmaUU))
   expect_error(corrected_lasso(W, as.character(y), sigmaUU))
   expect_error(corrected_lasso(W, y, list(sigmaUU)))
   expect_error(corrected_lasso(W, c(y, 2), sigmaUU, family = "gaussian"))

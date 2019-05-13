@@ -42,3 +42,30 @@ test_that("gmu_lasso fails when it should", {
   expect_error(gmu_lasso(W, y, lambda = -1))
   expect_error(gmus(W, y, delta = -1:3))
 })
+
+
+# Poisson regression
+suppressWarnings(RNGversion("3.5.0"))
+set.seed(3)
+
+n <- 100
+p <- 5
+beta <- c(.1, .1, 0, 0, 0)
+X <- matrix(rnorm(n * p), nrow = n)
+W <- X + rnorm(n, sd = diag(sigmaUU))
+y <- rpois(n, exp(X %*% beta))
+fit <- gmu_lasso(W, y, family = "poisson")
+
+
+# Test that the result is as it should
+test_that("gmu_lasso returns correct object", {
+  expect_s3_class(fit, "gmu_lasso")
+  expect_equal(fit$family, "poisson")
+})
+
+
+# Test that the S3 methods work
+test_that("S3 methods for gmus work", {
+  expect_output(print(fit),
+                regexp = "Generalized MU Lasso with family poisson, with 5 variables")
+})

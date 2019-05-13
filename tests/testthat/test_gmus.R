@@ -114,3 +114,4 @@ test_that("S3 methods for gmus work", {
   expect_s3_class(plot(fit), "ggplot")
 })
 
+

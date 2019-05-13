@@ -65,8 +65,16 @@ gmu_lasso <- function(W, y, lambda = NULL, delta = NULL,
   W <- cbind(rep(1,n), W)
 
   # Run the lasso with cross validation to find a value for lambda
-  if(is.null(lambda)) lambda <- glmnet::cv.glmnet(W, y, family = family)$lambda.min
-  if(is.null(delta)) delta <- seq(from = 0, to = 0.2, by = 0.05)
+  if(is.null(lambda)) {
+    lambda <- glmnet::cv.glmnet(W, y, family = family)$lambda.min
+  } else {
+    stopifnot(all(lambda >= 0))
+  }
+  if(is.null(delta)) {
+    delta <- seq(from = 0, to = 0.5, by = 0.02)
+  } else {
+    stopifnot(all(delta >= 0))
+  }
 
   n <- dim(W)[1]
   p <- dim(W)[2]
@@ -107,7 +115,7 @@ gmu_lasso <- function(W, y, lambda = NULL, delta = NULL,
   ## TODO: Should return a list, including regularization parameters
 
   fit <- list(intercept = bhatGMUL[1, ],
-              beta = bhatGMUL[-1, ] / scales,
+              beta = matrix(bhatGMUL[-1, ] / scales, nrow = p - 1),
               family = family,
               delta = delta,
               lambda = lambda,

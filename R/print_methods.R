@@ -45,7 +45,7 @@ print.cv_corrected_lasso <- function(x, ...){
 #' @export
 #'
 print.gds <- function(x, ...){
-  cat("Generalized Dantzig Selector with family ", x$family, ", with ", length(x$beta), " variables fitted with ",
+  cat("Generalized Dantzig Selector with family ", x$family, ", with ", nrow(x$beta), " variables fitted with ",
       "regularization parameter ", x$lambda, ".\n", sep = "")
   cat("Use functions plot() and coef() for more information about the fitted values.\n")
 }
@@ -63,7 +63,7 @@ print.gds <- function(x, ...){
 #'
 #'
 print.gmu_lasso <- function(x, ...){
-  cat("Generalized MU Lasso with family ", x$family, ", with ", length(x$beta), " variables fitted with ",
+  cat("Generalized MU Lasso with family ", x$family, ", with ", nrow(x$beta), " variables fitted with ",
       "regularization parameters lambda = ", x$lambda, " and ", length(x$delta), " delta values.\n", sep = "")
   cat("Use functions plot() and coef() for more information about the fitted values.\n")
 }
@@ -81,7 +81,7 @@ print.gmu_lasso <- function(x, ...){
 #'
 #'
 print.gmus <- function(x, ...){
-  cat("Generalized MU Selector with family ", x$family, ", with ", length(x$beta), " variables fitted with ",
+  cat("Generalized MU Selector with family ", x$family, ", with ", nrow(x$beta), " variables fitted with ",
       "regularization parameters lambda = ", x$lambda, " and ", length(x$delta), " delta values.\n", sep = "")
   cat("Use functions plot() and coef() for more information about the fitted values.\n")
 }

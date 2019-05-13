@@ -72,7 +72,7 @@ gmus <- function(W, y, lambda = NULL, delta = NULL,
 
 
   fit <- list(intercept = fit[1, ],
-              beta = fit[2:p, ] / scales,
+              beta = matrix(fit[2:p, ] / scales, nrow = p - 1),
               family = family,
               delta = delta,
               lambda = lambda,

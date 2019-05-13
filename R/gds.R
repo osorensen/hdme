@@ -26,9 +26,10 @@
 #' coef(fit)
 #' coef(fit, all = TRUE)
 #' @export
-gds <- function(X, y, lambda = NULL, family = c("gaussian", "binomial")) {
+gds <- function(X, y, lambda = NULL, family = "gaussian") {
 
   if(!is.null(lambda) & length(lambda) != 1) stop("lambda must be a single value")
+  stopifnot(lambda >= 0)
   fit <- gmus(X, y, lambda = lambda, delta = 0, family = family)
 
   # In the Dantzig selector case, delta is not of interest

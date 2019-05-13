@@ -4,7 +4,7 @@
 \alias{gds}
 \title{Generalized Dantzig Selector}
 \usage{
-gds(X, y, lambda = NULL, family = c("gaussian", "binomial"))
+gds(X, y, lambda = NULL, family = "gaussian")
 }
 \arguments{
 \item{X}{Design matrix.}

@@ -6,7 +6,7 @@
 #' @param delta Additional regularization parameter, bounding the measurement
 #'   error.
 #' @param family "gaussian" for linear regression, "binomial" for logistic
-#'   regression or "poisson" for Poisson regression.
+#'   regression or "poisson" for Poisson regression. Defaults go "gaussian".
 #' @return An object of class "gmus".
 #' @references \insertRef{rosenbaum2010}{hdme}
 #'
@@ -42,9 +42,9 @@
 #'
 #' @export
 gmus <- function(W, y, lambda = NULL, delta = NULL,
-                     family = c("gaussian", "binomial", "poisson")) {
+                     family = "gaussian") {
 
-  family <- match.arg(family)
+  family <- match.arg(family, choices = c("gaussian", "binomial", "poisson"))
 
   if(is.null(lambda)) lambda <- glmnet::cv.glmnet(W, y, family = family)$lambda.min
   if(is.null(delta)) delta <- seq(from = 0, to = 0.5, by = 0.02)

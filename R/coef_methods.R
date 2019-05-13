@@ -61,13 +61,15 @@ gmu_coefs <- function(object, all){
     ), row.names = FALSE)
   } else if(length(object$delta) == 1 & !all(object$beta == 0)){
     if(!all){
-      cat("Non-zero coefficient estimates at regularization parameters (lambda, delta) = (", round(object$lambda, 3), round(object$delta, 3), "):\n", sep = "")
+      cat("Non-zero coefficient estimates at regularization parameters (lambda, delta) = (",
+          round(object$lambda, 3), ", ", round(object$delta, 3), "):\n", sep = "")
       print(data.frame(
         coefficient = which(object$beta != 0),
         estimate = object$beta[object$beta != 0]
       ), row.names = FALSE)
     } else {
-      cat("Coefficient estimates at regularization parameters (lambda, delta) = (", round(object$lambda, 3), round(object$delta, 3), "):\n", sep = "")
+      cat("Coefficient estimates at regularization parameters (lambda, delta) = (",
+          round(object$lambda, 3), ", ", round(object$delta, 3), "):\n", sep = "")
       print(data.frame(
         coefficient = 1:length(object$beta),
         estimate = object$beta

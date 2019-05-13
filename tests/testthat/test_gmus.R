@@ -49,6 +49,36 @@ test_that("S3 methods for gmus work", {
 })
 
 
+
+## Test again with a single delta
+set.seed(1)
+fit <- gmus(W, y, delta = 0.2, family = "gaussian")
+set.seed(1)
+fit2 <- mus(W, y, delta = 0.2)
+test_that("mus function works", {
+  expect_equal(fit, fit2)
+})
+
+# Test that the result is as it should
+test_that("gmus returns correct object", {
+  expect_equal(dim(fit$beta), c(50, 1))
+  expect_equal(round(fit$beta[3, 1], 7), 0.4289449)
+  expect_equal(round(fit$beta[13, 1], 7), 0)
+  expect_equal(length(fit$delta), 1)
+  expect_equal(round(fit$lambda, 7), 0.1123004)
+})
+
+# Test that the S3 methods work
+test_that("S3 methods for gmus work", {
+  expect_output(coef(fit),
+                regexp = "Non-zero coefficient estimates at regularization parameters")
+  expect_output(coef(fit, all = TRUE),
+                regexp = "Coefficient estimates at regularization parameters")
+  expect_output(print(fit),
+                regexp = "Generalized MU Selector with family gaussian")
+  expect_s3_class(plot(fit), "ggplot")
+})
+
 ### Logistic regression
 # Generate example data and create a first fit
 suppressWarnings(RNGversion("3.5.0"))

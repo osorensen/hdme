@@ -76,6 +76,7 @@ test_that("gds returns correct object", {
 test_that("S3 methods for gds work", {
   expect_output(coef(fit),
                 regexp = "Non-zero coefficients:")
+  expect_output(coef(fit, all = TRUE), regexp = "Coefficient estimates:")
   expect_output(print(fit),
                 regexp = "Generalized Dantzig Selector with family gaussian")
   expect_s3_class(plot(fit), "ggplot")

@@ -46,8 +46,16 @@ gmus <- function(W, y, lambda = NULL, delta = NULL,
 
   family <- match.arg(family, choices = c("gaussian", "binomial", "poisson"))
 
-  if(is.null(lambda)) lambda <- glmnet::cv.glmnet(W, y, family = family)$lambda.min
-  if(is.null(delta)) delta <- seq(from = 0, to = 0.5, by = 0.02)
+  if(is.null(lambda)) {
+    lambda <- glmnet::cv.glmnet(W, y, family = family)$lambda.min
+  } else {
+    stopifnot(all(lambda >= 0))
+  }
+  if(is.null(delta)) {
+    delta <- seq(from = 0, to = 0.5, by = 0.02)
+  } else {
+    stopifnot(all(delta >= 0))
+  }
 
   n <- dim(W)[1]
   p <- dim(W)[2] + 1

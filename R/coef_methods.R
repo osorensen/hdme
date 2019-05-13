@@ -82,7 +82,8 @@ gmu_coefs <- function(object, all){
 #' Default coef method for a \code{gmu_lasso} object.
 #'
 #' @param object Fitted model object returned by \code{\link{gmu_lasso}}.
-#' @param all Logical indicating whether to show all coefficient estimates, or only non-zeros.
+#' @param all Logical indicating whether to show all coefficient estimates, or
+#'   only non-zeros. Only used when delta is a single value.
 #' @param ... Other arguments (not used).
 #'
 #' @export
@@ -96,7 +97,8 @@ coef.gmu_lasso <- function(object, all = FALSE, ...){
 #' Default coef method for a \code{gmus} object.
 #'
 #' @param object Fitted model object returned by \code{\link{gmus}}.
-#' @param all Logical indicating whether to show all coefficient estimates, or only non-zeros.
+#' @param all Logical indicating whether to show all coefficient estimates, or
+#'   only non-zeros. Only used when delta is a single value.
 #' @param ... Other arguments (not used).
 #'
 #' @export

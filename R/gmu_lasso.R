@@ -61,6 +61,7 @@ gmu_lasso <- function(W, y, lambda = NULL, delta = NULL,
   # Standardize W
   W <- scale(W)
   scales <- attr(W, "scaled:scale")
+  n <- nrow(W)
   # Add intercept in first column
   W <- cbind(rep(1,n), W)
 

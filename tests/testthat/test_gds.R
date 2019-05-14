@@ -87,8 +87,8 @@ test_that("S3 methods for gds work", {
 ### Poisson GDS
 suppressWarnings(RNGversion("3.5.0"))
 set.seed(1)
-n <- 1000
-p <- 150
+n <- 50
+p <- 15
 
 # True (latent) variables
 X <- matrix(rnorm(n * p), nrow = n)
@@ -104,10 +104,10 @@ fit <- gds(X, y, family = "poisson")
 test_that("gds returns correct object", {
   expect_s3_class(fit, "gds")
   expect_equal(fit$family, "poisson")
-  expect_equal(length(fit$beta), 150)
-  expect_equal(round(fit$beta[[1]], 7), .1737518)
-  expect_equal(round(fit$beta[[30]], 7), 0)
-  expect_equal(fit$num_non_zero, 16)
+  expect_equal(length(fit$beta), 15)
+  expect_equal(round(fit$beta[[1]], 7), 0)
+  expect_equal(round(fit$beta[[3]], 7), 0.3465382)
+  expect_equal(fit$num_non_zero, 2)
 })
 
 # Test that the S3 methods work also in this case

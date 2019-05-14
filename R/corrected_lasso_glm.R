@@ -30,7 +30,6 @@ corrected_lasso_glm <- function(W, y, sigmaUU, family = c("binomial", "poisson")
     # Iteration counter
     s <- 0
     diff <- tol + 1
-    #cat("Step", r, "of outer iteration loop. Radius =", radii[r], "\n")
 
     while(s <= maxIR & diff > tol){
       tmp1vec <- sum(y - mean_function(muOld + W %*% betaOld + (y - 1/2) * as.vector(t(betaOld) %*% sigmaUU %*% betaOld )))

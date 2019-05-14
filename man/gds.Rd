@@ -4,7 +4,7 @@
 \alias{gds}
 \title{Generalized Dantzig Selector}
 \usage{
-gds(X, y, lambda = NULL, family = c("gaussian", "binomial"))
+gds(X, y, lambda = NULL, family = "gaussian")
 }
 \arguments{
 \item{X}{Design matrix.}
@@ -13,7 +13,7 @@ gds(X, y, lambda = NULL, family = c("gaussian", "binomial"))
 
 \item{lambda}{Regularization parameter. Only a single value is supported.}
 
-\item{family}{Use "gaussian" for linear regression and "binomial" for logistic regression.}
+\item{family}{Use "gaussian" for linear regression, "binomial" for logistic regression and "poisson" for Poisson regression.}
 }
 \value{
 Intercept and coefficients at the values of lambda specified.

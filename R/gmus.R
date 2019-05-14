@@ -6,7 +6,7 @@
 #' @param delta Additional regularization parameter, bounding the measurement
 #'   error.
 #' @param family "gaussian" for linear regression, "binomial" for logistic
-#'   regression or "poisson" for Poisson regression.
+#'   regression or "poisson" for Poisson regression. Defaults go "gaussian".
 #' @return An object of class "gmus".
 #' @references \insertRef{rosenbaum2010}{hdme}
 #'
@@ -42,12 +42,20 @@
 #'
 #' @export
 gmus <- function(W, y, lambda = NULL, delta = NULL,
-                     family = c("gaussian", "binomial", "poisson")) {
+                     family = "gaussian") {
 
-  family <- match.arg(family)
+  family <- match.arg(family, choices = c("gaussian", "binomial", "poisson"))
 
-  if(is.null(lambda)) lambda <- glmnet::cv.glmnet(W, y, family = family)$lambda.min
-  if(is.null(delta)) delta <- seq(from = 0, to = 0.5, by = 0.02)
+  if(is.null(lambda)) {
+    lambda <- glmnet::cv.glmnet(W, y, family = family)$lambda.min
+  } else {
+    stopifnot(all(lambda >= 0))
+  }
+  if(is.null(delta)) {
+    delta <- seq(from = 0, to = 0.5, by = 0.02)
+  } else {
+    stopifnot(all(delta >= 0))
+  }
 
   n <- dim(W)[1]
   p <- dim(W)[2] + 1
@@ -59,12 +67,12 @@ gmus <- function(W, y, lambda = NULL, delta = NULL,
     fit <- sapply(delta, function(delta, W, y, lambda) musalgorithm(W, y, lambda, delta),
                   W, y, lambda)
   } else if(family %in% c("binomial", "poisson")) {
-    fit <- sapply(delta, function(delta, W, y, lambda) mus_glm(W, y, lambda, delta), W, y, lambda)
+    fit <- sapply(delta, function(delta, W, y, lambda, family) mus_glm(W, y, lambda, delta, family), W, y, lambda, family)
   }
 
 
   fit <- list(intercept = fit[1, ],
-              beta = fit[2:p, ] / scales,
+              beta = matrix(fit[2:p, ] / scales, nrow = p - 1),
               family = family,
               delta = delta,
               lambda = lambda,

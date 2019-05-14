@@ -4,8 +4,7 @@
 \alias{gmus}
 \title{Generalized Matrix Uncertainty Selector}
 \usage{
-gmus(W, y, lambda = NULL, delta = NULL, family = c("gaussian",
-  "binomial", "poisson"))
+gmus(W, y, lambda = NULL, delta = NULL, family = "gaussian")
 }
 \arguments{
 \item{W}{Design matrix, measured with error. Must be a numeric matrix.}
@@ -18,7 +17,7 @@ gmus(W, y, lambda = NULL, delta = NULL, family = c("gaussian",
 error.}
 
 \item{family}{"gaussian" for linear regression, "binomial" for logistic
-regression or "poisson" for Poisson regression.}
+regression or "poisson" for Poisson regression. Defaults go "gaussian".}
 }
 \value{
 An object of class "gmus".

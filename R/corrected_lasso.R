@@ -75,11 +75,11 @@ corrected_lasso <- function(W, y, sigmaUU, family = c("gaussian", "binomial", "p
 
 
   if(!is.matrix(W)) {
-    stop("X should be a matrix")
+    stop("W should be a matrix")
   }
 
   if(!is.numeric(W)) {
-    stop("X should be a numeric matrix")
+    stop("W should be a numeric matrix")
   }
 
   y <- drop(y)

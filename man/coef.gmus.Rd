@@ -9,7 +9,8 @@
 \arguments{
 \item{object}{Fitted model object returned by \code{\link{gmus}}.}
 
-\item{all}{Logical indicating whether to show all coefficient estimates, or only non-zeros.}
+\item{all}{Logical indicating whether to show all coefficient estimates, or
+only non-zeros. Only used when delta is a single value.}
 
 \item{...}{Other arguments (not used).}
 }

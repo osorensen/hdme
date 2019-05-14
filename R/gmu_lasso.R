@@ -10,6 +10,7 @@
 #'   supported.
 #' @param active_set Logical. Whether or not to use an active set strategy to
 #'   speed up coordinate descent algorithm.
+#' @param maxit Maximum number of iterations of iterative reweighing algorithm.
 #'
 #' @return An object of class "gmu_lasso".
 #' @export
@@ -46,7 +47,7 @@
 #'
 #'
 gmu_lasso <- function(W, y, lambda = NULL, delta = NULL,
-                          family = "binomial", active_set = TRUE){
+                          family = "binomial", active_set = TRUE, maxit = 1000){
 
   if(family == "binomial") {
     mu <- logit
@@ -61,20 +62,27 @@ gmu_lasso <- function(W, y, lambda = NULL, delta = NULL,
   # Standardize W
   W <- scale(W)
   scales <- attr(W, "scaled:scale")
+  n <- nrow(W)
   # Add intercept in first column
   W <- cbind(rep(1,n), W)
 
   # Run the lasso with cross validation to find a value for lambda
-  if(is.null(lambda)) lambda <- glmnet::cv.glmnet(W, y, family = family)$lambda.min
-  if(is.null(delta)) delta <- seq(from = 0, to = 0.2, by = 0.05)
+  if(is.null(lambda)) {
+    lambda <- glmnet::cv.glmnet(W, y, family = family)$lambda.min
+  } else {
+    stopifnot(all(lambda >= 0))
+  }
+  if(is.null(delta)) {
+    delta <- seq(from = 0, to = 0.5, by = 0.02)
+  } else {
+    stopifnot(all(delta >= 0))
+  }
 
   n <- dim(W)[1]
   p <- dim(W)[2]
   bOld <- stats::rnorm(p)/p
   bNew <- stats::rnorm(p)/p
   IRLSeps <- 1e-7
-  maxit <- 100
-
 
   bhatGMUL <- matrix(nrow=p, ncol=length(delta))
 
@@ -99,15 +107,13 @@ gmu_lasso <- function(W, y, lambda = NULL, delta = NULL,
       count <- count+1
       Diff1 <- sum(abs(bNew - bOld))
       Diff2 <- sum(abs(bNew - bOlder))
-      #print(paste("Diff1 = ", Diff1, ", Diff2 = ", Diff2, sep=""))
     }
-    if(count >= maxit) print(paste("Did not converge"))
+    if(count >= maxit) stop(paste("Did not converge. Consider increasing maxit."))
     bhatGMUL[ ,i] <- bNew
   }
-  ## TODO: Should return a list, including regularization parameters
 
   fit <- list(intercept = bhatGMUL[1, ],
-              beta = bhatGMUL[-1, ] / scales,
+              beta = matrix(bhatGMUL[-1, ] / scales, nrow = p - 1),
               family = family,
               delta = delta,
               lambda = lambda,

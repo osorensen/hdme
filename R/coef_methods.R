@@ -61,13 +61,15 @@ gmu_coefs <- function(object, all){
     ), row.names = FALSE)
   } else if(length(object$delta) == 1 & !all(object$beta == 0)){
     if(!all){
-      cat("Non-zero coefficient estimates at regularization parameters (lambda, delta) = (", round(object$lambda, 3), round(object$delta, 3), "):\n", sep = "")
+      cat("Non-zero coefficient estimates at regularization parameters (lambda, delta) = (",
+          round(object$lambda, 3), ", ", round(object$delta, 3), "):\n", sep = "")
       print(data.frame(
         coefficient = which(object$beta != 0),
         estimate = object$beta[object$beta != 0]
       ), row.names = FALSE)
     } else {
-      cat("Coefficient estimates at regularization parameters (lambda, delta) = (", round(object$lambda, 3), round(object$delta, 3), "):\n", sep = "")
+      cat("Coefficient estimates at regularization parameters (lambda, delta) = (",
+          round(object$lambda, 3), ", ", round(object$delta, 3), "):\n", sep = "")
       print(data.frame(
         coefficient = 1:length(object$beta),
         estimate = object$beta
@@ -82,7 +84,8 @@ gmu_coefs <- function(object, all){
 #' Default coef method for a \code{gmu_lasso} object.
 #'
 #' @param object Fitted model object returned by \code{\link{gmu_lasso}}.
-#' @param all Logical indicating whether to show all coefficient estimates, or only non-zeros.
+#' @param all Logical indicating whether to show all coefficient estimates, or
+#'   only non-zeros. Only used when delta is a single value.
 #' @param ... Other arguments (not used).
 #'
 #' @export
@@ -96,7 +99,8 @@ coef.gmu_lasso <- function(object, all = FALSE, ...){
 #' Default coef method for a \code{gmus} object.
 #'
 #' @param object Fitted model object returned by \code{\link{gmus}}.
-#' @param all Logical indicating whether to show all coefficient estimates, or only non-zeros.
+#' @param all Logical indicating whether to show all coefficient estimates, or
+#'   only non-zeros. Only used when delta is a single value.
 #' @param ... Other arguments (not used).
 #'
 #' @export

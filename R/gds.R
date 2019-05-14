@@ -3,7 +3,7 @@
 #' @param X Design matrix.
 #' @param y Vector of the continuous response value.
 #' @param lambda Regularization parameter. Only a single value is supported.
-#' @param family Use "gaussian" for linear regression and "binomial" for logistic regression.
+#' @param family Use "gaussian" for linear regression, "binomial" for logistic regression and "poisson" for Poisson regression.
 #' @return Intercept and coefficients at the values of lambda specified.
 #' @references \insertRef{candes2007}{hdme}
 #'
@@ -26,9 +26,10 @@
 #' coef(fit)
 #' coef(fit, all = TRUE)
 #' @export
-gds <- function(X, y, lambda = NULL, family = c("gaussian", "binomial")) {
+gds <- function(X, y, lambda = NULL, family = "gaussian") {
 
   if(!is.null(lambda) & length(lambda) != 1) stop("lambda must be a single value")
+  stopifnot(lambda >= 0)
   fit <- gmus(X, y, lambda = lambda, delta = 0, family = family)
 
   # In the Dantzig selector case, delta is not of interest

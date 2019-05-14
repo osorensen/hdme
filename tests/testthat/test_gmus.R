@@ -1,40 +1,159 @@
-context("Testing Generalized Matrix Uncertainty Selector")
+# Tests of gmus
 
 suppressWarnings(RNGversion("3.5.0"))
-set.seed(100)
-n <- 100 # Number of samples
-p <- 5 # Number of covariates
-X <- matrix(rnorm(n * p), nrow = n)  # True (latent) variables
-sigmaUU <- diag(x = 0.2, nrow = p, ncol = p) # Measurement error covariance matrix (typically estimated by replicate measurements)
-W <- X + rnorm(n, sd = diag(sigmaUU)) # Measurement matrix (this is the one we observe)
-beta <- c(seq(from = 0.1, to = 1, length.out = 5), rep(0, p-5)) # Coefficient
-y <- X %*% beta + rnorm(n, sd = 1) # Response
-fit <- gmus(W, y, family = "gaussian") # Run the GMUS
+set.seed(1)
 
-test_that("gmus returns right object", {
-  expect_output(str(fit), "List of 6")
-  expect_equal(class(fit), "gmus")
-})
-
-# Try the shorthand mus
+# Generate example data and create a first fit
+n <- 100
+p <- 50
+X <- matrix(rnorm(n * p), nrow = n)
+sigmaUU <- diag(x = 0.2, nrow = p, ncol = p)
+W <- X + rnorm(n, sd = diag(sigmaUU))
+beta <- c(seq(from = 0.1, to = 1, length.out = 5), rep(0, p-5))
+y <- X %*% beta + rnorm(n, sd = 1)
+set.seed(1)
+fit <- gmus(W, y, family = "gaussian")
+set.seed(1)
 fit2 <- mus(W, y)
-test_that("mus returns right object", {
-  expect_output(str(fit2), "List of 6")
-  expect_equal(class(fit2), "gmus")
+test_that("mus function works", {
+  expect_equal(fit, fit2)
 })
 
-# Now check the logistic version
-y <- rbinom(n, size = 1, prob = hdme:::logit(X %*% c(rep(5, 2), rep(0, p-2))))
-deltavec <- seq(from = 0, to = 0.5, length.out = 10)
-fit <- gmus(W, y, family = "binomial", delta = deltavec, lambda = 0.001)
-
-test_that("gmus returns right object for logistic regression", {
-  expect_output(str(fit), "List of 6")
-  expect_equal(class(fit), "gmus")
+# Test that the result is as it should
+test_that("gmus returns correct object", {
+  expect_s3_class(fit, "gmus")
+  expect_equal(fit$family, "gaussian")
+  expect_equal(dim(fit$beta), c(50, 26))
+  expect_equal(round(fit$beta[3, 5], 7), 0.5388245)
+  expect_equal(round(fit$beta[13, 15], 7), 0)
+  expect_equal(length(fit$delta), 26)
+  expect_equal(round(fit$lambda, 7), 0.1123004)
 })
 
-test_that("gmus has right dimension in beta vectors", {
-          expect_equal(dim(fit$beta), c(ncol(W), length(deltavec)))
-          expect_equal(length(fit$delta), length(deltavec))
-          expect_equal(fit$lambda, 0.001)
-          })
+# Next test that it fails when it should
+test_that("gmus fails when it should", {
+  expect_error(gmus(W, y, sigmaUU = sigmaUU))
+  expect_error(gmus(W, y, family = "gamma"))
+  expect_error(gmus(list(W), y))
+  expect_error(gmus(W, y, lambda = -1))
+  expect_error(gmus(W, y, delta = -1:3))
+})
+
+# Test that the S3 methods work
+test_that("S3 methods for gmus work", {
+  expect_output(coef(fit),
+                regexp = "Number of nonzero coefficient estimates")
+  expect_output(print(fit),
+                regexp = "Generalized MU Selector with family gaussian")
+  expect_s3_class(plot(fit), "ggplot")
+})
+
+
+
+## Test again with a single delta
+set.seed(1)
+fit <- gmus(W, y, delta = 0.2, family = "gaussian")
+set.seed(1)
+fit2 <- mus(W, y, delta = 0.2)
+test_that("mus function works", {
+  expect_equal(fit, fit2)
+})
+
+# Test that the result is as it should
+test_that("gmus returns correct object", {
+  expect_equal(dim(fit$beta), c(50, 1))
+  expect_equal(round(fit$beta[3, 1], 7), 0.4289449)
+  expect_equal(round(fit$beta[13, 1], 7), 0)
+  expect_equal(length(fit$delta), 1)
+  expect_equal(round(fit$lambda, 7), 0.1123004)
+})
+
+# Test that the S3 methods work
+test_that("S3 methods for gmus work", {
+  expect_output(coef(fit),
+                regexp = "Non-zero coefficient estimates at regularization parameters")
+  expect_output(coef(fit, all = TRUE),
+                regexp = "Coefficient estimates at regularization parameters")
+  expect_output(print(fit),
+                regexp = "Generalized MU Selector with family gaussian")
+  expect_s3_class(plot(fit), "ggplot")
+})
+
+### Logistic regression
+# Generate example data and create a first fit
+suppressWarnings(RNGversion("3.5.0"))
+set.seed(1)
+
+n <- 1000  # Number of samples
+p <- 10 # Number of covariates
+X <- matrix(rnorm(n * p), nrow = n) # True (latent) variables # Design matrix
+sigmaUU <- diag(x = 0.2, nrow = p, ncol = p)
+W <- X + rnorm(n, sd = diag(sigmaUU))
+beta <- c(seq(from = 0.1, to = 1, length.out = 5), rep(0, p-5)) # True regression coefficients
+y <- rbinom(n, 1, (1 + exp(-X %*% beta))^(-1)) # Binomially distributed response
+fit <- gmus(W, y, family = "binomial")
+
+# Test that the result is as it should
+test_that("gmus returns correct object", {
+  expect_s3_class(fit, "gmus")
+  expect_equal(fit$family, "binomial")
+  expect_equal(dim(fit$beta), c(10, 26))
+  expect_equal(round(fit$beta[3, 5], 7), 0.1819474)
+  expect_equal(round(fit$beta[7, 1], 7), -0.0852176)
+  expect_equal(length(fit$delta), 26)
+  expect_equal(round(fit$lambda, 7), 0.0053673)
+})
+
+
+# Test that the S3 methods work
+test_that("S3 methods for gmus work", {
+  expect_output(coef(fit),
+                regexp = "Number of nonzero coefficient estimates")
+  expect_output(print(fit),
+                regexp = "Generalized MU Selector with family binomial")
+  expect_s3_class(plot(fit), "ggplot")
+})
+
+
+### Poisson regression
+# Generate example data and create a first fit
+suppressWarnings(RNGversion("3.5.0"))
+set.seed(1)
+
+n <- 100
+p <- 15
+
+# True (latent) variables
+X <- matrix(rnorm(n * p), nrow = n)
+# Measurement matrix (this is the one we observe)
+W <- X + matrix(rnorm(n*p, sd = .2), nrow = n, ncol = p)
+# Coefficient vector
+beta <- c(rep(.2, 5), rep(0, p-5))
+# Response
+y <- rpois(n, exp(X %*% beta))
+# Run the MU Selector
+fit <- gmus(W, y, family = "poisson")
+
+
+# Test that the result is as it should
+test_that("gmus returns correct object", {
+  expect_s3_class(fit, "gmus")
+  expect_equal(fit$family, "poisson")
+  expect_equal(dim(fit$beta), c(15, 26))
+  expect_equal(round(fit$beta[3, 5], 7), 0)
+  expect_equal(round(fit$beta[7, 1], 7), 0)
+  expect_equal(length(fit$delta), 26)
+  expect_equal(round(fit$lambda, 7), 0.2194676)
+})
+
+
+# Test that the S3 methods work
+test_that("S3 methods for gmus work", {
+  expect_output(coef(fit),
+                regexp = "Number of nonzero coefficient estimates")
+  expect_output(print(fit),
+                regexp = "Generalized MU Selector with family poisson")
+  expect_s3_class(plot(fit), "ggplot")
+})
+
+

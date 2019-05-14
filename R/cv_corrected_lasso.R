@@ -48,6 +48,8 @@
 #' @export
 cv_corrected_lasso <- function(W, y, sigmaUU, n_folds = 10, family = "gaussian",
                  radii = NULL, no_radii = 100, alpha = 0.1, maxits = 5000){
+
+  stopifnot(family == "gaussian")
   N = nrow(W)
   y <- drop(y)
   fold_id = sample(rep(seq(n_folds), length = N))
@@ -83,7 +85,8 @@ cv_corrected_lasso <- function(W, y, sigmaUU, n_folds = 10, family = "gaussian",
               radius_min = radius_min,
               loss_min = loss_min,
               radius_1se = radius_1se,
-              loss_1se = loss_1se
+              loss_1se = loss_1se,
+              family = family
               )
 
   class(fit) <- c("cv_corrected_lasso")

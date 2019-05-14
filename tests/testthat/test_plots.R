@@ -16,7 +16,7 @@ y <- rbinom(n, 1, (1 + exp(-X %*% beta))^(-1)) # Binomially distributed response
 fit <- gmu_lasso(W, y, family = "binomial")
 test_that("plot.gmu_lasso works", {
   expect_s3_class(plot(fit), "ggplot")
-}
+})
 
 fit <- gmus(W, y, family = "binomial")
 test_that("plot.gmus works", {

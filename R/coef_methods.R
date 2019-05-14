@@ -8,7 +8,7 @@
 #' @export
 coef.corrected_lasso <- function(object, ...){
   if(length(object$radii) > 1){
-    cat("Number of nonzero coefficient estimates as a function of regularization parameter (radius):\n")
+    cat("Number of nonzero coefficient estimates\nas a function of regularization parameter (radius):\n")
     print(data.frame(
       radius = object$radii,
       nonzeros = apply(object$betaCorr, 2, function(x) sum(x != 0))
@@ -53,7 +53,7 @@ coef.gds <- function(object, all = FALSE, ...){
 
 gmu_coefs <- function(object, all){
   if(length(object$delta) > 1){
-    cat("Number of nonzero coefficient estimates as a function of regularization parameters (lambda, delta):\n")
+    cat("Number of nonzero coefficient estimates\nas a function of regularization parameters\n(lambda, delta):\n")
     print(data.frame(
       lambda = round(object$lambda, 3),
       delta = object$delta,
@@ -61,14 +61,14 @@ gmu_coefs <- function(object, all){
     ), row.names = FALSE)
   } else if(length(object$delta) == 1 & !all(object$beta == 0)){
     if(!all){
-      cat("Non-zero coefficient estimates at regularization parameters (lambda, delta) = (",
+      cat("Non-zero coefficient estimates at\nregularization parameters (lambda, delta) = (",
           round(object$lambda, 3), ", ", round(object$delta, 3), "):\n", sep = "")
       print(data.frame(
         coefficient = which(object$beta != 0),
         estimate = object$beta[object$beta != 0]
       ), row.names = FALSE)
     } else {
-      cat("Coefficient estimates at regularization parameters (lambda, delta) = (",
+      cat("Coefficient estimates at regularization\nparameters (lambda, delta) = (",
           round(object$lambda, 3), ", ", round(object$delta, 3), "):\n", sep = "")
       print(data.frame(
         coefficient = 1:length(object$beta),

@@ -278,8 +278,8 @@ The object returned is a `list` with class `corrected_lasso`.
 ```{r}
 # Class of the object
 class(corrected_fit)
-# Object is a list
-typeof(corrected_fit)
+# The coef() method prints the number of nonzero estimates as a function of the radius
+coef(corrected_fit)
 ```
 
 The arguments to the function are shown below.
@@ -415,8 +415,14 @@ We provide the measurement matrix and the response. The solution is computed ove
 ```{r}
 mus_fit <- mus(ll$W, ll$y)
 class(mus_fit)
-str(mus_fit)
 ```
+
+The coef() methods shows the number of nonzero coefficients as a function of $\delta$.
+
+```{r}
+coef(mus_fit)
+```
+
 
 The default plot method shows the number of nonzero coefficients along the grid of $\delta$ values chosen by the algorithm. 
 

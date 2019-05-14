@@ -82,3 +82,40 @@ test_that("S3 methods for gds work", {
                 regexp = "Generalized Dantzig Selector with family gaussian")
   expect_s3_class(plot(fit), "ggplot")
 })
+
+
+### Poisson GDS
+suppressWarnings(RNGversion("3.5.0"))
+set.seed(1)
+n <- 1000
+p <- 150
+
+# True (latent) variables
+X <- matrix(rnorm(n * p), nrow = n)
+# Coefficient vector
+beta <- c(rep(.2, 5), rep(0, p-5))
+# Response
+y <- rpois(n, exp(X %*% beta))
+# Run the MU Selector
+fit <- gds(X, y, family = "poisson")
+
+
+# Test that the result is as it should
+test_that("gds returns correct object", {
+  expect_s3_class(fit, "gds")
+  expect_equal(fit$family, "poisson")
+  expect_equal(length(fit$beta), 150)
+  expect_equal(round(fit$beta[[1]], 7), .1737518)
+  expect_equal(round(fit$beta[[30]], 7), 0)
+  expect_equal(fit$num_non_zero, 16)
+})
+
+# Test that the S3 methods work also in this case
+test_that("S3 methods for gds work", {
+  expect_output(coef(fit),
+                regexp = "Non-zero coefficients:")
+  expect_output(coef(fit, all = TRUE), regexp = "Coefficient estimates:")
+  expect_output(print(fit),
+                regexp = "Generalized Dantzig Selector with family poisson")
+  expect_s3_class(plot(fit), "ggplot")
+})

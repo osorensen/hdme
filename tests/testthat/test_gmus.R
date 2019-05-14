@@ -115,3 +115,45 @@ test_that("S3 methods for gmus work", {
 })
 
 
+### Poisson regression
+# Generate example data and create a first fit
+suppressWarnings(RNGversion("3.5.0"))
+set.seed(1)
+
+n <- 100
+p <- 15
+
+# True (latent) variables
+X <- matrix(rnorm(n * p), nrow = n)
+# Measurement matrix (this is the one we observe)
+W <- X + matrix(rnorm(n*p, sd = .2), nrow = n, ncol = p)
+# Coefficient vector
+beta <- c(rep(.2, 5), rep(0, p-5))
+# Response
+y <- rpois(n, exp(X %*% beta))
+# Run the MU Selector
+fit <- gmus(W, y, family = "poisson")
+
+
+# Test that the result is as it should
+test_that("gmus returns correct object", {
+  expect_s3_class(fit, "gmus")
+  expect_equal(fit$family, "poisson")
+  expect_equal(dim(fit$beta), c(15, 26))
+  expect_equal(round(fit$beta[3, 5], 7), 0)
+  expect_equal(round(fit$beta[7, 1], 7), 0)
+  expect_equal(length(fit$delta), 26)
+  expect_equal(round(fit$lambda, 7), 0.2194676)
+})
+
+
+# Test that the S3 methods work
+test_that("S3 methods for gmus work", {
+  expect_output(coef(fit),
+                regexp = "Number of nonzero coefficient estimates")
+  expect_output(print(fit),
+                regexp = "Generalized MU Selector with family poisson")
+  expect_s3_class(plot(fit), "ggplot")
+})
+
+

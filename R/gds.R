@@ -3,7 +3,7 @@
 #' @param X Design matrix.
 #' @param y Vector of the continuous response value.
 #' @param lambda Regularization parameter. Only a single value is supported.
-#' @param family Use "gaussian" for linear regression and "binomial" for logistic regression.
+#' @param family Use "gaussian" for linear regression, "binomial" for logistic regression and "poisson" for Poisson regression.
 #' @return Intercept and coefficients at the values of lambda specified.
 #' @references \insertRef{candes2007}{hdme}
 #'

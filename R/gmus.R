@@ -67,7 +67,7 @@ gmus <- function(W, y, lambda = NULL, delta = NULL,
     fit <- sapply(delta, function(delta, W, y, lambda) musalgorithm(W, y, lambda, delta),
                   W, y, lambda)
   } else if(family %in% c("binomial", "poisson")) {
-    fit <- sapply(delta, function(delta, W, y, lambda) mus_glm(W, y, lambda, delta), W, y, lambda)
+    fit <- sapply(delta, function(delta, W, y, lambda, family) mus_glm(W, y, lambda, delta, family), W, y, lambda, family)
   }
 
 

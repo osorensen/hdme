@@ -5,7 +5,7 @@
 \title{Generalized Matrix Uncertainty Lasso}
 \usage{
 gmu_lasso(W, y, lambda = NULL, delta = NULL, family = "binomial",
-  active_set = TRUE)
+  active_set = TRUE, maxit = 1000)
 }
 \arguments{
 \item{W}{Design matrix, measured with error. Must be a numeric matrix.}
@@ -23,6 +23,8 @@ supported.}
 
 \item{active_set}{Logical. Whether or not to use an active set strategy to
 speed up coordinate descent algorithm.}
+
+\item{maxit}{Maximum number of iterations of iterative reweighing algorithm.}
 }
 \value{
 An object of class "gmu_lasso".

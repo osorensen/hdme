@@ -40,7 +40,7 @@ test_that("gmu_lasso fails when it should", {
   expect_error(gmu_lasso(W, y, family = "gamma"))
   expect_error(gmu_lasso(list(W), y))
   expect_error(gmu_lasso(W, y, lambda = -1))
-  expect_error(gmus(W, y, delta = -1:3))
+  expect_error(gmu_lasso(W, y, delta = -1:3))
 })
 
 
@@ -89,4 +89,20 @@ test_that("S3 methods for gmus work", {
   expect_output(print(fit),
                 regexp = "Generalized MU Lasso with family poisson")
   expect_s3_class(plot(fit), "ggplot")
+})
+
+
+# Convergence
+suppressWarnings(RNGversion("3.5.0"))
+set.seed(1)
+
+n <- 100  # Number of samples
+p <- 100 # Number of covariates
+X <- matrix(rnorm(n * p), nrow = n) # True (latent) variables # Design matrix
+sigmaUU <- diag(x = 0.2, nrow = p, ncol = p)
+W <- X + rnorm(n, sd = diag(sigmaUU))
+beta <- rnorm(n, sd = 0.001)
+y <- rbinom(n, 1, (1 + exp(-X %*% beta))^(-1)) # Binomially distributed response
+test_that("lack of convergence causes error", {
+  expect_error(gmu_lasso(W, y, family = "binomial", maxit = 2, active_set = FALSE))
 })

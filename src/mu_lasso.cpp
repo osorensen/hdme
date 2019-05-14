@@ -17,9 +17,9 @@ arma::vec mu_lasso(arma::vec omega, double gamma, arma::mat W, arma::vec z, arma
   arma::vec betaOld = betaInit;
   int p = W.n_cols;
   int n = W.n_rows;
-  int maxit = 10000;
   double epsilon = 1e-7, error = 10;
   double a,b, denom, numerator;
+  int maxit = 1000;
 
   int i=0, j;
   while((i < maxit) & (error > epsilon)){
@@ -48,7 +48,7 @@ arma::vec mu_lasso(arma::vec omega, double gamma, arma::mat W, arma::vec z, arma
     ++i;
   }
   if(i >= maxit){
-    Rcpp::Rcout << "Coordinate descent did not converge." << std::endl;
+    Rcpp::Rcout << "Coordinate descent did not converge.\n";
   }
 
   return beta;

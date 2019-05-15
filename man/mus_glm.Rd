@@ -4,7 +4,8 @@
 \alias{mus_glm}
 \title{Generalized Matrix Uncertainty Selector for logistic regression}
 \usage{
-mus_glm(W, y, lambda, delta, family = c("binomial", "poisson"))
+mus_glm(W, y, lambda, delta, family = c("binomial", "poisson"),
+  weights = NULL)
 }
 \arguments{
 \item{W}{Design matrix, measured with error.}
@@ -16,6 +17,8 @@ mus_glm(W, y, lambda, delta, family = c("binomial", "poisson"))
 \item{delta}{Regularization parameter due to measurement error.}
 
 \item{family}{"binomial" or "poisson"}
+
+\item{weights}{Case weights.}
 }
 \value{
 Intercept and coefficients at the values of lambda and delta specified.

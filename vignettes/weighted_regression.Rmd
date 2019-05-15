@@ -1,0 +1,35 @@
+---
+title: "Weighted Regression"
+output: rmarkdown::html_vignette
+bibliography: ../inst/REFERENCES.bib
+vignette: >
+  %\VignetteIndexEntry{Weighted Regression}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+
+```{r setup}
+library(hdme)
+```
+
+
+This document summarizes the mathematics underlying weighted regression in the `hdme` package. The idea is to provide a vector $d \in \mathbb{R}^{n}$ of weights, with which each case gets multiplied. We use the notation of @sorensen2015 and @sorensen2018. We also let $D \in \mathbb{R}^{n}$ be a diagonal matrix with the vector $d$ on its diagonal.
+
+# Generalized Dantzig Selector
+
+## Gaussian Case
+
+The Dantzig Selector with weights becomes:
+
+$$
+\text{minimize } \beta \text{, subject to } \frac{1}{n}\left\|X^{T} D (y - X \beta) \right\|_{\infty} \leq \lambda
+$$
+
+

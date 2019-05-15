@@ -71,9 +71,9 @@ test_that("gmus returns correct object", {
 # Test that the S3 methods work
 test_that("S3 methods for gmus work", {
   expect_output(coef(fit),
-                regexp = "Non-zero coefficient estimates at regularization parameters")
+                regexp = "Non-zero coefficient estimates at")
   expect_output(coef(fit, all = TRUE),
-                regexp = "Coefficient estimates at regularization parameters")
+                regexp = "Coefficient estimates at regularization")
   expect_output(print(fit),
                 regexp = "Generalized MU Selector with family gaussian")
   expect_s3_class(plot(fit), "ggplot")

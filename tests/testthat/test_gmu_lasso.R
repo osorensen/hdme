@@ -28,9 +28,9 @@ test_that("gmu_lasso returns correct object", {
 # Test that the S3 methods work
 test_that("S3 methods for gmu_lasso work", {
   expect_output(coef(fit),
-                regexp = "Number of nonzero coefficient estimates as a function of regularization parameters")
+                regexp = "Number of nonzero coefficient estimates")
   expect_output(print(fit),
-                regexp = "Generalized MU Lasso with family binomial, with 10 variables")
+                regexp = "Generalized MU Lasso with family binomial, with 10 variables fitted with regularization parameters lambda = 0.00536")
   expect_s3_class(plot(fit), "ggplot")
 })
 

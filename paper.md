@@ -6,7 +6,7 @@ tags:
   - variable selection
   - measurement error
 authors:
-  - name: Oystein Sorensen
+  - name: Øystein Sørensen
     orcid: 0000-0003-0724-3542
     affiliation: 1 # (Multiple affiliations must be quoted)
 affiliations:

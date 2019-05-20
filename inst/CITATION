@@ -1,23 +1,11 @@
-citHeader("2015 for (generalized) corrected lasso; 2018 for (generalized) matrix uncertainty selector and matrix uncertainty lasso.")
-
 bibentry(
  bibtype="Article",
- title="Measurement error in lasso: Impact and likelihood bias correction",
- journal="Statistica Sinica",
- volume= "25",
- number="2",
- pages="809-829",
- year="2015",
- author="Oystein Sorensen, Arnoldo Frigessi and Magne Thoresen",
- textVersion="Sorensen, Frigessi, Thoresen (2015) Measurement error in lasso: Impact and likelihood bias correction. Statistica Sinica 25(2):809-829" )
-
-bibentry(
- bibtype="Article",
- title="Covariate Selection in High-Dimensional Generalized Linear Models With Measurement Error",
- journal="Journal of Computational and Graphical Statistics",
- volume= "27",
- number="4",
- pages="739-749",
- year="2018",
- author="Oystein Sorensen, Kristoffer Herland Hellton, Arnoldo Frigessi and Magne Thoresen",
- textVersion="Sorensen et al. (2018) Covariate Selection in High-Dimensional Generalized Linear Models With Measurement Error. Journal of Computational and Graphical Statistics 27(4):739-749" )
+ title="hdme: High-Dimensional Regression with Measurement Error",
+ journal="Journal of Open Source Software",
+ volume= "4",
+ number="37",
+ pages="1404",
+ year="2019",
+ doi="10.21105/joss.01404",
+ author="Oystein Sorensen",
+ textVersion="Sorensen, (2019). hdme: High-Dimensional Regression with Measurement Error. Journal of Open Source Software, 4(37), 1404, https://doi.org/10.21105/joss.01404" )

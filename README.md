@@ -10,6 +10,7 @@
 Status](https://travis-ci.org/osorensen/hdme.svg?branch=master)](https://travis-ci.org/osorensen/hdme)
 [![Codecov test
 coverage](https://codecov.io/gh/osorensen/hdme/branch/master/graph/badge.svg)](https://codecov.io/gh/osorensen/hdme?branch=master)
+[![DOI](http://joss.theoj.org/papers/10.21105/joss.01404/status.svg)](https://doi.org/10.21105/joss.01404)
 <!-- badges: end -->
 
 The goal of hdme is to provide penalized regression methods for

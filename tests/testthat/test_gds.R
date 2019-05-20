@@ -22,7 +22,7 @@ test_that("gds returns correct object", {
   expect_equal(round(fit$beta[[3]], 7), 0.5015788)
   expect_equal(round(fit$beta[[10]], 7), -0.0454783)
   expect_equal(round(fit$intercept, 7), -0.1187412)
-  expect_equal(fit$num_non_zero, 6)
+  expect_equal(fit$num_non_zero, 8)
 })
 
 # Next test that it fails when it should
@@ -71,7 +71,7 @@ test_that("gds returns correct object", {
   expect_equal(length(fit$beta), 50)
   expect_equal(round(fit$beta[[1]], 7), 0.1056266)
   expect_equal(round(fit$beta[[30]], 7), 0)
-  expect_equal(fit$num_non_zero, 10)
+  expect_equal(fit$num_non_zero, 13)
 })
 
 # Test that the S3 methods work also in this case

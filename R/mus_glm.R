@@ -6,11 +6,12 @@
 #' @param lambda Regularization parameter due to model error.
 #' @param delta Regularization parameter due to measurement error.
 #' @param family "binomial" or "poisson"
+#' @param weights Case weights.
 #' @return Intercept and coefficients at the values of lambda and delta specified.
 #'
 #' @keywords internal
 #'
-mus_glm <- function(W, y, lambda, delta, family = c("binomial", "poisson")){
+mus_glm <- function(W, y, lambda, delta, family = c("binomial", "poisson"), weights = NULL){
 
   family <- match.arg(family)
 
@@ -41,12 +42,12 @@ mus_glm <- function(W, y, lambda, delta, family = c("binomial", "poisson")){
       z <- W%*%bOld + (y - mu(W%*%bOld))/dmu(W%*%bOld)
       Wtilde <- c(sqrt(V)) * W
       ztilde <- c(sqrt(V)) * c(z)
-      bNew <- musalgorithm(Wtilde, ztilde, lambda, delta * sqrt(sum((V)^2)) / sqrt(n))
+      bNew <- musalgorithm(Wtilde, ztilde, lambda, delta * sqrt(sum((V)^2)) / sqrt(n), weights)
 
       count <- count+1
       Diff1 <- sum(abs(bNew - bOld))
       Diff2 <- sum(abs(bNew - bOlder))
   }
-  if(count >= maxit) print(paste("Did not converge"))
+  if(count >= maxit) print("Did not converge")
   return(bNew)
 }

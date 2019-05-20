@@ -7,6 +7,7 @@
 #'   error.
 #' @param family "gaussian" for linear regression, "binomial" for logistic
 #'   regression or "poisson" for Poisson regression. Defaults go "gaussian".
+#' @param weights A vector of weights for each row of \code{X}.
 #' @return An object of class "gmus".
 #' @references \insertRef{rosenbaum2010}{hdme}
 #'
@@ -42,9 +43,11 @@
 #'
 #' @export
 gmus <- function(W, y, lambda = NULL, delta = NULL,
-                     family = "gaussian") {
+                     family = "gaussian", weights = NULL) {
 
   family <- match.arg(family, choices = c("gaussian", "binomial", "poisson"))
+
+  if(!is.null(weights) & length(weights) != nrow(W)) stop("weights vector must be one value per case")
 
   if(is.null(lambda)) {
     lambda <- glmnet::cv.glmnet(W, y, family = family)$lambda.min
@@ -64,10 +67,9 @@ gmus <- function(W, y, lambda = NULL, delta = NULL,
   W <- cbind(rep(1,n), W)
 
   if(family == "gaussian") {
-    fit <- sapply(delta, function(delta, W, y, lambda) musalgorithm(W, y, lambda, delta),
-                  W, y, lambda)
+    fit <- sapply(delta, function(delta) musalgorithm(W, y, lambda, delta, weights))
   } else if(family %in% c("binomial", "poisson")) {
-    fit <- sapply(delta, function(delta, W, y, lambda, family) mus_glm(W, y, lambda, delta, family), W, y, lambda, family)
+    fit <- sapply(delta, function(delta) mus_glm(W, y, lambda, delta, family, weights))
   }
 
 

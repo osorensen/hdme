@@ -4,7 +4,7 @@
 \alias{musalgorithm}
 \title{Algorithm for mus}
 \usage{
-musalgorithm(W, y, lambda, delta)
+musalgorithm(W, y, lambda, delta, weights = NULL)
 }
 \arguments{
 \item{W}{Matrix of measurements.}

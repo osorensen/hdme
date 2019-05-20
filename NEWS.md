@@ -1,3 +1,7 @@
+# hdme 0.3.1
+
+- Added case weighting to `gds` and `gmus`.
+
 # hdme 0.3.0
 
 - This release contains all changes since 0.2.3, as listed under the headings below.

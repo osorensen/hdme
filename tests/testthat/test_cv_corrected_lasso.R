@@ -1,7 +1,7 @@
 # Tests of cv_corrected_lasso
 
 suppressWarnings(RNGversion("3.5.0"))
-set.seed(1)
+set.seed(1, kind = "Mersenne-Twister", normal.kind = "Inversion")
 
 # Generate example data and create a first fit
 n <- 100

@@ -1,7 +1,7 @@
 # Tests of gmus
 
 suppressWarnings(RNGversion("3.5.0"))
-set.seed(1)
+set.seed(1, kind = "Mersenne-Twister", normal.kind = "Inversion")
 
 # Generate example data and create a first fit
 n <- 100
@@ -11,9 +11,9 @@ sigmaUU <- diag(x = 0.2, nrow = p, ncol = p)
 W <- X + rnorm(n, sd = diag(sigmaUU))
 beta <- c(seq(from = 0.1, to = 1, length.out = 5), rep(0, p-5))
 y <- X %*% beta + rnorm(n, sd = 1)
-set.seed(1)
+set.seed(1, kind = "Mersenne-Twister", normal.kind = "Inversion")
 fit <- gmus(W, y, family = "gaussian")
-set.seed(1)
+set.seed(1, kind = "Mersenne-Twister", normal.kind = "Inversion")
 fit2 <- mus(W, y)
 test_that("mus function works", {
   expect_equal(fit, fit2)
@@ -51,9 +51,9 @@ test_that("S3 methods for gmus work", {
 
 
 ## Test again with a single delta
-set.seed(1)
+set.seed(1, kind = "Mersenne-Twister", normal.kind = "Inversion")
 fit <- gmus(W, y, delta = 0.2, family = "gaussian")
-set.seed(1)
+set.seed(1, kind = "Mersenne-Twister", normal.kind = "Inversion")
 fit2 <- mus(W, y, delta = 0.2)
 test_that("mus function works", {
   expect_equal(fit, fit2)
@@ -82,7 +82,7 @@ test_that("S3 methods for gmus work", {
 ### Logistic regression
 # Generate example data and create a first fit
 suppressWarnings(RNGversion("3.5.0"))
-set.seed(1)
+set.seed(1, kind = "Mersenne-Twister", normal.kind = "Inversion")
 
 n <- 1000  # Number of samples
 p <- 10 # Number of covariates
@@ -118,7 +118,7 @@ test_that("S3 methods for gmus work", {
 ### Poisson regression
 # Generate example data and create a first fit
 suppressWarnings(RNGversion("3.5.0"))
-set.seed(1)
+set.seed(1, kind = "Mersenne-Twister", normal.kind = "Inversion")
 
 n <- 100
 p <- 15

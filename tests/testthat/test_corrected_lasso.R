@@ -1,7 +1,7 @@
 # Tests of corrected_lasso
 
 suppressWarnings(RNGversion("3.5.0"))
-set.seed(1)
+set.seed(1, kind = "Mersenne-Twister", normal.kind = "Inversion")
 
 # Generate example data and create a first fit
 n <- 100
@@ -96,7 +96,7 @@ test_that("S3 methods for corrected_lasso work", {
 
 # Poisson regression
 suppressWarnings(RNGversion("3.5.0"))
-set.seed(3)
+set.seed(3, kind = "Mersenne-Twister", normal.kind = "Inversion")
 
 n <- 1000
 p <- 5

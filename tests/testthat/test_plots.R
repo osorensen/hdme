@@ -3,7 +3,7 @@
 ### Logistic regression
 # Generate example data and create a first fit
 suppressWarnings(RNGversion("3.5.0"))
-set.seed(1)
+set.seed(1, kind = "Mersenne-Twister", normal.kind = "Inversion")
 
 n <- 1000  # Number of samples
 p <- 10 # Number of covariates
@@ -32,7 +32,7 @@ test_that("plot.correct_lasso works", {
 
 # cv_corrected_lasso
 suppressWarnings(RNGversion("3.5.0"))
-set.seed(1)
+set.seed(1, kind = "Mersenne-Twister", normal.kind = "Inversion")
 n <- 100
 p <- 50
 X <- matrix(rnorm(n * p), nrow = n)

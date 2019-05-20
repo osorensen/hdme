@@ -3,6 +3,7 @@ This is a resubmission. It adds a large number of unit tests, added examples, S3
 
 ## Test environments
 * local os X install, R 3.6.0
+* win-builder (release, oldrelease and devel)
 * R-hub (devel)
 
 ## R CMD check results

@@ -1,9 +1,8 @@
 ## Resubmission
-This is a resubmission. It reduces the number of dependencies, fixes some typos in the vignette, and improves documentation.
+This is a resubmission. It adds a large number of unit tests, added examples, S3 methods, and renaming of functions to make them consistent with what is standard in R. It also adds case weighting.
 
 ## Test environments
-* local os X install, R 3.5.2
-* win-builder (devel and release)
+* local os X install, R 3.6.0
 * R-hub (devel)
 
 ## R CMD check results

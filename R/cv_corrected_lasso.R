@@ -50,19 +50,18 @@ cv_corrected_lasso <- function(W, y, sigmaUU, n_folds = 10, family = "gaussian",
                  radii = NULL, no_radii = 100, alpha = 0.1, maxits = 5000){
 
   stopifnot(family == "gaussian")
-  N = nrow(W)
   y <- drop(y)
-  fold_id = sample(rep(seq(n_folds), length = N))
-  outlist = as.list(seq(n_folds))
+
+  cv_list <- set_up_cv(nrow(W), n_folds)
 
 
   if(is.null(radii)) radii <- set_radius(W, y, no_radii = no_radii)
   loss <- matrix(nrow = no_radii, ncol = n_folds)
 
   for(i in seq(n_folds)) {
-    test = (fold_id == i)
-    outlist[[i]] <- corrected_lasso(W = W[!test, , drop = FALSE], y = y[!test], sigmaUU = sigmaUU, radii = radii)
-    loss[, i] <- gauss_loss(W = W[test, , drop = FALSE], y = y[test], sigmaUU = sigmaUU, beta = outlist[[i]]$betaCorr)
+    test = (cv_list$fold_id == i)
+    cv_list$outlist[[i]] <- corrected_lasso(W = W[!test, , drop = FALSE], y = y[!test], sigmaUU = sigmaUU, radii = radii)
+    loss[, i] <- gauss_loss(W = W[test, , drop = FALSE], y = y[test], sigmaUU = sigmaUU, beta = cv_list$outlist[[i]]$betaCorr)
   }
 
   cv <- data.frame(

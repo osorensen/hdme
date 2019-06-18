@@ -20,7 +20,13 @@ deviance <- function(y, yhat, family, weights){
   } else if(family == "gaussian"){
     return(sum((y - yhat)^2 * weights))
   } else if(family == "poisson"){
-    return(2 * sum(weights * (y * log(y / yhat) - y + yhat)))
+    x1 <- y * log(y / yhat)
+    x1[is.na(x1) | x1 == -Inf] <- 0
+
+    x2 <- (y - yhat)
+    x2[is.na(x2) | x2 == -Inf] <- 0
+
+    return(2 * sum(weights * (x1 - x2)))
   } else{
     cat("Unknown family", family, ".\n")
     stop()

@@ -38,21 +38,25 @@ An object of class \code{cv_gds}.
 Generalized Dantzig Selector with cross-validation.
 }
 \details{
-Cross-validation loss is calculated as the deviance of the model.
-For the Gaussian case, this is the sum of squared residuals. Weights supplied
+Cross-validation loss is calculated as the deviance of the model divided
+by the number of observations.
+For the Gaussian case, this is the mean squared error. Weights supplied
 through the \code{weights} argument are used both in fitting the models
 and when evaluating the test set deviance.
 }
 \examples{
+\dontrun{
 # Example with logistic regression
 n <- 1000  # Number of samples
 p <- 10 # Number of covariates
 X <- matrix(rnorm(n * p), nrow = n) # True (latent) variables # Design matrix
 beta <- c(seq(from = 0.1, to = 1, length.out = 5), rep(0, p-5)) # True regression coefficients
 y <- rbinom(n, 1, (1 + exp(-X \%*\% beta))^(-1)) # Binomially distributed response
-fit <- cv_gds(X, y, family = "binomial")
+fit <- cv_gds(X, y, family = "binomial", no_lambda = 50, n_folds = 10)
 print(fit)
 plot(fit)
+
+}
 
 }
 \references{

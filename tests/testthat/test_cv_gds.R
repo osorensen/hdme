@@ -17,10 +17,10 @@ fit <- cv_gds(X, y)
 test_that("cv_gds returns correct object", {
   expect_s3_class(fit, "cv_gds")
   expect_equal(fit$family, "gaussian")
-  expect_equal(round(fit$lambda_min, 6), 4.8e-05)
-  expect_equal(round(fit$lambda_1se, 6), 0.002903)
-  expect_equal(round(fit$loss_min, 3), 239.887)
-  expect_equal(round(fit$loss_1se, 3), 240.376)
+  expect_equal(round(fit$lambda_min, 6), 0.008077)
+  expect_equal(round(fit$lambda_1se, 6), 0.022474)
+  expect_equal(round(fit$loss_min, 3), 0.183)
+  expect_equal(round(fit$loss_1se, 3), 0.185)
 })
 
 # Next test that it fails when it should

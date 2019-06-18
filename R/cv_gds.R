@@ -19,8 +19,9 @@
 #'   per observation.
 #' @return An object of class \code{cv_gds}.
 #'
-#' @details Cross-validation loss is calculated as the deviance of the model.
-#' For the Gaussian case, this is the sum of squared residuals. Weights supplied
+#' @details Cross-validation loss is calculated as the deviance of the model divided
+#' by the number of observations.
+#' For the Gaussian case, this is the mean squared error. Weights supplied
 #' through the \code{weights} argument are used both in fitting the models
 #' and when evaluating the test set deviance.
 #'
@@ -29,15 +30,18 @@
 #'   \insertRef{james2009}{hdme}
 #'
 #' @examples
+#' \dontrun{
 #' # Example with logistic regression
 #' n <- 1000  # Number of samples
 #' p <- 10 # Number of covariates
 #' X <- matrix(rnorm(n * p), nrow = n) # True (latent) variables # Design matrix
 #' beta <- c(seq(from = 0.1, to = 1, length.out = 5), rep(0, p-5)) # True regression coefficients
 #' y <- rbinom(n, 1, (1 + exp(-X %*% beta))^(-1)) # Binomially distributed response
-#' fit <- cv_gds(X, y, family = "binomial")
+#' fit <- cv_gds(X, y, family = "binomial", no_lambda = 50, n_folds = 10)
 #' print(fit)
 #' plot(fit)
+#'
+#' }
 #'
 #' @export
 cv_gds <- function(X, y, family = "gaussian", no_lambda = 10, lambda = NULL,
@@ -58,8 +62,8 @@ cv_gds <- function(X, y, family = "gaussian", no_lambda = 10, lambda = NULL,
   stopifnot(all(lambda >= 0))
 
   # Set up cross-validation if necessary
-
-  cv_list <- set_up_cv(nrow(X), n_folds)
+  n <- nrow(X)
+  cv_list <- set_up_cv(n, n_folds)
 
   loss <- matrix(nrow = no_lambda, ncol = n_folds)
 
@@ -71,18 +75,25 @@ cv_gds <- function(X, y, family = "gaussian", no_lambda = 10, lambda = NULL,
       fit <- gmus(W = X[!test, , drop = FALSE], y = y[!test], lambda = l, delta = 0,
                   family = family, weights = weights[!test])
 
-      test_pred <- logit(X[test, , drop = FALSE] %*% fit$beta + fit$intercept)
-      deviance(y[test], test_pred, family, weights[test])
-      }))
-    }
+      linpred <- X[test, , drop = FALSE] %*% fit$beta + fit$intercept
+      if(family == "binomial"){
+        test_pred <- logit(linpred)
+      } else if(family == "gaussian"){
+        test_pred <- linpred
+      } else if(family == "poisson"){
+        test_pred <- exp(linpred)
+      }
 
+      deviance(y[test], test_pred, family, weights[test])
+      })) / sum(test) # Divide by size of test set to get mean deviance
+    }
 
     cv <- data.frame(
       lambda = lambda,
-      mean_loss = rowSums(loss),
+      mean_loss = rowMeans(loss),
       sd_loss = apply(loss, 1, stats::sd),
-      upper_1se = rowSums(loss) + apply(loss, 1, stats::sd) / sqrt(n_folds),
-      lower_1se = rowSums(loss) - apply(loss, 1, stats::sd) / sqrt(n_folds)
+      upper_1se = rowMeans(loss) + apply(loss, 1, stats::sd) / sqrt(n_folds),
+      lower_1se = rowMeans(loss) - apply(loss, 1, stats::sd) / sqrt(n_folds)
     )
 
     ind1 <- min(which(cv$mean_loss == min(cv$mean_loss)))

@@ -1,3 +1,7 @@
+# hdme 0.3.1.9000
+
+- New function `cv_gds` which computes cross-validated generalized Dantzig selector.
+
 # hdme 0.3.1
 
 - Added case weighting to `gds` and `gmus`.

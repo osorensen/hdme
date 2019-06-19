@@ -1,7 +1,7 @@
 Package: hdme
 Type: Package
 Title: High-Dimensional Regression with Measurement Error
-Version: 0.3.1
+Version: 0.3.1.9000
 Encoding: UTF-8
 Author: Oystein Sorensen
 Maintainer: Oystein Sorensen <oystein.sorensen.1985@gmail.com>

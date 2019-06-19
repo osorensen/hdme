@@ -52,9 +52,27 @@ p <- 10 # Number of covariates
 X <- matrix(rnorm(n * p), nrow = n) # True (latent) variables # Design matrix
 beta <- c(seq(from = 0.1, to = 1, length.out = 5), rep(0, p-5)) # True regression coefficients
 y <- rbinom(n, 1, (1 + exp(-X \%*\% beta))^(-1)) # Binomially distributed response
-fit <- cv_gds(X, y, family = "binomial", no_lambda = 50, n_folds = 10)
-print(fit)
+cv_fit <- cv_gds(X, y, family = "binomial", no_lambda = 50, n_folds = 10)
+print(cv_fit)
+plot(cv_fit)
+
+# Now fit a single GDS at the optimum lambda value determined by cross-validation
+fit <- gds(X, y, lambda = cv_fit$lambda_min, family = "binomial")
 plot(fit)
+
+# Compare this to the fit for which lambda is selected by GDS
+# This automatic selection is performed by glmnet::cv.glmnet, for
+# the sake of speed
+fit2 <- gds(X, y, family = "binomial")
+
+The following plot compares the two fits.
+library(ggplot2)
+library(tidyr)
+df <- data.frame(fit = fit$beta, fit2 = fit2$beta, index = seq(1, p, by = 1))
+ggplot(gather(df, key = "Model", value = "Coefficient", -index),
+       aes(x = index, y = Coefficient, color = Model)) +
+       geom_point() +
+       theme(legend.title = element_blank())
 
 }
 

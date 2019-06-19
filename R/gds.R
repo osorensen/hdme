@@ -56,6 +56,8 @@
 #' @export
 gds <- function(X, y, lambda = NULL, family = "gaussian", weights = NULL) {
 
+  stopifnot(family %in% c("gaussian", "poisson", "binomial"))
+
   if(!is.null(lambda) & length(lambda) != 1) stop("lambda must be a single value")
 
   stopifnot(lambda >= 0)

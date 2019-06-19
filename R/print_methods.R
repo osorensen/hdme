@@ -50,6 +50,25 @@ print.gds <- function(x, ...){
   cat("Use functions plot() and coef() for more information about the fitted values.\n")
 }
 
+#' Print a Cross-Validated GDS Object
+#'
+#' Default print method for a \code{cv_gds} object.
+#'
+#' @param x Fitted model object returned by \code{\link{cv_gds}}.
+#' @param ... Other arguments (not used).
+#'
+#' @export
+#'
+print.cv_gds <- function(x, ...){
+  cat("Cross-validation results:\n")
+  print(x$cv, row.names = FALSE)
+  cat("\n")
+  cat("Regularization parameter at minimum deviance is ", x$lambda_min, " with deviance ",
+      x$loss_min, ".\n", sep = "")
+  cat("Smallest regularization parameter within one standard error of minimum deviance is\n",
+      x$lambda_1se, " with deviance ", x$loss_1se, ".\n", sep = "")
+}
+
 
 #' Print a GMU Lasso object
 #'

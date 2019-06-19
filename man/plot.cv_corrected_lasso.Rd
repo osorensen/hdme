@@ -7,10 +7,10 @@
 \method{plot}{cv_corrected_lasso}(x, ...)
 }
 \arguments{
-\item{x}{The object to be plotted, returned from cv_corrected_lasso}
+\item{x}{The object to be plotted, returned from \code{\link{cv_corrected_lasso}}.}
 
 \item{...}{Other arguments to plot (not used).}
 }
 \description{
-Plot the output of cv_corrected_lasso
+Plot the output of \code{\link{cv_corrected_lasso}}.
 }

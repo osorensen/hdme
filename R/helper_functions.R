@@ -19,7 +19,7 @@ set_radius <- function(W, y, family = "gaussian", no_radii,
 
   # First run the naive Lasso
   lassoFit <- glmnet::cv.glmnet(W, y, family = family)
-  betaNaive <- glmnet::coef.cv.glmnet(lassoFit, s = "lambda.min")
+  betaNaive <- stats::coef(lassoFit, s = "lambda.min")
 
   # Use the estimated vector to find the upper radius for cross-validation
   a <- sum( abs( betaNaive ) )

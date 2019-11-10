@@ -16,11 +16,12 @@ License: GPL-3
 LazyData: TRUE
 RoxygenNote: 6.1.1
 Imports:
-  glmnet (>= 2.0-13), 
+  glmnet (>= 3.0.0), 
   ggplot2 (>= 2.2.1),
   Rdpack, 
   Rcpp (>= 0.12.15),
   Rglpk (>= 0.6-1),
+  stats
 URL: https://github.com/osorensen/hdme
 RdMacros: Rdpack
 Suggests: 

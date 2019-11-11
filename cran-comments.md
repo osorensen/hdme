@@ -3,6 +3,7 @@ This is an update which fixes a build error caused by an update of the glmnet pa
 
 ## Test environments
 * local Windows install, R 3.6.1
+* local Mac OS install, R 3.6.1
 * win-builder (release, oldrelease and devel)
 * Travis Linux.
 

@@ -1,6 +1,6 @@
 # hdme 0.3.2
 
-- Change in dependency on glmnet.
+- Changed used of `coef` function from `glmnet`, due to a breaking change in `glmnet`.
 
 # hdme 0.3.1.9000
 

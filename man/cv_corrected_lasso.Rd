@@ -4,8 +4,17 @@
 \alias{cv_corrected_lasso}
 \title{Cross-validated Corrected lasso}
 \usage{
-cv_corrected_lasso(W, y, sigmaUU, n_folds = 10, family = "gaussian",
-  radii = NULL, no_radii = 100, alpha = 0.1, maxits = 5000)
+cv_corrected_lasso(
+  W,
+  y,
+  sigmaUU,
+  n_folds = 10,
+  family = "gaussian",
+  radii = NULL,
+  no_radii = 100,
+  alpha = 0.1,
+  maxits = 5000
+)
 }
 \arguments{
 \item{W}{Design matrix, measured with error.}

@@ -1,7 +1,7 @@
 Package: hdme
 Type: Package
 Title: High-Dimensional Regression with Measurement Error
-Version: 0.3.2
+Version: 0.3.3
 Encoding: UTF-8
 Author: Oystein Sorensen
 Maintainer: Oystein Sorensen <oystein.sorensen.1985@gmail.com>
@@ -14,7 +14,7 @@ Description: Penalized regression for generalized linear models for
   case of measurement error (Sorensen et al. (2018) <doi:10.1080/10618600.2018.1425626>).
 License: GPL-3
 LazyData: TRUE
-RoxygenNote: 6.1.1
+RoxygenNote: 7.1.0
 Imports:
   glmnet (>= 3.0.0), 
   ggplot2 (>= 2.2.1),
@@ -28,7 +28,6 @@ Suggests:
     knitr,
     rmarkdown,
     testthat,
-    flare,
     dplyr,
     tidyr,
     covr

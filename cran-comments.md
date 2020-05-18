@@ -1,9 +1,8 @@
 ## Resubmission
-This is an update which fixes a build error caused by an update of the glmnet package.
+This is an update which fixes a warning caused by the suggested package 'flare' no longer being on CRAN.
 
 ## Test environments
-* local Windows install, R 3.6.1
-* local Mac OS install, R 3.6.1
+* local Mac OS install, R 4.0.0
 * win-builder (release, oldrelease and devel)
 * Travis Linux.
 

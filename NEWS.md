@@ -1,3 +1,7 @@
+# hdme 0.3.3
+
+- Package 'flare' removed from suggested dependencies.
+
 # hdme 0.3.2
 
 - Changed used of `coef` function from `glmnet`, due to a breaking change in `glmnet`.

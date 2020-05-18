@@ -4,8 +4,7 @@
 \alias{mus_glm}
 \title{Generalized Matrix Uncertainty Selector for logistic regression}
 \usage{
-mus_glm(W, y, lambda, delta, family = c("binomial", "poisson"),
-  weights = NULL)
+mus_glm(W, y, lambda, delta, family = c("binomial", "poisson"), weights = NULL)
 }
 \arguments{
 \item{W}{Design matrix, measured with error.}

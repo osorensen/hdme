@@ -181,29 +181,7 @@ The Dantzig selector @candes2007 is closely related to the lasso. It is defined 
 $$
 \text{minimize } ~ \|\beta\|_{1}, ~ \text{ subject to }  ~ (1/n)\| X^{T} (y - X\beta)\|_{\infty} \leq \lambda,
 $$
-where $\|\cdot\|_{\infty}$ denotes the maximum component norm. An `R` implentation of the Dantzig selector can be found in the `flare` package @flare_package. We illustrate it with the same data as in the previous section. Calling the `slim` method in the `flare` package yields the Dantzig selector solution for the default values of $\lambda$. We can compare the methods for data with and without measurement error.
-
-```{r}
-library(flare)
-# No measurement error, using X
-dantzig_fit_x <- slim(ll$X, ll$y, nlambda = 10, method = "dantzig", verbose = FALSE, lambda.min.ratio = 0.3)
-# Measurement error, using W
-dantzig_fit_w <- slim(ll$W, ll$y, nlambda = 10, method = "dantzig", verbose = FALSE, lambda.min.ratio = 0.3)
-```
-
-Below is the regularization path for the Dantzig selector in the case of no measurement error.
-```{r}
-plot(dantzig_fit_x)
-```
-
-
-Next is the regularization path for the Dantzig selector in the case of measurement error.
-
-```{r}
-plot(dantzig_fit_w)
-```
-
-A generalized Dantzig selector for generalized linear models was introduced by @james2009. It is defined as the solution to the optimization problem 
+where $\|\cdot\|_{\infty}$ denotes the maximum component norm. A generalized Dantzig selector for generalized linear models was introduced by @james2009. It is defined as the solution to the optimization problem 
 $$
 \text{minimize } ~ \|\beta\|_{1}, ~ \text{ subject to }  ~ (1/n)\| X^{T} (y - \mu(X\beta))\|_{\infty} \leq \lambda,
 $$

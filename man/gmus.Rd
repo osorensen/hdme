@@ -4,8 +4,7 @@
 \alias{gmus}
 \title{Generalized Matrix Uncertainty Selector}
 \usage{
-gmus(W, y, lambda = NULL, delta = NULL, family = "gaussian",
-  weights = NULL)
+gmus(W, y, lambda = NULL, delta = NULL, family = "gaussian", weights = NULL)
 }
 \arguments{
 \item{W}{Design matrix, measured with error. Must be a numeric matrix.}

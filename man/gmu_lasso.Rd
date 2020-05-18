@@ -4,8 +4,15 @@
 \alias{gmu_lasso}
 \title{Generalized Matrix Uncertainty Lasso}
 \usage{
-gmu_lasso(W, y, lambda = NULL, delta = NULL, family = "binomial",
-  active_set = TRUE, maxit = 1000)
+gmu_lasso(
+  W,
+  y,
+  lambda = NULL,
+  delta = NULL,
+  family = "binomial",
+  active_set = TRUE,
+  maxit = 1000
+)
 }
 \arguments{
 \item{W}{Design matrix, measured with error. Must be a numeric matrix.}

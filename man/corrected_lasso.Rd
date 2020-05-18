@@ -4,9 +4,16 @@
 \alias{corrected_lasso}
 \title{Corrected Lasso}
 \usage{
-corrected_lasso(W, y, sigmaUU, family = c("gaussian", "binomial",
-  "poisson"), radii = NULL, no_radii = NULL, alpha = 0.1,
-  maxits = 5000)
+corrected_lasso(
+  W,
+  y,
+  sigmaUU,
+  family = c("gaussian", "binomial", "poisson"),
+  radii = NULL,
+  no_radii = NULL,
+  alpha = 0.1,
+  maxits = 5000
+)
 }
 \arguments{
 \item{W}{Design matrix, measured with error. Must be a numeric matrix.}

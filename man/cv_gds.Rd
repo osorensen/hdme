@@ -4,8 +4,15 @@
 \alias{cv_gds}
 \title{Cross-Validated Generalized Dantzig Selector}
 \usage{
-cv_gds(X, y, family = "gaussian", no_lambda = 10, lambda = NULL,
-  n_folds = 5, weights = rep(1, length(y)))
+cv_gds(
+  X,
+  y,
+  family = "gaussian",
+  no_lambda = 10,
+  lambda = NULL,
+  n_folds = 5,
+  weights = rep(1, length(y))
+)
 }
 \arguments{
 \item{X}{Design matrix.}

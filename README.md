@@ -6,8 +6,6 @@
 <!-- badges: start -->
 
 [![CRAN\_Status\_Badge](http://www.r-pkg.org/badges/version/hdme)](https://cran.r-project.org/package=hdme)
-[![Build
-Status](https://travis-ci.org/osorensen/hdme.svg?branch=master)](https://travis-ci.org/osorensen/hdme)
 [![codecov](https://codecov.io/gh/osorensen/hdme/branch/master/graph/badge.svg)](https://codecov.io/gh/osorensen/hdme)
 [![DOI](http://joss.theoj.org/papers/10.21105/joss.01404/status.svg)](https://doi.org/10.21105/joss.01404)
 <!-- badges: end -->
@@ -55,16 +53,16 @@ hdme provides implementations of the following algorithms:
 
 The methods implemented in the package include
 
-  - Corrected Lasso for Linear Models (Loh and Wainwright (2012))
-  - Corrected Lasso for Generalized Linear Models (Sorensen, Frigessi,
+-   Corrected Lasso for Linear Models (Loh and Wainwright (2012))
+-   Corrected Lasso for Generalized Linear Models (Sorensen, Frigessi,
     and Thoresen (2015))
-  - Matrix Uncertainty Selector for Linear Models (Rosenbaum and
+-   Matrix Uncertainty Selector for Linear Models (Rosenbaum and
     Tsybakov (2010))
-  - Matrix Uncertainty Selector for Generalized Linear Models (Sorensen
+-   Matrix Uncertainty Selector for Generalized Linear Models (Sorensen
     et al. (2018))
-  - Matrix Uncertainty Lasso for Generalized Linear Models (Sorensen et
+-   Matrix Uncertainty Lasso for Generalized Linear Models (Sorensen et
     al. (2018))
-  - Generalized Dantzig Selector (James and Radchenko (2009))
+-   Generalized Dantzig Selector (James and Radchenko (2009))
 
 ## Contributions
 
@@ -75,16 +73,16 @@ pull requests are also appreciated.
 
 ## References
 
-<div id="refs" class="references">
+<div id="refs" class="references csl-bib-body hanging-indent">
 
-<div id="ref-james2009">
+<div id="ref-james2009" class="csl-entry">
 
 James, Gareth M., and Peter Radchenko. 2009. “A Generalized Dantzig
 Selector with Shrinkage Tuning.” *Biometrika* 96 (2): 323–37.
 
 </div>
 
-<div id="ref-loh2012">
+<div id="ref-loh2012" class="csl-entry">
 
 Loh, Po-Ling, and Martin J. Wainwright. 2012. “High-Dimensional
 Regression with Noisy and Missing Data: Provable Guarantees with
@@ -92,14 +90,14 @@ Nonconvexity.” *Ann. Statist.* 40 (3): 1637–64.
 
 </div>
 
-<div id="ref-rosenbaum2010">
+<div id="ref-rosenbaum2010" class="csl-entry">
 
 Rosenbaum, Mathieu, and Alexandre B. Tsybakov. 2010. “Sparse Recovery
 Under Matrix Uncertainty.” *Ann. Statist.* 38 (5): 2620–51.
 
 </div>
 
-<div id="ref-sorensen2015">
+<div id="ref-sorensen2015" class="csl-entry">
 
 Sorensen, Oystein, Arnoldo Frigessi, and Magne Thoresen. 2015.
 “Measurement Error in Lasso: Impact and Likelihood Bias Correction.”
@@ -107,7 +105,7 @@ Sorensen, Oystein, Arnoldo Frigessi, and Magne Thoresen. 2015.
 
 </div>
 
-<div id="ref-sorensen2018">
+<div id="ref-sorensen2018" class="csl-entry">
 
 Sorensen, Oystein, Kristoffer Herland Hellton, Arnoldo Frigessi, and
 Magne Thoresen. 2018. “Covariate Selection in High-Dimensional

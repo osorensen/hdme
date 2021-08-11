@@ -6,6 +6,11 @@
 
 using namespace Rcpp;
 
+#ifdef RCPP_USE_GLOBAL_ROSTREAM
+Rcpp::Rostream<true>&  Rcpp::Rcout = Rcpp::Rcpp_cout_get();
+Rcpp::Rostream<false>& Rcpp::Rcerr = Rcpp::Rcpp_cerr_get();
+#endif
+
 // mu_lasso
 arma::vec mu_lasso(arma::vec omega, double gamma, arma::mat W, arma::vec z, arma::vec betaInit, bool activeSet);
 RcppExport SEXP _hdme_mu_lasso(SEXP omegaSEXP, SEXP gammaSEXP, SEXP WSEXP, SEXP zSEXP, SEXP betaInitSEXP, SEXP activeSetSEXP) {

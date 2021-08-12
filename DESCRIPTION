@@ -3,7 +3,10 @@ Type: Package
 Title: High-Dimensional Regression with Measurement Error
 Version: 0.3.3
 Encoding: UTF-8
-Author: Oystein Sorensen
+Authors@R: c(person("Oystein", "Sorensen", 
+                    email = "oystein.sorensen.1985@gmail.com", 
+                    role = c("aut", "cre"),
+                    comment = c(ORCID = "0000-0003-0724-3542")))
 Maintainer: Oystein Sorensen <oystein.sorensen.1985@gmail.com>
 Description: Penalized regression for generalized linear models for
   measurement error problems (aka. errors-in-variables). The package

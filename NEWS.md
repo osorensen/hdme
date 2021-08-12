@@ -1,3 +1,7 @@
+# hdme 0.3.4
+
+- Changed to Authors(at)R notation in DESCRIPTION.
+
 # hdme 0.3.3
 
 - Package 'flare' removed from suggested dependencies.

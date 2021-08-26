@@ -188,7 +188,7 @@ $$
 where $\mu(\cdot) \in \mathbb{R}^{n}$ is the vector valued mean function of the generalized linear model. Examples include logistic regression with $\mu(x) = (1+\exp(-x))^{-1}$ and Poisson regression with $\mu(x) = \exp(x)$. Using an iterative reweighing algorithm, the generalized Dantzig selector can be solved as a sequence of linear optimization problems of the same form as the Dantzig selector for linear models.
 
 #### Generalized Dantzig Selector
-To our knowledge, no R package to date contains an implementation of the Generalized Dantzig Selector (GDS), although code is available on [Professor Gareth James' homepage](http://www-bcf.usc.edu/~gareth/research/gdscode). Since the Generalized Matrix Uncertainty Selector (GMUS) presented later in this vignette is a generalization of the GDS, we have included a function for computing the GDS, called `gds`.
+To our knowledge, no R package to date contains an implementation of the Generalized Dantzig Selector (GDS). Since the Generalized Matrix Uncertainty Selector (GMUS) presented later in this vignette is a generalization of the GDS, we have included a function for computing the GDS, called `gds`.
 
 ```{r}
 # Number of samples

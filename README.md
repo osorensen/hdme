@@ -72,6 +72,32 @@ suspect you have found a bug, please [open an
 Issue](https://github.com/osorensen/hdme/issues). Code contribution by
 pull requests are also appreciated.
 
+## Citation
+
+If using hdme in a scientific publication, please cite the following
+paper:
+
+``` r
+citation("hdme")
+#> 
+#>   Sorensen, (2019). hdme: High-Dimensional Regression with Measurement
+#>   Error. Journal of Open Source Software, 4(37), 1404,
+#>   https://doi.org/10.21105/joss.01404
+#> 
+#> A BibTeX entry for LaTeX users is
+#> 
+#>   @Article{,
+#>     title = {hdme: High-Dimensional Regression with Measurement Error},
+#>     journal = {Journal of Open Source Software},
+#>     volume = {4},
+#>     number = {37},
+#>     pages = {1404},
+#>     year = {2019},
+#>     doi = {10.21105/joss.01404},
+#>     author = {Oystein Sorensen},
+#>   }
+```
+
 ## References
 
 <div id="refs" class="references csl-bib-body hanging-indent">

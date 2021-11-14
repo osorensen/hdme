@@ -1,7 +1,7 @@
 Package: hdme
 Type: Package
 Title: High-Dimensional Regression with Measurement Error
-Version: 0.3.4
+Version: 0.3.4.9000
 Encoding: UTF-8
 Authors@R: c(person("Oystein", "Sorensen", 
                     email = "oystein.sorensen.1985@gmail.com", 

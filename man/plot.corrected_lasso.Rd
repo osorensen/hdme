@@ -4,13 +4,18 @@
 \alias{plot.corrected_lasso}
 \title{plot.corrected_lasso}
 \usage{
-\method{plot}{corrected_lasso}(x, type = "nonzero", ...)
+\method{plot}{corrected_lasso}(x, type = "nonzero", label = FALSE, ...)
 }
 \arguments{
-\item{x}{Object of class corrected_lasso, returned from calling corrected_lasso()}
+\item{x}{Object of class corrected_lasso, returned from calling
+corrected_lasso()}
 
-\item{type}{Type of plot. Either "nonzero" or "path". Ignored if \code{length(x$radii) == 1},
-in case of which all coefficient estimates are plotted at the given regularization parameter.}
+\item{type}{Type of plot. Either "nonzero" or "path". Ignored if
+\code{length(x$radii) == 1}, in case of which all coefficient estimates are
+plotted at the given regularization parameter.}
+
+\item{label}{Logical specifying whether to add labels to coefficient paths.
+Only used when \code{type = "path"}.}
 
 \item{...}{Other arguments to plot (not used)}
 }

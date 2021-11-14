@@ -27,6 +27,7 @@ fit <- corrected_lasso(W, y, sigmaUU, family = "binomial")
 test_that("plot.correct_lasso works", {
   expect_s3_class(plot(fit), "ggplot")
   expect_s3_class(plot(fit, "path"), "ggplot")
+  expect_s3_class(plot(fit, "path", label = TRUE), "ggplot")
   expect_error(plot(fit, "coefficients"))
 })
 

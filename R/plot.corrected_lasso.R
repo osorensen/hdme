@@ -1,8 +1,12 @@
 #' @title plot.corrected_lasso
 #' @description Plot the output of corrected_lasso
-#' @param x Object of class corrected_lasso, returned from calling corrected_lasso()
-#' @param type Type of plot. Either "nonzero" or "path". Ignored if \code{length(x$radii) == 1},
-#' in case of which all coefficient estimates are plotted at the given regularization parameter.
+#' @param x Object of class corrected_lasso, returned from calling
+#'   corrected_lasso()
+#' @param type Type of plot. Either "nonzero" or "path". Ignored if
+#'   \code{length(x$radii) == 1}, in case of which all coefficient estimates are
+#'   plotted at the given regularization parameter.
+#' @param label Logical specifying whether to add labels to coefficient paths.
+#'   Only used when \code{type = "path"}.
 #' @param ... Other arguments to plot (not used)
 #' @examples
 #' # Example with linear regression
@@ -24,7 +28,7 @@
 #' plot(fit)
 #'
 #' @export
-plot.corrected_lasso <- function(x, type = "nonzero", ...) {
+plot.corrected_lasso <- function(x, type = "nonzero", label = FALSE, ...) {
 
   if(length(x$radii) == 1){
     message("Only one regularization parameter. Plotting all coefficients.\n")
@@ -44,10 +48,19 @@ plot.corrected_lasso <- function(x, type = "nonzero", ...) {
                      coefficient_id = as.factor(rep(seq_along(1:nrow(x$betaCorr)), each = length(x$radii))),
                      beta_corr = as.vector(t(x$betaCorr)))
 
-    ggplot2::ggplot(df, ggplot2::aes_(x =~ radius, y =~ beta_corr, color =~ coefficient_id)) +
+    p <- ggplot2::ggplot(df, ggplot2::aes_(x =~ radius, y =~ beta_corr, color =~ coefficient_id)) +
       ggplot2::geom_path() +
       ggplot2::labs(x = "radius", y = "Coefficient estimate", title = "Coefficient paths") +
       ggplot2::theme(legend.position="none")
+
+    if(label){
+      lab_df <- df[df$radius == max(x$radii), ]
+      p +
+        ggplot2::geom_label(data = lab_df, ggplot2::aes_(label =~ coefficient_id))
+    } else {
+      p
+    }
+
   } else {
     stop("type argument must have value 'nonzero' or 'path'")
   }

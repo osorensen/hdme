@@ -72,4 +72,13 @@ The methods implemented in the package include
 
 Contributions to `hdme` are very welcome. If you have a question or suspect you have found a bug, please [open an Issue](https://github.com/osorensen/hdme/issues). Code contribution by pull requests are also appreciated.
 
+## Citation
+
+If using hdme in a scientific publication, please cite the following paper:
+
+```{r}
+citation("hdme")
+```
+
+
 ## References

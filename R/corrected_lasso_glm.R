@@ -1,5 +1,5 @@
 corrected_lasso_glm <- function(W, y, sigmaUU, family = c("binomial", "poisson"),
-                                radii, no_radii, alpha, maxits, standardize, tol = 1e-10, maxIR = 50){
+                                radii, no_radii, alpha, maxits, tol = 1e-10, maxIR = 50){
   family <- match.arg(family)
 
   if(family == "binomial") {
@@ -31,7 +31,7 @@ corrected_lasso_glm <- function(W, y, sigmaUU, family = c("binomial", "poisson")
     s <- 0
     diff <- tol + 1
 
-    while(s <= maxIR & diff > tol){
+    while(s <= maxIR && diff > tol){
       tmp1vec <- sum(y - mean_function(muOld + W %*% betaOld + (y - 1/2) * as.vector(t(betaOld) %*% sigmaUU %*% betaOld )))
 
       part1 <- y - mean_function(muOld + W %*% betaOld + (y - 1/2) * as.vector(t(betaOld) %*% sigmaUU %*% betaOld) )

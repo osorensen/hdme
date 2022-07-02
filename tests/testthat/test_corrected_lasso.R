@@ -8,7 +8,7 @@ n <- 100
 p <- 50
 X <- matrix(rnorm(n * p), nrow = n)
 sigmaUU <- diag(x = 0.2, nrow = p, ncol = p)
-W <- X + rnorm(n, sd = diag(sigmaUU))
+W <- X + rnorm(n, sd = sqrt(diag(sigmaUU)))
 beta <- c(seq(from = 0.1, to = 1, length.out = 5), rep(0, p-5))
 y <- X %*% beta + rnorm(n, sd = 1)
 fit <- corrected_lasso(W, y, sigmaUU, family = "gaussian")
@@ -18,8 +18,8 @@ test_that("corrected_lasso returns correct object", {
   expect_s3_class(fit, "corrected_lasso")
   expect_equal(fit$family, "gaussian")
   expect_equal(dim(fit$betaCorr), c(50, 20))
-  expect_equal(round(fit$betaCorr[3, 5], 7), 0.4869312)
-  expect_equal(round(fit$betaCorr[13, 15], 7), -0.0817454)
+  expect_equal(round(fit$betaCorr[3, 5], 7), 0.4771281)
+  expect_equal(round(fit$betaCorr[13, 15], 7), -0.2078683)
   expect_equal(length(fit$radii), 20)
 })
 
@@ -63,13 +63,13 @@ test_that("S3 methods for corrected_lasso work", {
 
 
 # Binomial, logistic regression
+set.seed(1)
 n <- 1000
 p <- 50
 X <- matrix(rnorm(n * p), nrow = n)
 sigmaUU <- diag(x = 0.2, nrow = p, ncol = p)
-W <- X + rnorm(n, sd = diag(sigmaUU))
-logit <- function(x) (1+exp(-x))^(-1)
-y <- rbinom(n, size = 1, prob = logit(X %*% c(rep(5, 5), rep(0, p-5))))
+W <- X + rnorm(n, sd = sqrt(diag(sigmaUU)))
+y <- rbinom(n, size = 1, prob = plogis(X %*% c(rep(5, 5), rep(0, p-5))))
 fit <- corrected_lasso(W, y, sigmaUU, family = "binomial")
 
 # First test that the result is as it should
@@ -77,7 +77,7 @@ test_that("corrected_lasso returns correct object in the binomial case", {
   expect_s3_class(fit, "corrected_lasso")
   expect_equal(fit$family, "binomial")
   expect_equal(dim(fit$betaCorr), c(50, 20))
-  expect_equal(round(fit$betaCorr[3, 5], 6), 3.368377)
+  expect_equal(round(fit$betaCorr[3, 5], 6), 0)
   expect_equal(round(fit$betaCorr[13, 15], 6), 0)
   expect_equal(length(fit$radii), 20)
 })
@@ -103,7 +103,7 @@ p <- 5
 beta <- c(.01, .01, 0, 0, 0)
 X <- matrix(rnorm(n * p), nrow = n)
 sigmaUU <- diag(x = 0.2, nrow = p, ncol = p)
-W <- X + rnorm(n, sd = diag(sigmaUU))
+W <- X + rnorm(n, sd = sqrt(diag(sigmaUU)))
 y <- rpois(n, exp(X %*% beta))
 fit <- corrected_lasso(W, y, sigmaUU, family = "poisson")
 
@@ -124,3 +124,4 @@ test_that("S3 methods for corrected_lasso work", {
   expect_s3_class(plot(fit), "ggplot")
   expect_s3_class(plot(fit, type = "path"), "ggplot")
 })
+

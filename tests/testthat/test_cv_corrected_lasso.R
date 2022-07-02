@@ -8,7 +8,7 @@ n <- 100
 p <- 50
 X <- matrix(rnorm(n * p), nrow = n)
 sigmaUU <- diag(x = 0.2, nrow = p, ncol = p)
-W <- X + rnorm(n, sd = diag(sigmaUU))
+W <- X + rnorm(n, sd = sqrt(diag(sigmaUU)))
 beta <- c(seq(from = 0.1, to = 1, length.out = 5), rep(0, p-5))
 y <- X %*% beta + rnorm(n, sd = 1)
 fit <- cv_corrected_lasso(W, y, sigmaUU, family = "gaussian")
@@ -17,10 +17,10 @@ fit <- cv_corrected_lasso(W, y, sigmaUU, family = "gaussian")
 test_that("cv_corrected_lasso returns correct object", {
   expect_s3_class(fit, "cv_corrected_lasso")
   expect_equal(fit$family, "gaussian")
-  expect_equal(round(fit$radius_min, 6), 3.930886)
-  expect_equal(round(fit$radius_1se, 6), 2.334563)
-  expect_equal(round(fit$loss_min, 6), 0.743409)
-  expect_equal(round(fit$loss_1se, 6), 0.917014)
+  expect_equal(round(fit$radius_min, 6), 4.513754)
+  expect_equal(round(fit$radius_1se, 6), 2.680729)
+  expect_equal(round(fit$loss_min, 6), 1.046644)
+  expect_equal(round(fit$loss_1se, 6), 1.264022)
 })
 
 # Next test that it fails when it should

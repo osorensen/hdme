@@ -3,7 +3,7 @@ corrected_lasso_glm <- function(W, y, sigmaUU, family = c("binomial", "poisson")
   family <- match.arg(family)
 
   if(family == "binomial") {
-    mean_function <- logit
+    mean_function <- stats::plogis
   } else if(family == "poisson") {
     mean_function <- pois
   }
@@ -32,13 +32,10 @@ corrected_lasso_glm <- function(W, y, sigmaUU, family = c("binomial", "poisson")
     diff <- tol + 1
 
     while(s <= maxIR && diff > tol){
-      tmp1vec <- sum(y - mean_function(muOld + W %*% betaOld + (y - 1/2) * as.vector(t(betaOld) %*% sigmaUU %*% betaOld )))
-
       part1 <- y - mean_function(muOld + W %*% betaOld + (y - 1/2) * as.vector(t(betaOld) %*% sigmaUU %*% betaOld) )
       part2 <- W + y %*% (t(betaOld) %*% sigmaUU)
-      tmp2vec <- as.vector(t(part1) %*% (part2))
-      mu <- muOld + alpha * tmp1vec
-      beta <- project_onto_l1_ball(betaOld + alpha * tmp2vec, radii[r])
+      mu <- muOld + alpha * sum(part1)
+      beta <- project_onto_l1_ball(betaOld + c(alpha * t(part1) %*% (part2)), radii[r])
       diff <- sum(abs(beta - betaOld))
 
       muOld <- mu

@@ -1,3 +1,8 @@
+# Development versions
+
+- Corrected a logical error in the examples, in which the variance of the measurement 
+  errors was supplied as the standard error.
+
 # hdme 0.3.4
 
 - Changed to Authors(at)R notation in DESCRIPTION.

@@ -3,7 +3,7 @@
 }
 
 # Logistic functions
-logit <- function(x) (1+exp(-x))^(-1)
+logit <- stats::plogis
 dlogit <- function(x) exp(-x)*(1+exp(-x))^(-2)
 
 # Poisson functions

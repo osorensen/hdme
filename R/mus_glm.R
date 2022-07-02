@@ -16,11 +16,11 @@ mus_glm <- function(W, y, lambda, delta, family = c("binomial", "poisson"), weig
   family <- match.arg(family)
 
   if(family == "binomial") {
-    mu <- logit
+    mu <- stats::plogis
     dmu <- dlogit
   } else if(family == "poisson") {
-    mu <- pois
-    dmu <- dpois
+    mu <- exp
+    dmu <- exp
   }
 
 

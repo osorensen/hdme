@@ -31,7 +31,7 @@
 #' # (typically estimated by replicate measurements)
 #' sigmaUU <- diag(x = 0.2, nrow = p, ncol = p)
 #' # Measurement matrix (this is the one we observe)
-#' W <- X + rnorm(n, sd = diag(sigmaUU))
+#' W <- X + rnorm(n, sd = sqrt(diag(sigmaUU)))
 #' # Coefficient
 #' beta <- c(seq(from = 0.1, to = 1, length.out = 5), rep(0, p-5))
 #' # Response

@@ -61,7 +61,7 @@ X <- matrix(rnorm(n * p), nrow = n)
 # (typically estimated by replicate measurements)
 sigmaUU <- diag(x = 0.2, nrow = p, ncol = p)
 # Measurement matrix (this is the one we observe)
-W <- X + rnorm(n, sd = diag(sigmaUU))
+W <- X + rnorm(n, sd = sqrt(diag(sigmaUU)))
 # Coefficient
 beta <- c(seq(from = 0.1, to = 1, length.out = 5), rep(0, p-5))
 # Response
@@ -82,10 +82,10 @@ X <- matrix(rnorm(n * p), nrow = n)
 # Measurement error covariance matrix
 sigmaUU <- diag(x = 0.2, nrow = p, ncol = p)
 # Measurement matrix (this is the one we observe)
-W <- X + rnorm(n, sd = diag(sigmaUU))
+W <- X + rnorm(n, sd = sqrt(diag(sigmaUU)))
 logit <- function(x) (1+exp(-x))^(-1)
 # Response
-y <- rbinom(n, size = 1, prob = logit(X \%*\% c(rep(5, 5), rep(0, p-5))))
+y <- rbinom(n, size = 1, prob = plogis(X \%*\% c(rep(5, 5), rep(0, p-5))))
 fit <- corrected_lasso(W, y, sigmaUU, family = "binomial")
 plot(fit)
 coef(fit)

@@ -95,7 +95,7 @@ cv_gds <- function(X, y, family = "gaussian", no_lambda = 10, lambda = NULL,
 
       linpred <- X[test, , drop = FALSE] %*% fit$beta + fit$intercept
       if(family == "binomial"){
-        test_pred <- logit(linpred)
+        test_pred <- stats::plogis(linpred)
       } else if(family == "gaussian"){
         test_pred <- linpred
       } else if(family == "poisson"){

@@ -50,11 +50,11 @@ gmu_lasso <- function(W, y, lambda = NULL, delta = NULL,
                           family = "binomial", active_set = TRUE, maxit = 1000){
 
   if(family == "binomial") {
-    mu <- logit
+    mu <- stats::plogis
     dmu <- dlogit
   } else if(family == "poisson") {
-    mu <- pois
-    dmu <- dpois
+    mu <- exp
+    dmu <- exp
   } else {
     stop("Currently only 'binomial' and 'possion' are supported arguments for family.")
   }

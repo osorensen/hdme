@@ -59,7 +59,6 @@
 #' sigmaUU <- diag(x = 0.2, nrow = p, ncol = p)
 #' # Measurement matrix (this is the one we observe)
 #' W <- X + rnorm(n, sd = sqrt(diag(sigmaUU)))
-#' logit <- function(x) (1+exp(-x))^(-1)
 #' # Response
 #' y <- rbinom(n, size = 1, prob = plogis(X %*% c(rep(5, 5), rep(0, p-5))))
 #' fit <- corrected_lasso(W, y, sigmaUU, family = "binomial")

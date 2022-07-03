@@ -11,3 +11,4 @@ paper.bib
 paper.md
 paper.pdf
 ^\.github$
+^dev-scripts$

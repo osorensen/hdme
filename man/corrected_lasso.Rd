@@ -48,6 +48,8 @@ Lasso (L1-regularization) for generalized linear models with
 \details{
 Corrected version of the lasso for generalized linear models. The
  method does require an estimate of the measurement error covariance matrix.
+ Note that the Poisson regression option is sensitive to numerical overflow.
+ A solution to this might be added in the future.
 }
 \examples{
 # Example with linear regression
@@ -83,7 +85,6 @@ X <- matrix(rnorm(n * p), nrow = n)
 sigmaUU <- diag(x = 0.2, nrow = p, ncol = p)
 # Measurement matrix (this is the one we observe)
 W <- X + rnorm(n, sd = sqrt(diag(sigmaUU)))
-logit <- function(x) (1+exp(-x))^(-1)
 # Response
 y <- rbinom(n, size = 1, prob = plogis(X \%*\% c(rep(5, 5), rep(0, p-5))))
 fit <- corrected_lasso(W, y, sigmaUU, family = "binomial")

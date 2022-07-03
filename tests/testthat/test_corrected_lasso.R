@@ -98,7 +98,7 @@ test_that("S3 methods for corrected_lasso work", {
 suppressWarnings(RNGversion("3.5.0"))
 set.seed(3, kind = "Mersenne-Twister", normal.kind = "Inversion")
 
-n <- 1000
+n <- 100
 p <- 5
 beta <- c(.01, .01, 0, 0, 0)
 X <- matrix(rnorm(n * p), nrow = n)
@@ -112,7 +112,7 @@ test_that("corrected_lasso returns correct object in the poisson case", {
   expect_s3_class(fit, "corrected_lasso")
   expect_equal(fit$family, "poisson")
   expect_equal(dim(fit$betaCorr), c(5, 20))
-  expect_equal(round(fit$betaCorr[3, 5], 6), 0)
+  expect_equal(round(fit$betaCorr[3, 5], 6), 0.006223)
   expect_equal(round(fit$betaCorr[1, 15], 6), 0)
   expect_equal(length(fit$radii), 20)
 })

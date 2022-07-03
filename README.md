@@ -5,8 +5,8 @@
 
 <!-- badges: start -->
 
-[![CRAN\_Status\_Badge](http://www.r-pkg.org/badges/version/hdme)](https://cran.r-project.org/package=hdme)
-[![codecov](https://codecov.io/gh/osorensen/hdme/branch/master/graph/badge.svg)](https://codecov.io/gh/osorensen/hdme)
+[![CRAN_Status_Badge](http://www.r-pkg.org/badges/version/hdme)](https://cran.r-project.org/package=hdme)
+[![codecov](https://codecov.io/gh/osorensen/hdme/branch/master/graph/badge.svg)](https://app.codecov.io/gh/osorensen/hdme)
 [![DOI](http://joss.theoj.org/papers/10.21105/joss.01404/status.svg)](https://doi.org/10.21105/joss.01404)
 [![R-CMD-check](https://github.com/osorensen/hdme/workflows/R-CMD-check/badge.svg)](https://github.com/osorensen/hdme/actions)
 <!-- badges: end -->
@@ -79,6 +79,8 @@ paper:
 
 ``` r
 citation("hdme")
+#> 
+#> To cite package 'hdme' in publications use:
 #> 
 #>   Sorensen, (2019). hdme: High-Dimensional Regression with Measurement
 #>   Error. Journal of Open Source Software, 4(37), 1404,

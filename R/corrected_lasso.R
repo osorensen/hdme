@@ -5,6 +5,8 @@
 #'
 #'@details Corrected version of the lasso for generalized linear models. The
 #'  method does require an estimate of the measurement error covariance matrix.
+#'  Note that the Poisson regression option is sensitive to numerical overflow.
+#'  A solution to this might be added in the future.
 #'@param W Design matrix, measured with error. Must be a numeric matrix.
 #'@param y Vector of responses.
 #'@param sigmaUU Covariance matrix of the measurement error.
@@ -20,6 +22,7 @@
 #'@param maxits Maximum number of iterations of the project gradient descent
 #'  algorithm for each radius. Default is 5000.
 #'@return An object of class "corrected_lasso".
+#'
 #'
 #'@references \insertRef{loh2012}{hdme}
 #'

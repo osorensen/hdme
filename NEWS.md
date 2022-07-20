@@ -2,6 +2,7 @@
 
 - Fixed bug in stopping condition for projected gradient descent. Thanks to Michael
 Pollmann for discovering this.
+- Fixed numerical overflow issue which happened for corrected lasso with Poisson regression.
 
 # hdme 0.4.0
 

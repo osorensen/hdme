@@ -48,8 +48,8 @@ Lasso (L1-regularization) for generalized linear models with
 \details{
 Corrected version of the lasso for generalized linear models. The
  method does require an estimate of the measurement error covariance matrix.
- Note that the Poisson regression option is sensitive to numerical overflow.
- A solution to this might be added in the future.
+ The Poisson regression option might sensitive to numerical overflow, please
+ file a GitHub issue in the source repository if you experience this.
 }
 \examples{
 # Example with linear regression

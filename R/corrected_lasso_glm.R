@@ -10,8 +10,10 @@ corrected_lasso_glm <- function(W, y, sigmaUU, family = c("binomial", "poisson")
     mean_function <- function(eta, betaOld, sigmaUU){
       z <- seq(from = 0, to = 20, by = 1.0)
       vapply(eta, function(etai){
-        sum(z / factorial(z) * exp(z * etai - z^2 / 2 * c(t(betaOld) %*% sigmaUU %*% betaOld))) /
-          sum(1 / factorial(z) * exp(z * etai - z^2 / 2 * c(t(betaOld) %*% sigmaUU %*% betaOld)))
+        arg <- z * etai - z^2 / 2 * c(t(betaOld) %*% sigmaUU %*% betaOld)
+        k <- max(arg)
+        sum(z / factorial(z) * exp(arg - k)) /
+          sum(1 / factorial(z) * exp(arg - k))
       }, FUN.VALUE = numeric(1))
     }
   }

@@ -10,7 +10,7 @@ project_gradient <- function(Q, b, maxits, alpha, R, betaOld) {
   while(its <= maxits & change > tol){
     grad <- Q %*% betaOld - b
     betaNew <- project_onto_l1_ball(betaOld - alpha*grad, R)
-    diff <- sum(betaNew^2 - betaOld^2)
+    diff <- sum((betaNew - betaOld)^2)
     change <- diff / alpha
     betaOld <- betaNew
     its <- its+1

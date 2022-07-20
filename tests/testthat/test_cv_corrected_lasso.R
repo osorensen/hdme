@@ -17,10 +17,10 @@ fit <- cv_corrected_lasso(W, y, sigmaUU, family = "gaussian")
 test_that("cv_corrected_lasso returns correct object", {
   expect_s3_class(fit, "cv_corrected_lasso")
   expect_equal(fit$family, "gaussian")
-  expect_equal(round(fit$radius_min, 6), 4.513754)
-  expect_equal(round(fit$radius_1se, 6), 2.680729)
-  expect_equal(round(fit$loss_min, 6), 1.046644)
-  expect_equal(round(fit$loss_1se, 6), 1.264022)
+  expect_equal(round(fit$radius_min, 6), 4.59013)
+  expect_equal(round(fit$radius_1se, 6), 2.757105)
+  expect_equal(round(fit$loss_min, 6), 1.029747)
+  expect_equal(round(fit$loss_1se, 6), 1.245535)
 })
 
 # Next test that it fails when it should

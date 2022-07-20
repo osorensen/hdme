@@ -1,11 +1,11 @@
 ## Resubmission
 This is an update which
 
-- Fixes a bug with Poisson regression.
-- Fixes some errors in the examples.
+- Fixes a bug in the convergence criterion for projected gradient descent.
+- Improves numerical stability of corrected lasso with Poisson regression.
 
 ## Test environments
-* local Mac OS install, R 4.2.0
+* local Mac OS install, R 4.2.1
 * win-builder (release, oldrelease and devel)
 * GitHub Actions linux.
 

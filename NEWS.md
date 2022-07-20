@@ -1,4 +1,4 @@
-# Development version
+# hdme 0.5.0
 
 - Fixed bug in stopping condition for projected gradient descent. Thanks to Michael
 Pollmann for discovering this.

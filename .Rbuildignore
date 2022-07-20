@@ -12,3 +12,4 @@ paper.md
 paper.pdf
 ^\.github$
 ^dev-scripts$
+^CRAN-SUBMISSION$

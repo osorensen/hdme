@@ -1,3 +1,8 @@
+# Development version
+
+- Fixed bug in stopping condition for projected gradient descent. Thanks to Michael
+Pollmann for discovering this.
+
 # hdme 0.4.0
 
 - Fixes a bug in `corrected_lasso()` with the `family = "poisson"` option. Thanks

@@ -125,3 +125,17 @@ test_that("S3 methods for corrected_lasso work", {
   expect_s3_class(plot(fit, type = "path"), "ggplot")
 })
 
+# Test for numerical overflow issue
+test_that("Poisson regression tackles fairly big numbers", {
+  n <- 1000
+  p <- 50
+  q <- 2
+  beta <- 0.3
+
+  X <- matrix(rnorm(n * p), nrow = n)
+  sigmaUU <- diag(x = 0.2, nrow = p, ncol = p)
+  W <- X + rnorm(n, sd = sqrt(diag(sigmaUU)))
+  y <- rpois(n, exp(X %*% c(rep(beta, q), rep(0, p-q))))
+  fit <- corrected_lasso(W, y, sigmaUU, family = "poisson")
+  expect_s3_class(fit, "corrected_lasso")
+})

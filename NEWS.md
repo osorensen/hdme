@@ -1,6 +1,6 @@
 # hdme 0.5.1
 
-- Colorblind friendly plots in vignette. Thanks to André Cruz for suggesting.
+- Colorblind friendly plots in vignette. Thanks to Andre Cruz for suggesting.
 
 # hdme 0.5.0
 

@@ -1,3 +1,7 @@
+# hdme development versions
+
+- Colorblind friendly plots in vignette. Thanks to André Cruz for suggesting.
+
 # hdme 0.5.0
 
 - Fixed bug in stopping condition for projected gradient descent. Thanks to Michael

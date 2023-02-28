@@ -1,4 +1,4 @@
-# hdme development versions
+# hdme 0.5.1
 
 - Colorblind friendly plots in vignette. Thanks to André Cruz for suggesting.
 

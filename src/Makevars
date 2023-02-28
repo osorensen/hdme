@@ -8,7 +8,7 @@
 ##
 ## And with R 3.4.0, and RcppArmadillo 0.7.960.*, we turn C++11 on as OpenMP
 ## support within Armadillo prefers / requires it
-CXX_STD = CXX11
+
 
 CC=ccache clang -Qunused-arguments
 CXX=ccache clang++ -Qunused-arguments

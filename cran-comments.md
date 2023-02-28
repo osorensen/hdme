@@ -1,6 +1,7 @@
 ## Resubmission
 This is an update which
 
+- Removes C++11 specification from Makevars and Makevars.win.
 - Modifies the plots in the vignette so that they are colorblind friendly. Thanks to André Cruz for suggesting.
 
 ## Test environments

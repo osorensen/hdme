@@ -1,6 +1,7 @@
 # hdme 0.5.1
 
 - Colorblind friendly plots in vignette. Thanks to Andre Cruz for suggesting.
+- Removed C++11 flags from Makevars and Makevars.win.
 
 # hdme 0.5.0
 

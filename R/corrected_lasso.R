@@ -21,6 +21,8 @@
 #'  0.1.
 #'@param maxits Maximum number of iterations of the project gradient descent
 #'  algorithm for each radius. Default is 5000.
+#'@param tol Iteration tolerance for change in sum of squares of beta. Defaults
+#'. to 1e-12.
 #'@return An object of class "corrected_lasso".
 #'
 #'
@@ -72,7 +74,7 @@
 #'
 #'@export
 corrected_lasso <- function(W, y, sigmaUU, family = c("gaussian", "binomial", "poisson"),
-                 radii = NULL, no_radii = NULL, alpha = 0.1, maxits = 5000){
+                 radii = NULL, no_radii = NULL, alpha = 0.1, maxits = 5000, tol = 1e-12){
   family <- match.arg(family)
 
 
@@ -105,11 +107,11 @@ corrected_lasso <- function(W, y, sigmaUU, family = c("gaussian", "binomial", "p
   if(family == "gaussian") {
     fit <- corrected_lasso_gaussian(W = W, y = y, sigmaUU = sigmaUU,
                                     radii = radii, no_radii = no_radii,
-                                    alpha = alpha, maxits = maxits)
+                                    alpha = alpha, maxits = maxits, tol = tol)
   } else if(family %in% c("binomial", "poisson")) {
     fit <- corrected_lasso_glm(W = W, y = y, sigmaUU = sigmaUU, family = family,
                                radii = radii, no_radii = no_radii,
-                               alpha = alpha, maxits = maxits)
+                               alpha = alpha, maxits = maxits, tol = tol)
   }
 
   fit$family <- family

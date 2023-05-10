@@ -12,7 +12,8 @@ corrected_lasso(
   radii = NULL,
   no_radii = NULL,
   alpha = 0.1,
-  maxits = 5000
+  maxits = 5000,
+  tol = 1e-12
 )
 }
 \arguments{
@@ -37,6 +38,9 @@ parameters to fit the corrected lasso for.}
 
 \item{maxits}{Maximum number of iterations of the project gradient descent
 algorithm for each radius. Default is 5000.}
+
+\item{tol}{Iteration tolerance for change in sum of squares of beta. Defaults
+. to 1e-12.}
 }
 \value{
 An object of class "corrected_lasso".

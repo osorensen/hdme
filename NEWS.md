@@ -1,8 +1,14 @@
+# hdme 0.5.1.9000
+
+- Fixed a bug in corrected_lasso and cv_corrected lasso causing the algorithm to 
+not converge, without issuing a warning. Thanks to Yuxiao Ruoyao for discovering
+the error (issue 47).
+
 # hdme 0.5.1
 
 - Colorblind friendly plots in vignette. Thanks to Andre Cruz for suggesting.
 - Removed C++11 flags from Makevars and Makevars.win.
-???
+
 # hdme 0.5.0
 
 - Fixed bug in stopping condition for projected gradient descent. Thanks to Michael

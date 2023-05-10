@@ -2,10 +2,9 @@
 # Based on a Matlab function developed by Po-Ling Loh and Martin J. Wainwright
 #' @useDynLib hdme, .registration = TRUE
 #' @importFrom Rcpp sourceCpp
-project_gradient <- function(Q, b, maxits, alpha, R, betaOld) {
+project_gradient <- function(Q, b, maxits, alpha, R, betaOld, tol) {
   its <- 1 # Number of iterations
   change <- 1 # Initial value, change per iteration
-  tol <- 1e-4 # Tolerance in change of \beta, stopping criterion
   p <- length(b)
   while(its <= maxits & change > tol){
     grad <- Q %*% betaOld - b

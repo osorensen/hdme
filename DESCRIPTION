@@ -1,7 +1,7 @@
 Package: hdme
 Type: Package
 Title: High-Dimensional Regression with Measurement Error
-Version: 0.5.1
+Version: 0.5.1.9000
 Encoding: UTF-8
 Authors@R: c(person("Oystein", "Sorensen", 
                     email = "oystein.sorensen.1985@gmail.com", 
@@ -16,7 +16,7 @@ Description: Penalized regression for generalized linear models for
   Selector, which is a version the (Generalized) Dantzig Selector for the 
   case of measurement error (Sorensen et al. (2018) <doi:10.1080/10618600.2018.1425626>).
 License: GPL-3
-RoxygenNote: 7.2.0
+RoxygenNote: 7.2.3
 Imports:
   glmnet (>= 3.0.0), 
   ggplot2 (>= 2.2.1),

@@ -1,5 +1,5 @@
 corrected_lasso_glm <- function(W, y, sigmaUU, family = c("binomial", "poisson"),
-                                radii, no_radii, alpha, maxits, tol = 1e-10, maxIR = 50){
+                                radii, no_radii, alpha, maxits, tol, maxIR = 50){
   family <- match.arg(family)
 
   if(family == "binomial") {
@@ -39,6 +39,7 @@ corrected_lasso_glm <- function(W, y, sigmaUU, family = c("binomial", "poisson")
   for(r in seq_along(radii)) {
     # Iteration counter
     s <- 0
+    # Initialize to large value
     diff <- tol + 1
 
     while(s <= maxIR && diff > tol){

@@ -18,8 +18,8 @@ test_that("corrected_lasso returns correct object", {
   expect_s3_class(fit, "corrected_lasso")
   expect_equal(fit$family, "gaussian")
   expect_equal(dim(fit$betaCorr), c(50, 20))
-  expect_equal(round(fit$betaCorr[3, 5], 7), 0.4604238)
-  expect_equal(round(fit$betaCorr[13, 15], 7), -0.1538393)
+  expect_equal(fit$betaCorr[3, 5], 0.477261461287873)
+  expect_equal(fit$betaCorr[13, 15], -0.208150042972837)
   expect_equal(length(fit$radii), 20)
 })
 

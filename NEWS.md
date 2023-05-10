@@ -2,7 +2,7 @@
 
 - Colorblind friendly plots in vignette. Thanks to Andre Cruz for suggesting.
 - Removed C++11 flags from Makevars and Makevars.win.
-
+???
 # hdme 0.5.0
 
 - Fixed bug in stopping condition for projected gradient descent. Thanks to Michael

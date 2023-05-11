@@ -19,8 +19,8 @@ test_that("cv_corrected_lasso returns correct object", {
   expect_equal(fit$family, "gaussian")
   expect_equal(fit$radius_min, 4.43737792698698)
   expect_equal(fit$radius_1se, 2.7571054975092)
-  expect_equal(fit$loss_min, 1.03795424365678)
-  expect_equal(fit$loss_1se, 1.25770450537438)
+  expect_equal(fit$loss_min, 1.03805475271189)
+  expect_equal(fit$loss_1se, 1.25763509981727)
 })
 
 # Next test that it fails when it should

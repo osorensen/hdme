@@ -13,7 +13,8 @@ cv_corrected_lasso(
   radii = NULL,
   no_radii = 100,
   alpha = 0.1,
-  maxits = 5000
+  maxits = 5000,
+  tol = 1e-12
 )
 }
 \arguments{
@@ -38,6 +39,9 @@ Default is 0.1.}
 
 \item{maxits}{Optional maximum number of iterations of the project gradient
 descent algorithm for each radius. Default is 5000.}
+
+\item{tol}{Iteration tolerance for change in sum of squares of beta. Defaults
+to 1e-12.}
 }
 \value{
 An object of class "cv_corrected_lasso".

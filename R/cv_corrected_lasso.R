@@ -16,6 +16,8 @@
 #'   Default is 0.1.
 #' @param maxits Optional maximum number of iterations of the project gradient
 #'   descent algorithm for each radius. Default is 5000.
+#'@param tol Iteration tolerance for change in sum of squares of beta. Defaults
+#' to 1e-12.
 #' @return An object of class "cv_corrected_lasso".
 #' @references \insertRef{loh2012}{hdme}
 #'
@@ -47,7 +49,7 @@
 #' plot(fit)
 #' @export
 cv_corrected_lasso <- function(W, y, sigmaUU, n_folds = 10, family = "gaussian",
-                 radii = NULL, no_radii = 100, alpha = 0.1, maxits = 5000){
+                 radii = NULL, no_radii = 100, alpha = 0.1, maxits = 5000, tol = 1e-12){
 
   stopifnot(family == "gaussian")
   y <- drop(y)
@@ -60,7 +62,7 @@ cv_corrected_lasso <- function(W, y, sigmaUU, n_folds = 10, family = "gaussian",
 
   for(i in seq(n_folds)) {
     test = (cv_list$fold_id == i)
-    cv_list$outlist[[i]] <- corrected_lasso(W = W[!test, , drop = FALSE], y = y[!test], sigmaUU = sigmaUU, radii = radii)
+    cv_list$outlist[[i]] <- corrected_lasso(W = W[!test, , drop = FALSE], y = y[!test], sigmaUU = sigmaUU, radii = radii, tol = tol)
     loss[, i] <- gauss_loss(W = W[test, , drop = FALSE], y = y[test], sigmaUU = sigmaUU, beta = cv_list$outlist[[i]]$betaCorr)
   }
 

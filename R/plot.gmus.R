@@ -36,13 +36,13 @@
 plot.gmus <- function(x, ...) {
   if(length(x$delta) > 1) {
     df <- data.frame(delta = x$delta, nonzero = x$num_non_zero)
-    ggplot2::ggplot(df, ggplot2::aes_(x =~ delta, y =~ nonzero)) +
+    ggplot2::ggplot(df, ggplot2::aes(x = .data$delta, y = .data$nonzero)) +
       ggplot2::geom_line() +
       ggplot2::labs(x = "delta", y = "Nonzero coefficients", title = "Elbow plot")
   } else {
     df <- data.frame(index = seq_along(x$beta), beta = x$beta)
 
-    ggplot2::ggplot(df, ggplot2::aes_(x =~ index, y =~ beta)) +
+    ggplot2::ggplot(df, ggplot2::aes(x = .data$index, y = .data$beta)) +
       ggplot2::geom_point() +
       ggplot2::labs(x = "Coefficient number", y = "Coefficient value", title = "Estimated coefficients")
   }

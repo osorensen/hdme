@@ -6,9 +6,9 @@
 plot.cv_gds <- function(x, ...) {
 
   ggplot2::ggplot(as.data.frame(x$cv),
-                  ggplot2::aes_(x =~ log(lambda), y =~ mean_loss,
-                                ymin =~ lower_1se,
-                                ymax =~ upper_1se)) +
+                  ggplot2::aes(x = log(.data$lambda), y = .data$mean_loss,
+                                ymin = .data$lower_1se,
+                                ymax = .data$upper_1se)) +
     ggplot2::geom_point() +
     ggplot2::geom_errorbar(color = "gray") +
     ggplot2::labs(x = expression(log(lambda)), y = "Deviance", title = "Cross-validation plot")

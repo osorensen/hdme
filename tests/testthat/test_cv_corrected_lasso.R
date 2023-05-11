@@ -11,7 +11,7 @@ sigmaUU <- diag(x = 0.2, nrow = p, ncol = p)
 W <- X + rnorm(n, sd = sqrt(diag(sigmaUU)))
 beta <- c(seq(from = 0.1, to = 1, length.out = 5), rep(0, p-5))
 y <- X %*% beta + rnorm(n, sd = 1)
-fit <- cv_corrected_lasso(W, y, sigmaUU, family = "gaussian")
+fit <- cv_corrected_lasso(W, y, sigmaUU, family = "gaussian", tol = 1e-8)
 
 # First test that the result is as it should
 test_that("cv_corrected_lasso returns correct object", {

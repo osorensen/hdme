@@ -11,7 +11,7 @@ sigmaUU <- diag(x = 0.2, nrow = p, ncol = p)
 W <- X + rnorm(n, sd = sqrt(diag(sigmaUU)))
 beta <- c(seq(from = 0.1, to = 1, length.out = 5), rep(0, p-5))
 y <- X %*% beta + rnorm(n, sd = 1)
-fit <- cv_corrected_lasso(W, y, sigmaUU, family = "gaussian")
+fit <- cv_corrected_lasso(W, y, sigmaUU, family = "gaussian", tol = 1e-8)
 
 # First test that the result is as it should
 test_that("cv_corrected_lasso returns correct object", {
@@ -19,8 +19,8 @@ test_that("cv_corrected_lasso returns correct object", {
   expect_equal(fit$family, "gaussian")
   expect_equal(fit$radius_min, 4.43737792698698)
   expect_equal(fit$radius_1se, 2.7571054975092)
-  expect_equal(fit$loss_min, 1.03795424365678)
-  expect_equal(fit$loss_1se, 1.25770450537438)
+  expect_equal(fit$loss_min, 1.03805475271189)
+  expect_equal(fit$loss_1se, 1.25763509981727)
 })
 
 # Next test that it fails when it should

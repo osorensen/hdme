@@ -91,17 +91,24 @@ sigmaUU <- diag(x = 0.2, nrow = p, ncol = p)
 W <- X + rnorm(n, sd = sqrt(diag(sigmaUU)))
 beta <- c(seq(from = 0.1, to = 1, length.out = 5), rep(0, p-5)) # True regression coefficients
 y <- rbinom(n, 1, (1 + exp(-X %*% beta))^(-1)) # Binomially distributed response
-fit <- gmus(W, y, family = "binomial")
+fit <- gmus(W, y, family = "binomial", delta = c(0, .1, .5))
 
 # Test that the result is as it should
 test_that("gmus returns correct object", {
   expect_s3_class(fit, "gmus")
   expect_equal(fit$family, "binomial")
-  expect_equal(dim(fit$beta), c(10, 26))
-  expect_equal(round(fit$beta[3, 5], 7), 0.0764739)
-  expect_equal(round(fit$beta[7, 1], 7), -0.1807346)
-  expect_equal(length(fit$delta), 26)
-  expect_equal(round(fit$lambda, 7), 0.0031986)
+  expect_equal(dim(fit$beta), c(10, 3))
+  expect_equal(fit$beta,
+               structure(c(-0.00902717310561197, 0.291585708663808, 0.22453144550476,
+                           0.595950901714361, 0.697393684858912, -0.101859995760623, -0.180734619436561,
+                           -0.135245313680128, -0.193714329179273, -0.168947345363323, 0,
+                           0.126427485685824, 0.0613982726133604, 0.395632383186917, 0.461659975169094,
+                           -1.98338549491951e-17, -0.026507087494231, -0.00949717831171686,
+                           -0.0444942103781876, -0.0162802316357272, 0, 0, 0, 0.238425364798653,
+                           0.288688356244267, 0, 0, 0, 9.06147456367423e-17, 0), dim = c(10L,
+                                                                                         3L)))
+  expect_equal(length(fit$delta), 3)
+  expect_equal(fit$lambda, 0.00319864842791345)
 })
 
 

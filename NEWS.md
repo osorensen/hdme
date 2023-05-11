@@ -1,3 +1,8 @@
+# hdme 0.5.1.9001
+
+- Changed ggplot code to avoid using deprecated functions.
+- Reduced test time by changing tests.
+
 # hdme 0.5.1.9000
 
 - Fixed a bug in corrected_lasso and cv_corrected lasso causing the algorithm to 

@@ -23,6 +23,7 @@ Imports:
   Rdpack, 
   Rcpp (>= 0.12.15),
   Rglpk (>= 0.6-1),
+  rlang (>= 1.0),
   stats
 URL: https://github.com/osorensen/hdme
 RdMacros: Rdpack

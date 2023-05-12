@@ -6,7 +6,7 @@
 plot.cv_corrected_lasso <- function(x, ...) {
 
 
-  ggplot2::ggplot(as.data.frame(x$cv),
+  ggplot2::ggplot(x$cv,
                   ggplot2::aes(x = .data$radii, y = .data$mean_loss,
                                 ymin = .data$lower_1se, ymax = .data$upper_1se)) +
     ggplot2::geom_point() +

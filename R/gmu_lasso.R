@@ -15,6 +15,8 @@
 #' @return An object of class "gmu_lasso".
 #' @export
 #'
+#' @importFrom rlang .data
+#'
 #' @references \insertRef{rosenbaum2010}{hdme}
 #'
 #'   \insertRef{sorensen2018}{hdme}

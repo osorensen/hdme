@@ -1,12 +1,14 @@
 ## Resubmission
+
 This is an update which
 
-- Removes C++11 specification from Makevars and Makevars.win.
-- Modifies the plots in the vignette so that they are colorblind friendly. Thanks to André Cruz for suggesting.
+- Contains a bug fix in the algorithm for the corrected lasso.
+- Removes use of deprecated ggplot2 functionality.
+- Reduces test time.
 
 ## Test environments
-* local Mac OS install, R 4.2.2
-* win-builder (release, oldrelease and devel)
+* local Mac OS install, R 4.3.0.
+* win-builder (devel)
 * GitHub Actions linux.
 
 ## R CMD check results

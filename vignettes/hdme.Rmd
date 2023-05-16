@@ -377,7 +377,7 @@ str(corrected_fit)
 
 
 # Matrix Uncertainty Selector
-The Matrix Uncertainty Selector (MUS) was introduced by @rosenbaum2010 as a modification of the Dantzig Selector for data with measurement error. The key insight behind the MUS, is that when $X$ is measured with error, the true coefficient vector $\beta$ may not be part of the feasible set, even when $\lambda$ is set to its theorically optimal value. The reason is that $\lambda$ is a bound on the residual of the linear model, while in the case of measurement error, a bound on $\delta$ the measurement error matrix $U$ is also needed. The MUS is defined as the optimization problem
+The Matrix Uncertainty Selector (MUS) was introduced by @rosenbaum2010 as a modification of the Dantzig Selector for data with measurement error. The key insight behind the MUS, is that when $X$ is measured with error, the true coefficient vector $\beta$ may not be part of the feasible set, even when $\lambda$ is set to its theoretically optimal value. The reason is that $\lambda$ is a bound on the residual of the linear model, while in the case of measurement error, a bound on $\delta$ the measurement error matrix $U$ is also needed. The MUS is defined as the optimization problem
 $$
 \text{minimize } ~ \|\beta\|_{1}, ~ \text{ subject to }  ~ (1/n)\| W^{T} (y - W\beta)\|_{\infty} \leq \lambda + \delta \|\beta\|_{1}.
 $$
